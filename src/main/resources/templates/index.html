@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理</title>
+
+    <link rel="stylesheet" href="/js/easyui1.5/themes/icon.css">
+    <link rel="stylesheet" href="/js/easyui1.5/themes/default/easyui.css">
+    <script src="/js/jquery-2.1.1.min.js"></script>
+    <script src="/js/easyui1.5/jquery.easyui.min.js"></script>
+
+</head>
+<script type="text/javascript">
+    $(function(){
+        getTreeData();
+    })
+    function getTreeData(){
+        $('#tree').tree({
+            data:[{
+                "id": 1,
+                "text": "后台管理",
+                "state": "open",
+                "children": [{
+                    "id": 11,
+                    "text": "专家信息管理",
+                    "url":""
+                },
+                    {
+                        "id": 12,
+                        "text": "文章管理",
+                        "url":""
+                    },{
+                        "id": 13,
+                        "text": "热点资讯管理",
+                        "url":""
+                    },{
+                        "id": 14,
+                        "text": "专家灼见管理",
+                        "url":""
+                    },{
+                        "id": 15,
+                        "text": "病例荟萃管理",
+                        "url":""
+                    },{
+                        "id": 16,
+                        "text": "闯关题目",
+                        "url":""
+                    },{
+                        "id": 17,
+                        "text": "问卷调查法",
+                        "url":""
+                    }],
+            }],
+            /* 新建一个面板 */
+            onClick:function(node){
+                if(node.children!=null||node.state=='closed'){return;}
+                if(node.url==null){return;}
+                if($("#center_tabs").tabs('exists',node.text)){
+                    $("#center_tabs").tabs('select',node.text);
+                }else{
+                    $("#center_tabs").tabs('add',{
+                        title:node.text,
+                        content:toView(node.url),
+                        closable:true,
+                        tools:[{
+                            iconCls:'icon-mini-refresh',
+                            handler:function(){
+                                var pp = $("#center_tabs").tabs('getSelected');
+                                var content = pp.panel('options').content;
+                                $("#center_tabs").tabs('update',{
+                                    tab:pp,
+                                    options:content
+                                });
+                            }
+                        }]
+                    });
+                }
+            }
+        });
+    }
+    function toView(url){
+        return '<iframe scrolling="auto" frameborder="0"  src="/kc/toView?viewName='+url+ '" style="width:100%;height:100%;"></iframe>';
+    }
+</script>
+<body class="easyui-layout" id = "ll">
+
+</div>
+
+<div data-options="region:'west',title:'West',split:true" style="height:500px;width:300px">
+    <ul id="tree">
+    </ul>
+</div>
+
+<div data-options="region:'center',title:'center title'" style="padding:5px;background:#eee;">
+    <div fit = true id="center_tabs" class="easyui-tabs" style="width:500px;height:250px;"></div>
+</div>
+</body>
+</html>
