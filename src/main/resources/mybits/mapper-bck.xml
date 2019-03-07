@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jk.background.mapper.BckMapper">
+
+    <insert id="addEx">
+        insert into `t_ example`
+        (em_title,em_zeid,em_createtime,
+        em_browse,em_medal,em_img,em_mp3,em_content
+        )values (#{em_title},#{em_zeid},NOW(),
+        #{em_browse},#{em_medal},#{em_img},#{em_mp3},
+        #{em_content}
+        )
+    </insert>
+
+    <update id="updateEx">
+        update `t_ example` set em_title=#{em_title},em_zeid=#{em_zeid},em_img=#{em_img},em_mp3=#{em_mp3},em_content=#{em_content}
+        where id = #{id}
+    </update>
+
+    <select id="queryEx" resultType="Example">
+        select * from `t_ example`
+    </select>
+
+    <select id="quertAu" resultType="Exprent">
+        select id,dt_name from t_docutor_expert
+    </select>
+
+
+</mapper>
