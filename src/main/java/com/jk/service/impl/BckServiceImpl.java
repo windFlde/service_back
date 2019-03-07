@@ -6,7 +6,6 @@ import com.jk.bean.Exprent;
 import com.jk.bean.ReceivePage;
 import com.jk.mapper.BckMapper;
 import com.jk.service.BckService;
-import com.jk.bean.Exprent;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,8 +26,6 @@ public class BckServiceImpl implements BckService {
         }else {
             bckMapper.addEx();
         }
-
-
     }
 
     @Override
@@ -43,5 +40,7 @@ public class BckServiceImpl implements BckService {
     public List<Exprent> quertAu() {
         return bckMapper.quertAu();
     }
+
+
 
 }

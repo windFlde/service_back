@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jk.background.mapper.ZGMapper">
+    <!--List<ZG> queryZG();-->
+    <select id="queryZG" resultType="ZG">
+      select * from t_docutor_expert
+    </select>
+
+    <!-- ZG queryZGById(String id);-->
+    <select id="queryZGById" resultType="ZG">
+        select * from t_docutor_expert where id = ${id}
+    </select>
+
+    <!--void updateZG(ZG zg);-->
+    <update id="updateZG">
+      UPDATE `t_docutor_expert` d
+        SET d.dt_addr=${dt_addr},d.dt_img=${dt_img},d.dt_jj=${dt_jj},d.dt_level=${dt_level},d.dt_modle=${dt_modle},d.dt_name=${dt_name},d.dt_qw=${dt_qw},d.dt_zc=${dt_zc}
+        WHERE
+            id = #{id}
+    </update>
+
+    <!--void deleteZG(String ids);-->
+    <delete id="deleteZG">
+        delete from t_docutor_expert where id in (#{ids})
+    </delete>
+
+    <!--void addZG(ZG zg);-->
+    <insert id="addZG">
+        INSERT INTO `t_docutor_expert` (
+            dt_name,
+            dt_zc,
+            dt_addr,
+            dt_img,
+            dt_jj,
+            dt_modle,
+            dt_level,
+            dt_qw
+        )
+        VALUES
+            (
+                #{dt_name},
+                #{dt_zc},
+                #{dt_addr},
+                #{dt_img},
+                #{dt_jj},
+                #{dt_modle},
+                #{dt_level},
+                #{dt_qw}
+            )
+    </insert>
+</mapper>

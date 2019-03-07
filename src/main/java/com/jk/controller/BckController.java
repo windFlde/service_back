@@ -21,9 +21,7 @@ public class BckController {
     @ResponseBody
     @RequestMapping("addEx")
     public void  addEx(Example example){
-
         bckService.addEx(example);
-
     }
 
     @ResponseBody
