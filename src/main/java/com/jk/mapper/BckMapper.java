@@ -3,7 +3,6 @@ package com.jk.mapper;
 import com.jk.bean.Example;
 import com.jk.bean.Exprent;
 
-
 import java.util.List;
 
 public interface BckMapper {
@@ -14,4 +13,6 @@ public interface BckMapper {
     List<Example> queryEx();
 
     List<Exprent> quertAu();
+
+
 }
