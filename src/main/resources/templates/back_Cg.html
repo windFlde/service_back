@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <script src="/js/layer/layer.js"></script>
+    <link rel="stylesheet" href="/js/easyui1.5/themes/icon.css">
+    <link rel="stylesheet" href="/js/easyui1.5/themes/default/easyui.css">
+    <script src="/js/jquery-2.1.1.min.js"></script>
+    <script src="/js/easyui1.5/jquery.easyui.min.js"></script>
+</head>
+<script type="text/javascript">
+    $(function(){
+        /*initTable();*/
+        normal2ajaxFrom();
+        $("#dialog_add").dialog('close');
+    })
+
+
+
+    function addUser() {
+        $("#dialog_add").dialog('open');
+    }
+
+    function submitData(){
+        $("#add_user_form").form('submit');
+    }
+
+    function normal2ajaxFrom(){
+
+        //使普通表单成为ajax提交方式的表单。
+        $('#add_user_form').form({
+
+            url:"CG/addChuangGuan",
+
+            onSubmit: function(){ //在提交之前触发，返回false可以终止提交
+                //验证表单 方法二
+                return $('#add_user_form').form('validate');
+            },
+            success:function(data){   //在表单提交成功以后触发 data是后台返回的数据
+                //关闭对话框
+                $("#dialog_add").dialog('close');
+                //重新加载数据
+                $("#dg").datagrid('reload');//reload 会重新请求数据 但会停留在当前页
+            }
+        });
+    }
+
+
+    function deleteItem(id) {
+        $.ajax({
+            url:"<%=path %>/deleteItem.do",
+            type:"POST",
+            data:{id:id},
+            success:function(result){
+                $("#dg").datagrid('reload');
+
+            },
+            error:function(){
+                alert("ajax访问失败了,查看控制台");
+            }
+        });
+    }
+</script>
+<body>
+<div id="tb">
+    <a id="btn_add"   href="javascript:void(0)" class="easyui-linkbutton" onClick="addUser()" data-options="iconCls:'icon-add'">增加</a>
+    <a id="btn_add" href="batch_add.jsp" target="_blank" class="easyui-linkbutton" data-options="iconCls:'icon-add'">批量增加</a>
+</div>
+<table id="dg"></table>
+<div id="dialog_add"   class="easyui-dialog" title="My Dialog" style="width:800px;height:300px;"
+     data-options="iconCls:'icon-save',resizable:true,modal:true,
+			buttons:[{
+				text:'保存',
+				iconCls:'icon-save',
+				handler:function(){
+					submitData()//调用另一个方法
+				}
+			},{
+				text:'关闭',
+				iconCls:'icon-cancel',
+				handler:function(){
+					clearData();
+
+  					$('#dialog_add').dialog('close')
+				}
+			}]">
+<form id="add_user_form">
+    <input name="id" type="hidden"  >
+    问题:    <input name="question" id="name" class="easyui-textbox" data-options="multiline:true" style="width:300px;height:80px" > <br/>
+    答案A:   <input name="answer1" class="easyui-textbox" data-options="iconCls:'icon-man'" > <br/>
+    答案B:   <input name="answer2" class="easyui-textbox" data-options="iconCls:'icon-man'" > <br/>
+    答案C:   <input name="answer3" class="easyui-textbox" data-options="iconCls:'icon-man'" > <br/>
+    答案D:   <input name="answer4" class="easyui-textbox" data-options="iconCls:'icon-man'" > <br/>
+    回答:    <input name="questionKey" class="easyui-textbox" data-options="iconCls:'icon-man'" > <br/>
+    答案详述:<input name="keyWhy" class="easyui-textbox" data-options="multiline:true" style="width:300px;height:80px" > <br/>
+
+
+</form>
+</body>
+</html>
