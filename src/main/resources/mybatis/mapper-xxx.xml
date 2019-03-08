@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jk.mapper.XxxMapper">
+
+<!--SendPage queryWenZhang(ReceivePage receivePage);
+
+    void insertWenZhang(WenZhang wenZhang);
+
+    void deleteWenZhang(String ids);-->
+    <select id="queryWenZhang" resultType="wenzhang">
+
+        select * from t_wenzhang
+    </select>
+
+    <insert id="insertWenZhang">
+
+        insert into t_wenzhang (title,name,img,music,content,browse,creaTime,zeid)VALUES(
+          #{title},
+          #{name},
+          #{img},
+          #{music},
+          #{content},
+          #{browse},
+          #{creaTime},
+          #{zeid}
+        )
+    </insert>
+
+    <!--void updateWenZhang(WenZhang wenZhang);-->
+    <update id="updateWenZhang">
+
+       update t_wenzhang set title=#{title},
+        name=#{name},
+        img=#{img},
+        musci=#{music},
+        content=#{content},
+        browse=#{browse},
+        creaTime=#{creaTime},
+        zeid=#{zeid}
+    </update>
+
+    <delete id="deleteWenZhang">
+
+        delete from t_wenzhang where id in ('${ids}')
+    </delete>
+
+</mapper>

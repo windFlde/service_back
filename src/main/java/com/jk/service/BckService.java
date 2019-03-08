@@ -3,7 +3,6 @@ package com.jk.service;
 import com.jk.bean.Example;
 import com.jk.bean.Exprent;
 import com.jk.bean.ReceivePage;
-import com.jk.bean.ZG;
 
 import java.util.List;
 
