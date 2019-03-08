@@ -7,9 +7,11 @@ import com.jk.bean.ZG;
 import com.jk.mapper.ZGMapper;
 import com.jk.service.ZGService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ZGServiceImpl implements ZGService {
 
     @Autowired
