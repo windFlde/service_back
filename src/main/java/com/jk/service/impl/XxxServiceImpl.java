@@ -39,4 +39,5 @@ public class XxxServiceImpl implements XxxService {
     public void deleteWenZhang(String ids) {
         xxxMapper.deleteWenZhang(ids);
     }
+
 }
