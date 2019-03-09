@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jk.mapper.RdzxMapper">
+
+    <!--List<Hotspot> queryRdzx(Hotspot hotspot);-->
+    <select id="queryRdzx" resultType="Hotspot">
+
+        select * from t_hottop
+    </select>
+    
+    <!--void deleteHosport(String[] ids);-->
+    <delete id="deleteHosport">
+
+
+        delete from t_hottop where id in
+
+        (
+
+          <foreach collection="array" item="item" index="index" separator=",">
+
+              #{item}
+          </foreach>
+        )
+    </delete>
+
+    <!--void addHotspot(Hotspot hotspot);-->
+
+    <insert id="addHotspot">
+
+        insert into t_hottop(rd_title,rd_img,rd_browse,rd_createtime,rd_content)
+        values(#{rd_title},#{rd_img},#{rd_browse},#{rd_createtime},#{rd_content});
+    </insert>
+
+
+
+    <!--Hotspot rdzxMapper(Hotspot hotspot);-->
+    <select id="rdzxMapper" resultType="Hotspot">
+
+        select * from t_hottop where id=#{id}
+    </select>
+
+    <!--void updateHotspot(Hotspot hotspot);-->
+    <update id="updateHotspot">
+
+        update t_hottop set
+        rd_title=#{rd_title},rd_img=#{rd_img},
+        rd_browse=#{rd_browse},rd_createtime=#{rd_createtime},
+        rd_content=#{rd_content}
+        where id=#{id}
+    </update>
+
+</mapper>
