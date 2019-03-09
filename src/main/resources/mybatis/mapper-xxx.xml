@@ -44,4 +44,34 @@
         delete from t_wenzhang where id in ('${ids}')
     </delete>
 
+    <!--List<WenXian> queryWenXian();
+
+    void deleteWenXian(@Param("ids") String ids);
+
+    void insertWenXian(WenXian wenZhang);-->
+    <select id="queryWenXian" resultType="wenxian">
+        select * from t_wenxian
+    </select>
+
+    <insert id="insertWenXian">
+        INSERT INTO t_wenxian (
+            `name`,
+            `createTime`,
+            `browse`,
+            `content`
+        )
+        VALUES
+            (
+                #{name},
+                #{createTime},
+                #{browse},
+                #{content}
+            )
+    </insert>
+
+    <delete id="deleteWenXian">
+
+        delete from t_wenxian where id in ('${ids}')
+    </delete>
+
 </mapper>

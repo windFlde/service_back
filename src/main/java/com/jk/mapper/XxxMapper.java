@@ -1,5 +1,6 @@
 package com.jk.mapper;
 
+import com.jk.bean.WenXian;
 import com.jk.bean.WenZhang;
 import org.apache.ibatis.annotations.Param;
 
@@ -15,4 +16,10 @@ public interface XxxMapper {
     void updateWenZhang(WenZhang wenZhang);
 
     List<WenZhang> queryWenZhang(WenZhang w);
+
+    List<WenXian> queryWenXian();
+
+    void deleteWenXian(@Param("ids") String ids);
+
+    void insertWenXian(WenXian wenZhang);
 }

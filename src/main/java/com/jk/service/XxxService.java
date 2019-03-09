@@ -2,10 +2,8 @@ package com.jk.service;
 
 import com.jk.bean.ReceivePage;
 import com.jk.bean.SendPage;
+import com.jk.bean.WenXian;
 import com.jk.bean.WenZhang;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
 
 public interface XxxService {
 
@@ -15,4 +13,9 @@ public interface XxxService {
 
     void deleteWenZhang(String ids);
 
+    SendPage queryWenXian(ReceivePage receivePage);
+
+    void insertWenXian(WenXian wenZhang);
+
+    void deleteWenXian(String ids);
 }

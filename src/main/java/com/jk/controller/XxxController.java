@@ -2,6 +2,7 @@ package com.jk.controller;
 
 import com.jk.bean.ReceivePage;
 import com.jk.bean.SendPage;
+import com.jk.bean.WenXian;
 import com.jk.bean.WenZhang;
 import com.jk.service.XxxService;
 import com.jk.utils.OssUpFileUtil;
@@ -34,9 +35,21 @@ public class XxxController {
         return list;
     }
     @ResponseBody
+    @RequestMapping("queryWenXian")
+    public SendPage queryWenXian(ReceivePage receivePage) {
+        SendPage list =xxxService.queryWenXian(receivePage);
+        return list;
+    }
+    @ResponseBody
     @RequestMapping("insertWenZhang")
     public String insertWenZhang(WenZhang wenZhang) {
         xxxService.insertWenZhang(wenZhang);
+        return "";
+    }
+    @ResponseBody
+    @RequestMapping("insertWenXian")
+    public String insertWenXian(WenXian wenZhang) {
+        xxxService.insertWenXian(wenZhang);
         return "";
     }
     /**
@@ -63,6 +76,11 @@ public class XxxController {
     @RequestMapping("deleteWenZhang")
     public void deleteWenZhang(String  ids) {
         xxxService.deleteWenZhang(ids);
+    }
+    @ResponseBody
+    @RequestMapping("deleteWenXian")
+    public void deleteWenXian(String  ids) {
+        xxxService.deleteWenXian(ids);
     }
 
 }
