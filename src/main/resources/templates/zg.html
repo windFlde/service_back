@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>专家</title>
+    <script src="/js/layer/layer.js"></script>
+    <link rel="stylesheet" href="/js/easyui1.5/themes/icon.css">
+    <link rel="stylesheet" href="/js/easyui1.5/themes/default/easyui.css">
+    <script src="/js/jquery-2.1.1.min.js"></script>
+    <script src="/js/easyui1.5/jquery.easyui.min.js"></script>
+    <link rel="stylesheet" href="/js/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <script src="/js/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <script src="/layui/layui.all.js"></script>
+
+    <link rel="stylesheet" href="/js/uploadify/uploadify.css" />
+    <script src="/js/uploadify/jquery.uploadify.min.js"></script>
+
+</head>
+<script type="text/javascript" th:inline="none">
+    var ii = 0;
+    $(function(){
+        getData();
+        preFile()
+        layui.use('rate', function(){
+            var rate = layui.rate;//渲染
+            var ins1 = rate.render({
+                elem: '#test1',  //绑定元素
+                length:5,
+                value:0,
+                theme:'#FFB800',
+                text:true,
+                choose: function(value){
+                $("#fen").val(value);
+            }
+
+
+            });});
+    })
+    function getData(){
+        $("#table").datagrid({
+            url:'/zhuanjia/queryZG',
+            striped:true,
+            pagination:true,
+            pageList:[3,4,5,6,7],
+            pageSize: 4,
+            /* 奇数偶数行不同颜色 start */
+            rowStyler: function(index,row){
+                if (index%2==0){
+                    return 'background-color:#6293BB;color:#fff;';
+                }else{
+                    return "background-color:#ccfffcc;color:red;";
+                }
+            },
+            /* 奇数偶数行不同颜色 end */
+            columns:[[
+                {field:'xxx',title:'复选框',width:50,checkbox:true},
+                {field:'id',title:'id',width:100},
+                {field: 'dt_name',title: '专家姓名',align: 'center'},
+                {field: 'dt_zc',title: '职称',align: 'center'},
+                {field: 'dt_addr',title: '地址',align: 'center'},
+                {field: 'dt_img',title: '图片',align: 'center',
+                    formatter: function(value,row,index){
+                        console.info(index);
+                        return "<img src='"+value+"' width='88px'/>";
+                    }},
+                {field: 'dt_jj',title: '专家简介',align: 'center'},
+                {field: 'dt_modle',title: '参与项目',align: 'center'},
+                {field: 'dt_level',title: '专家等级',align: 'center'},
+                {field: 'dt_qw',title: '专家权威',align: 'center',
+                    formatter: function(value,row,index){
+                    var asd = (value==1)?"权威专家":" ";
+                        return asd;
+                    }},
+            ]],
+            checkOnSelect:false
+        });
+    }
+    function tijiao() {
+        /*ajax   start*/
+                $.ajax({
+                   url:"/zhuanjia/addZG",
+                   type:"POST",
+                   data:$("#form").serialize(),
+                   beforeSend:function(){
+                          ii = layer.msg('加载中', {
+                          icon: 16
+                          ,shade: 0.01
+                          });
+                    },
+                   success:function(a){
+                       $("#form").clean();
+                       $("[name=dt_jj]").html();
+                       $("[name=dt_modle]").html();
+                       $("#hideImg").prop("src"," ");
+                       $("#table").datagrid('reload');//reload 会重新请求数据 但会停留在当前页
+                   },
+                   error:function(){
+                      layer.msg("ajax失败");
+                   },complete:function(){
+                         layer.close(ii);
+                    }
+               });
+             /*ajax   end*/
+    }
+    function preFile(){
+        //上传插件
+        $("#file").uploadify({
+            //插件自带  不可忽略的参数
+            'swf': '/js/uploadify/uploadify.swf',
+            //前台请求后台的url 不可忽略的参数                          //*****要修改路经 !!!!!!!!!!!!!!!!!!!!!!!!
+            'uploader': '/zhuanjia/toUploadBlog',
+            //给div的进度条加背景 不可忽略
+            'queueID': 'fileQueue',
+            //上传文件文件名 !!!!!!!!!!!!!!!!!!与后台接口参数名字需要完全一致!!!!!!!!!!!!!!!!!!!!!!!!
+            'fileObjName' : 'file',
+            //给上传按钮设置文字
+            'buttonText': '上传图片',
+            //设置文件是否自动上传
+            'auto': true,
+            //可以同时选择多个文件 默认为true  不可忽略
+            'multi': true,
+            //上传后队列是否消失
+            'removeCompleted': true,
+            //队列消失时间
+            'removeTimeout' : 1,
+            //上传文件的个数，项目中一共可以上传文件的个数
+            'uploadLimit':  -1,
+            'onFallback':function(){alert("浏览器不支持,请更换其他浏览器,或打开Flash插件");},
+            //上传失败
+            'onUploadError':function(){
+                alert("上传失败");
+            },
+            //成功回调函数 file：文件对象。data后台输出数据
+            'onUploadSuccess':function(file,data,response){
+                //  for (data)
+                var imgurl =data
+                //alert(data);
+                //给img框赋值进行展示
+                $("#testImg").attr("src",data);
+                //给隐藏的文本框赋值 传到后台
+                $('#hideImg').val(data); //改!!!!!!!!!!11111
+            }
+        });
+    }
+    function removes(){
+        var rows = $("#table").datagrid('getChecked');
+        var ids = "";
+        $.each(rows,function(index,obj){
+            ids += ids== ''?obj.id:","+obj.id;
+        });
+        deleteItem(ids);
+    }
+    function deleteItem(ids){
+        if(ids != null && ids != ""){
+            $.messager.confirm('确认','您确认想要删除记录吗？',function(r){
+                if (r){
+                    $.ajax({
+                        url:"/zhuanjia/deleteZG",
+                        type:"POST",
+                        data:{ids:ids},
+                        success:function(pageUtil){
+                            $.messager.show({
+                                itle:'删除消息',
+                                msg:'删除成功！',
+                                timeout:3000,
+                                showType:'slide'
+                            });
+                            $("#table").datagrid('reload');//reload 会重新请求数据 但会停留在当前页
+                        },
+                        error:function(){
+                            alert("失败了");
+                        }
+                    });
+                }else{
+                    $.messager.show({
+                        title:'删除消息',
+                        msg:'没有删哦！',
+                        timeout:3000,
+                        showType:'slide'
+                    });
+                    $("#user_table").datagrid('reload');//reload 会重新请求数据 但会停留在当前页
+                }
+            });
+        }else{
+            $.messager.show({
+                title:'删除消息',
+                msg:'请先选中！',
+                timeout:3000,
+                showType:'slide'
+            });
+        }
+    }
+</script>
+<body>
+<div id="p">
+    <!-- 按钮触发模态框 -->
+    <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+        专家新增
+    </button>
+    <button class="btn btn-primary" onclick="removes()" >
+        批量删除
+    </button>
+</div>
+<table id="table" height="500" width="100%"></table>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    新增专家
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form id="form">
+                    <table>
+                        <tr>
+                            <td>名字：</td>
+                            <td><input type="text" name="dt_name" class="form-control" placeholder="请输入名字"></td>
+                        </tr>
+                        <tr>
+                            <td>职称：</td>
+                            <td><input type="text" name="dt_zc" class="form-control" placeholder="请输入职称"></td>
+                        </tr>
+                        <tr>
+                            <td>地址</td>
+                            <td><input type="text" name="dt_addr" class="form-control" placeholder="请输入地址"></td>
+                        </tr>
+                        <tr>
+                            <td>上传图片</td>
+                            <td><input name="dt_img" id="hideImg" type="hidden" >
+                                <img id="testImg" width="100"> <!-- 上传完显示的图片  -->
+                                <div id="fileQueue"></div><!--文件上传的进度条  -->
+                                <input id="file" type="file"><br/></td>
+                        </tr>
+                        <tr>
+                            <td>简介</td>
+                            <td><textarea name="dt_jj"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td>参与的项目</td>
+                            <td><textarea name="dt_modle"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td>等级</td>
+                            <td><div id="test1"></div><input type="hidden" id="fen" name="dt_level"></td>
+                        </tr>
+                        <tr>
+                            <td>权威</td>
+                            <td><input type="radio" name="dt_qw" value="1">权威专家</td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    关闭
+                </button>
+                <button type="button" onclick="tijiao()" class="btn btn-primary" data-dismiss="modal">
+                    保存
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+</body>
+</html>

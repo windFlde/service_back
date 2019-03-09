@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <link rel="stylesheet" href="/js/easyui1.5/themes/icon.css">
+    <link rel="stylesheet" href="/js/easyui1.5/themes/default/easyui.css">
+    <script src="/js/jquery-2.1.1.min.js"></script>
+    <script src="/js/easyui1.5/jquery.easyui.min.js"></script>
+    <script src="/js/easyui1.5/locale/easyui-lang-zh_CN.js"></script>
+    <link rel="stylesheet" href="/js/uploadify/uploadify.css" />
+    <script src="/js/uploadify/jquery.uploadify.min.js"></script>
+</head>
+
+<body>
+<div id="toolbar">
+    <a onclick="openDialog()" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">新增</a>
+    <a onclick="delMany()" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">刪除</a>
+</div>
+<!-- 新增修改 dialog弹框 -->
+<div id="hotspotDialog" class="easyui-dialog" data-options="title:'热点资讯',modal:true,closed:true,
+	buttons:[
+		{
+			text:'保存',
+			iconCls:'icon-save',
+			plain:true,
+			handler:function(){
+                saveForm();
+			}
+		}
+	]" style="width: 400px;height: 300px;">
+    <form id="hotspotForm" method="post">
+        <table>
+            <tr>
+                <td>标题:</td>
+                <td>
+                    <input type="hidden" name="id"/>
+                    <input type="text" class="easyui-textbox" name="rd_title"/>
+                </td>
+            </tr>
+            <tr>
+                <td>照片:</td>
+                <td>
+                    <div style="float: left">
+                        <img width="50px" height="50px" id="testimg" src="">
+                        <input type="hidden" id="hideImg" name="rd_img">
+                    </div>
+                    <div id="fileQueue"></div><!--文件上传的进度条  -->
+                    <div style="float: left">
+                        <input type="file" id="uploadify"/>
+                    </div>
+
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>访问量:</td>
+                <td><input type="text" class="easyui-textbox" data-options="min:1,max:200,increment:1" name="rd_browse"/> </td>
+            </tr>
+            <tr>
+                <td>时间:</td>
+                <td><input type="text" class="easyui-datebox" name="rd_createtime"/> </td>
+            </tr>
+            <tr>
+                <td>内容:</td>
+                <td><input type="text"  class="easyui-textbox" name="rd_content"/> </td>
+            </tr>
+        </table>
+    </form>
+</div>
+    <table id="table"></table>
+</body>
+    <script type="text/javascript"  th:inline="none">
+
+        $(function(){
+
+            initTable();
+        })
+
+        function initTable() {
+            $("#table").datagrid({
+                url:'/queryRdzx',
+                fit:'true',
+                toolbar:'#toolbar',
+                pagination:true,//开启分页
+                pageNumber:1,//第几页
+                pageSize:3,//每页多-少条
+                pageList:[1,3,5],//分页下拉框
+                loadMsg:'数据加载中……',
+                /* 奇数偶数行不同颜色 start */
+                rowStyler: function(index,row){
+                    if (index%2==0){
+                        return 'background-color:#6293BB;color:#fff;';
+                    }else{
+                        return "background-color:#ccffff;color:red;";
+                    }
+                },
+                /* 奇数偶数行不同颜色 end */
+                columns:[[
+                    {field:'fux',title:'复选框',width:80,checkbox:true},
+                    {field:'id',title:'ID',width:20},
+                    {field:'rd_title',title:'标题',width:200},
+                    {field:'rd_img',title:'头像',width:100,formatter:function(value,row,index){
+                            return '<img width="50px" height="50px" src="'+value+'"/>'
+                    }},
+                    {field:'rd_browse',title:'访问量',width:80},
+                    {field:'rd_createtime',title:'时间',width:100},
+                    {field:'rd_content',title:'内容',width:300},
+                    {field:'123',title:'操作',width:100,formatter:function(value,row,index){
+
+                         return '<a href="javascript:delOne('+row.id+');">删除</a>'+" | "+
+                                '<a href="javascript:editHotspot('+row.id+');">修改</a>';
+                    }}
+
+
+
+                ]]
+
+            })
+        }
+
+
+        function delOne(id) {
+
+            $.messager.confirm('提示','您确定要删这些数据吗？',function (r) {
+
+                if (r) {
+
+                    deleteHosportByIds(id);
+                }
+                
+            })
+        }
+
+        function delMany() {
+
+            var arr = $('#table').datagrid('getChecked');
+            if (arr.length <= 0) {
+
+                $.messager.alert('提示','请选择要删除的数据');
+                return;
+            }
+            $.messager.confirm('提示','你确定要删除这些数据吗?',function (r) {
+
+                if (r) {
+
+                    var ids="";
+                    for (var i = 0; i <arr.length ; i++) {
+
+                        ids+=ids==''?arr[i].id:','+arr[i].id;
+
+                    }
+                    deleteHosportByIds(ids);
+                    
+
+                }
+
+            })
+        }
+        
+        function deleteHosportByIds(ids) {
+
+
+             $.ajax({
+                     url:'/deleteHosport',
+                     type:'post',
+                     data:{ids:ids},
+                     success:function (data) {
+
+                         if (data) {
+                             initTable();
+                         }else{
+
+                             $.messager.alert('提示','删除失败','warning');
+                         }
+
+
+                     },error:function () {
+                         alert("ajax访问失败,请查看控制台");
+                     }
+
+                     })
+        }
+
+        //打开dialog新增对话框
+      function openDialog() {
+
+          //重置表单
+          $('#hotspotForm').form('reset');
+          //表单特殊字段单独处理
+          resetSpecial();
+            $('#hotspotDialog').dialog({
+                  title:'新增数据',
+                closed:false,
+                open:true
+
+            })
+      }
+
+        //表单特殊字段重置
+        function resetSpecial(){
+
+            $('#hideImg').val('');
+            $("#testimg").attr('src','');
+        }
+
+        //关闭dialog弹框
+        function closeDialog() {
+
+            $('#hotspotDialog').dialog('close');
+        }
+        //表单保存
+        function saveForm() {
+
+            $('#hotspotForm').form({
+
+                url:'/addHotspot',
+                type:'post',
+                success: function (data) {
+
+                    if (data) {
+
+                        closeDialog();
+                        initTable();
+                    }
+                }
+
+
+            })
+            $('#hotspotForm').submit();
+        }
+
+        //回显
+        function editHotspot(id) {
+
+             $.ajax({
+                     url:'/editHotspot',
+                     type:'post',
+                     data:{id:id},
+                     success:function (data) {
+
+                         $('#hotspotForm').form('load',data);
+                         //图片回显
+                         $('#testimg').attr('src',data.img);
+                         $('#hotspotDialog').dialog({
+                             title:'修改热点资讯',
+                             iconCls:'icon-add',
+                             closed:false
+                         })
+
+
+
+
+                     },error:function () {
+                         alert("ajax访问失败,请查看控制台");
+                     }
+
+                     })
+
+        }
+
+        function preFile(){
+            //上传插件
+            $("#file").uploadify({
+                //插件自带  不可忽略的参数
+                'swf': '/js/uploadify/uploadify.swf',
+                //前台请求后台的url 不可忽略的参数                          //*****要修改路经 !!!!!!!!!!!!!!!!!!!!!!!!
+                'uploader': '/upload',
+                //给div的进度条加背景 不可忽略
+                'queueID': 'fileQueue',
+                //上传文件文件名 !!!!!!!!!!!!!!!!!!与后台接口参数名字需要完全一致!!!!!!!!!!!!!!!!!!!!!!!!
+                'fileObjName' : 'file',
+                //给上传按钮设置文字
+                'buttonText': '上传图片',
+                //设置文件是否自动上传
+                'auto': true,
+                //可以同时选择多个文件 默认为true  不可忽略
+                'multi': true,
+                //上传后队列是否消失
+                'removeCompleted': true,
+                //队列消失时间
+                'removeTimeout' : 1,
+                //上传文件的个数，项目中一共可以上传文件的个数
+                'uploadLimit':  -1,
+                'onFallback':function(){alert("浏览器不支持,请更换其他浏览器,或打开Flash插件");},
+                //上传失败
+                'onUploadError':function(){
+                    alert("上传失败");
+                },
+                //成功回调函数 file：文件对象。data后台输出数据
+                'onUploadSuccess':function(file,data,response){
+                    //  for (data)
+                    var imgurl =data
+                    //alert(data);
+                    //给img框赋值进行展示
+                    $("#testImg").attr("src",data);
+                    //给隐藏的文本框赋值 传到后台
+                    $('#hideImg').val(data); //改!!!!!!!!!!11111
+                }
+            });
+        }
+
+
+    </script>
+</html>
