@@ -57,6 +57,7 @@
         setEvent();
         normal2ajax();
         $('#dialog_add').dialog('close');
+        $("#div2").hide();
     });
     function getData(){
         $("#dg").datagrid({
@@ -96,6 +97,10 @@
                     // }
                 },
                 {field:'zeid',title:'zeid',width:50},
+                {field:'strat',title:'发布状态',width:50,
+                    formatter: function(value,row,index){
+                        return value==1?"已发布":"等待发布";
+                    }},
                 {field:'xxx1',title:'操作',width:200,
                     /* 操作start */
                     formatter: function(value,row,index){
@@ -198,6 +203,14 @@
         $('#dialog_add').form("clear");
     }
     /* 提交================================================>end */
+    function setTime() {
+        $("#div2").show();
+    }
+    function setTime2() {
+        $("#div2").hide();
+        $("#time1").val(" ");
+
+    }
 </script>
 <body>
 <a id="btn_add" onclick="addData()" href="javascript:void(0)"class="easyui-linkbutton" data-options="iconCls:'icon-remove'">增加</a>
@@ -233,7 +246,8 @@
         content:<textarea name="content" rows="5px"></textarea><br>
         browse:<input name="browse" class="easyui-textbox" data-options="iconCls:'icon-man'" style="width:200px"><br>
         zeid:<input name="zeid" class="easyui-textbox" data-options="iconCls:'icon-man'" style="width:200px"><br>
-
+        发布状态：延迟发布<input onclick="setTime()" value="0" type="radio" name="strat" > 立即发布<input onclick="setTime2()" type="radio" value="1" name="strat" >
+        <div id="div2">设置延迟时间：<input id="time1" type="datetime-local" name="fabuTime" /></div>
     </form>
 </div>
 <!-- 弹框增加end -->

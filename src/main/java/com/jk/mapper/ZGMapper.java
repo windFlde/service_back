@@ -1,5 +1,6 @@
 package com.jk.mapper;
 
+import com.jk.bean.WenZhang;
 import com.jk.bean.ZG;
 import org.apache.ibatis.annotations.Param;
 
@@ -15,4 +16,8 @@ public interface ZGMapper {
     void deleteZG(@Param("ids") String ids);
 
     void addZG(ZG zg);
+
+    List<WenZhang> getAllTask();
+
+    void updateTask(@Param("id") Integer id);
 }
