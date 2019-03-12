@@ -25,14 +25,12 @@ public class Scheduler {
     @Scheduled(fixedRate = 1000)
     public void testTasks() {
         String format = dateFormat.format(new Date());
-        System.out.println("定时任务执行时间：" + format );
+        //System.out.println("定时任务执行时间：" + format );
         List<WenZhang> wen = zgService.getAllTask();
         for (WenZhang wenZhang : wen) {
-
             Date fabuTime = wenZhang.getFabuTime();
             String format1 = dateFormat.format(fabuTime);
-            System.out.println(format1);
-
+            //System.out.println(format1);
             if(format.equals(format1)){
                 zgService.updateTask(wenZhang.getId());
                 System.out.println(wenZhang.getName()+"发布成功");
