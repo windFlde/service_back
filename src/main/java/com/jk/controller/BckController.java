@@ -15,7 +15,6 @@ import java.util.List;
 @RequestMapping("bck")
 public class BckController {
 
-    //111
     @Resource
     BckService bckService;
 

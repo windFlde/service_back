@@ -14,7 +14,7 @@
 
     <insert id="insertWenZhang">
 
-        insert into t_wenzhang (title,name,img,music,content,browse,creaTime,zeid)VALUES(
+        insert into t_wenzhang (title,name,img,music,content,browse,creaTime,zeid,strat,fabuTime)VALUES(
           #{title},
           #{name},
           #{img},
@@ -22,7 +22,9 @@
           #{content},
           #{browse},
           #{creaTime},
-          #{zeid}
+          #{zeid},
+          #{strat},
+          #{fabuTime}
         )
     </insert>
 
@@ -36,7 +38,9 @@
         content=#{content},
         browse=#{browse},
         creaTime=#{creaTime},
-        zeid=#{zeid}
+        zeid=#{zeid},
+        strat=#{strat},
+        fabuTime=#{fabuTime}
     </update>
 
     <delete id="deleteWenZhang">
