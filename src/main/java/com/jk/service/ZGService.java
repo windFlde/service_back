@@ -1,9 +1,6 @@
 package com.jk.service;
 
-import com.jk.bean.ReceivePage;
-import com.jk.bean.SendPage;
-import com.jk.bean.WenZhang;
-import com.jk.bean.ZG;
+import com.jk.bean.*;
 
 import java.util.List;
 
@@ -22,4 +19,6 @@ public interface ZGService {
 
 
     void updateTask(Integer id);
+
+    List<Exprent> poiDerive(String dis);
 }

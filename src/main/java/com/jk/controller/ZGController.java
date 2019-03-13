@@ -1,10 +1,14 @@
 package com.jk.controller;
 
+import com.jk.bean.Exprent;
 import com.jk.bean.ReceivePage;
 import com.jk.bean.SendPage;
 import com.jk.bean.ZG;
 import com.jk.service.ZGService;
 import com.jk.utils.OssUpFileUtil;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.filechooser.FileSystemView;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -96,5 +107,53 @@ public class ZGController {
                 filename = count;
             } }
         return count;
+    }
+
+    /**
+     * POI导出
+     */
+    @ResponseBody
+    @RequestMapping("poiDerive")
+    public String poiDerive(String dis) throws IOException {
+
+        /////获取桌面路径
+        FileSystemView fsv = FileSystemView.getFileSystemView();
+        File com = fsv.getHomeDirectory();
+        //格式化时间戳
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-HHmmss");
+        String format = simpleDateFormat.format(new Date());
+
+        String resultUrl = com.getPath() + "//" + format + ".xls";     //文件路径
+
+        List<Exprent> data = zgService.poiDerive(dis);
+        HSSFWorkbook workbook  = new HSSFWorkbook(); //创建一个文档
+
+        HSSFSheet sheet = workbook.createSheet("Test");// 创建工作表(Sheet)
+
+        String[] headers = {"主键id", "专家名字", "职称", "地址", "图片地址", "简介", "合作项目", "等级","权威"};
+        HSSFRow row = sheet.createRow(0);// 创建行,从0开始
+        int a = 0;
+        for (String header : headers) {
+            row.createCell(a).setCellValue(header);
+            a++;
+        }
+        int index = 0;
+        for (Exprent datum : data) {
+            index++; //上面已经有0了  这里从1开始 就是从第二行开始
+            row = sheet.createRow(index);
+            row.createCell(0).setCellValue(datum.getId());
+            row.createCell(1).setCellValue(datum.getDt_name());
+            row.createCell(2).setCellValue(datum.getDt_zc());
+            row.createCell(3).setCellValue(datum.getDt_addr());
+            row.createCell(4).setCellValue(datum.getDt_img());
+            row.createCell(5).setCellValue(datum.getDt_jj());
+            row.createCell(6).setCellValue(datum.getDt_modle());
+            row.createCell(7).setCellValue(datum.getDt_level());
+            row.createCell(8).setCellValue(datum.getDt_qw());
+        }
+        FileOutputStream out = new FileOutputStream(resultUrl); //表格保存位置
+        workbook.write(out);//保存Excel文件
+        out.close();//关闭文件流
+        return "1";
     }
 }

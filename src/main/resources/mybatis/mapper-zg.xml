@@ -61,4 +61,9 @@
                     WHERE
                         id = ${id}
     </update>
+
+    <!--List<Exprent> poiDerive(String dis);-->
+    <select id="poiDerive" resultType="exprent">
+        select * from t_docutor_expert where id in (${dis})
+    </select>
 </mapper>

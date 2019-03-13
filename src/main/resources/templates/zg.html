@@ -192,6 +192,37 @@
             });
         }
     }
+    function poiDerive(){
+        var rows = $("#table").datagrid('getChecked');
+        var ids = "";
+        $.each(rows,function(index,obj){
+            ids += ids== ''?obj.id:","+obj.id;
+        });
+        if (ids != ""){
+            /*ajax   start*/
+                    $.ajax({
+                       url:"/zhuanjia/poiDerive",
+                       data:{dis:ids},
+                       beforeSend:function(){
+                              ii = layer.msg('加载中', {
+                              icon: 16
+                              ,shade: 0.01
+                              });
+                        },
+                       success:function(a){
+                            layer.msg("导出成功")
+                       },
+                       error:function(){
+                          layer.msg("ajax失败");
+                       },complete:function(){
+                             layer.close(ii);
+                        }
+                   });
+                 /*ajax   end*/
+        } else{
+            layer.msg("请先选择需要导出的数据")
+        }
+    }
 </script>
 <body>
 <div id="p">
@@ -201,6 +232,9 @@
     </button>
     <button class="btn btn-primary" onclick="removes()" >
         批量删除
+    </button>
+    <button class="btn btn-primary" onclick="poiDerive()" >
+        POI导出
     </button>
 </div>
 <table id="table" height="500" width="100%"></table>

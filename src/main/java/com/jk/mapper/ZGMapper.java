@@ -1,5 +1,6 @@
 package com.jk.mapper;
 
+import com.jk.bean.Exprent;
 import com.jk.bean.WenZhang;
 import com.jk.bean.ZG;
 import org.apache.ibatis.annotations.Param;
@@ -21,4 +22,6 @@ public interface ZGMapper {
 
 
     void updateTask(@Param("id") Integer id);
+
+    List<Exprent> poiDerive(@Param("dis") String dis);
 }
