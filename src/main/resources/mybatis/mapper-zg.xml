@@ -48,17 +48,4 @@
                 #{dt_qw}
             )
     </insert>
-
-    <!--List<WenZhang> getAllTask();-->
-    <select id="getAllTask" resultType="WenZhang">
-        select * from t_wenzhang where strat = 0
-    </select>
-
-    <!--void updateTask(Integer id);-->
-    <update id="updateTask" >
-            UPDATE t_wenzhang d
-                    SET d.strat = 1
-                    WHERE
-                        id = ${id}
-    </update>
 </mapper>

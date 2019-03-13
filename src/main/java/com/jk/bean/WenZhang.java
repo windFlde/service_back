@@ -22,9 +22,8 @@ public class WenZhang implements Serializable {
     Date creaTime;
     Integer zeid;
     Integer strat;
-
-
-    @JsonFormat(pattern="yyyy-MM-dd-hh-mm",timezone="GMT+8")
-    @DateTimeFormat(pattern = "yyyy-MM-dd-hh-mm")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date fabuTime;
+
 }

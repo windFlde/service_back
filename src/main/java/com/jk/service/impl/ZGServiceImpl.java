@@ -3,7 +3,6 @@ package com.jk.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.jk.bean.ReceivePage;
 import com.jk.bean.SendPage;
-import com.jk.bean.WenZhang;
 import com.jk.bean.ZG;
 import com.jk.mapper.ZGMapper;
 import com.jk.service.ZGService;
@@ -45,15 +44,5 @@ public class ZGServiceImpl implements ZGService {
     @Override
     public void addZG(ZG zg) {
         zgMapper.addZG(zg);
-    }
-
-    @Override
-    public List<WenZhang> getAllTask() {
-        return zgMapper.getAllTask();
-    }
-
-    @Override
-    public void updateTask(Integer id) {
-        zgMapper.updateTask(id);
     }
 }
