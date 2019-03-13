@@ -1,9 +1,6 @@
 package com.jk.service;
 
-import com.jk.bean.ReceivePage;
-import com.jk.bean.SendPage;
-import com.jk.bean.WenXian;
-import com.jk.bean.WenZhang;
+import com.jk.bean.*;
 
 public interface XxxService {
 
@@ -18,4 +15,6 @@ public interface XxxService {
     void insertWenXian(WenXian wenZhang);
 
     void deleteWenXian(String ids);
+
+    SendPage getLog(ReceivePage receivePage);
 }

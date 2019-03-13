@@ -1,11 +1,9 @@
 package com.jk.controller;
 
-import com.jk.bean.ReceivePage;
-import com.jk.bean.SendPage;
-import com.jk.bean.WenXian;
-import com.jk.bean.WenZhang;
+import com.jk.bean.*;
 import com.jk.service.XxxService;
 import com.jk.utils.OssUpFileUtil;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +20,9 @@ public class XxxController {
 
     @Resource
     private XxxService xxxService;
+
+    @Resource
+    private MongoTemplate mongoTemplate;
 
     @RequestMapping("toView")
     public String toView(String v) {
@@ -81,6 +82,12 @@ public class XxxController {
     @RequestMapping("deleteWenXian")
     public void deleteWenXian(String  ids) {
         xxxService.deleteWenXian(ids);
+    }
+    @ResponseBody
+    @RequestMapping("getLog")
+    public SendPage getLog(ReceivePage receivePage) {
+        SendPage sendPage=xxxService.getLog(receivePage);
+        return sendPage;
     }
 
 }

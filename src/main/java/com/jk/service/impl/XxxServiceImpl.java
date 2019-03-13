@@ -1,12 +1,11 @@
 package com.jk.service.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.jk.bean.ReceivePage;
-import com.jk.bean.SendPage;
-import com.jk.bean.WenXian;
-import com.jk.bean.WenZhang;
+import com.jk.bean.*;
 import com.jk.mapper.XxxMapper;
 import com.jk.service.XxxService;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -18,6 +17,8 @@ public class XxxServiceImpl implements XxxService {
     @Resource
     private XxxMapper xxxMapper;
 
+    @Resource
+    private MongoTemplate mongoTemplate;
 
     @Override
     public SendPage queryWenZhang(WenZhang w, ReceivePage r) {
@@ -59,5 +60,22 @@ public class XxxServiceImpl implements XxxService {
     public void deleteWenXian(String ids) {
         xxxMapper.deleteWenXian(ids);
     }
+
+    @Override
+    public SendPage getLog(ReceivePage receivePage) {
+        Query query = new Query();
+        int count = (int) mongoTemplate.count(query, LoginLog.class);
+        // skipNum = (pageNow-1)*pageSize
+
+        query.skip((receivePage.getPage() - 1) * receivePage.getRows());
+
+        query.limit(receivePage.getRows());
+
+        List<LoginLog> logList = mongoTemplate.find(query, LoginLog.class);
+
+        SendPage sendPage = new SendPage(count, logList);
+        return sendPage;
+    }
+
 
 }

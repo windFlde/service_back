@@ -5,7 +5,7 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@Document(collection = "t_CG")
+@Document(collection = "t_createLight")
 public class Chuangguan {
 
     private String id;

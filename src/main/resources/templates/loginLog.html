@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <script src="/js/jquery-2.1.1.min.js"></script>
+    <link rel="stylesheet" href="/js/easyui1.5/themes/icon.css">
+    <link rel="stylesheet" href="/js/easyui1.5/themes/default/easyui.css">
+    <script src="/js/easyui1.5/jquery.easyui.min.js"></script>
+    <script src="/js/easyui1.5/locale/easyui-lang-zh_CN.js"></script>
+    <script src="/js/layer/layer.js"></script>
+</head>
+<script type="text/javascript"  th:inline="none">
+    var ii = 0;
+    $(function () {
+        getData();
+    });
+    function getData(){
+        $("#dg").datagrid({
+            url:'/xjw/getLog',
+            striped:true,
+            pagePosition:'both',
+            pagination:true,
+            pageList:[3,4,5,6,7],
+            pageSize: 4,
+            /* 奇数偶数行不同颜色 start */
+            rowStyler: function(index,row){
+                if (index%2==0){
+                    return 'background-color:#6293BB;color:#fff;';
+                }else{
+                    return "background-color:#ccfffcc;color:red;";
+                }
+            },
+            /* 奇数偶数行不同颜色 end */
+            columns:[[
+                {field:'xxx',title:'复选框',width:50,checkbox:true},
+                {field:'id',title:'id',width:100},
+                {field:'userName',title:'userName',width:100},
+                {field:'logName',title:'logName',width:100},
+                {field:'createTime',title:'createTime',width:100},
+            ]],
+            checkOnSelect:false,
+        });
+    }
+</script>
+<body>
+<table id="dg" height="500" width="100%"></table>
+</body>
+</html>
