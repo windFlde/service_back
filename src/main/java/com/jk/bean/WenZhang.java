@@ -27,4 +27,5 @@ public class WenZhang implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm")
     Date fabuTime;
 
+
 }

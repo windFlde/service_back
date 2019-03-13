@@ -19,5 +19,6 @@ public interface ZGMapper {
 
     List<WenZhang> getAllTask();
 
+
     void updateTask(@Param("id") Integer id);
 }

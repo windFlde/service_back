@@ -20,5 +20,6 @@ public interface ZGService {
 
     List<WenZhang> getAllTask();
 
+
     void updateTask(Integer id);
 }

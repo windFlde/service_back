@@ -52,6 +52,7 @@ public class ZGServiceImpl implements ZGService {
         return zgMapper.getAllTask();
     }
 
+
     @Override
     public void updateTask(Integer id) {
         zgMapper.updateTask(id);

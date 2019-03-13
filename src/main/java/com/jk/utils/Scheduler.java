@@ -35,7 +35,6 @@ public class Scheduler {
                 zgService.updateTask(wenZhang.getId());
                 System.out.println(wenZhang.getName()+"发布成功");
             }
-
         }
     }
 

@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class ServiceBackApplication {
 
+
     public static void main(String[] args) {
         SpringApplication.run(ServiceBackApplication.class, args);
     }
