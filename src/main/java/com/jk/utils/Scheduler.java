@@ -30,7 +30,7 @@ public class Scheduler {
         for (WenZhang wenZhang : wen) {
             Date fabuTime = wenZhang.getFabuTime();
             String format1 = dateFormat.format(fabuTime);
-            //System.out.println(format1);
+           // System.out.println(format1);
             if(format.equals(format1)){
                 zgService.updateTask(wenZhang.getId());
                 System.out.println(wenZhang.getName()+"发布成功");
