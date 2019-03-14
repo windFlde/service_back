@@ -9,7 +9,7 @@
     void deleteWenZhang(String ids);-->
     <select id="queryWenZhang" resultType="wenzhang">
 
-        select * from t_wenzhang
+        select * from t_wenzhang order by sites
     </select>
 
     <insert id="insertWenZhang">
@@ -24,7 +24,9 @@
           #{creaTime},
           #{zeid},
           #{strat},
-          #{fabuTime}
+          #{fabuTime},
+          #{sites}
+
         )
     </insert>
 
@@ -77,5 +79,36 @@
 
         delete from t_wenxian where id in ('${ids}')
     </delete>
+
+    <!--WenZhang querySites(WenZhang wenZhang);-->
+    <select id="querySites" resultType="wenzhang">
+        select * from t_wenzhang where id=#{id}
+    </select>
+
+    <!--Integer getSites(Integer sites);-->
+    <select id="getSites" resultType="int">
+        SELECT ifnull(sites, 1) nextOrder
+        FROM t_wenzhang
+        WHERE  sites &lt; #{sites}
+        order by sites desc limit 0,1
+    </select>
+
+    <!--Integer getDownSite(@Param("sites") Integer sites);-->
+    <select id="getDownSite" resultType="int">
+        SELECT ifnull(sites, 1) nextOrder
+        FROM t_wenzhang
+        WHERE  sites &gt; #{sites}
+        order by sites  limit 0,1
+    </select>
+
+    <!--void updateSitesByIntSites(@Param("intSites") Integer intSites, @Param("id") Integer id);-->
+    <update id="updateSitesByIntSites">
+        update t_wenzhang set sites=#{intSites} where id= #{id}
+    </update>
+
+    <!-- void updateBeforeSites(@Param("intSites") Integer intSites,@Param("sites") Integer sites);-->
+    <update id="updateBeforeSites">
+        update t_wenzhang set sites=#{sites} where sites=#{intSites}
+    </update>
 
 </mapper>

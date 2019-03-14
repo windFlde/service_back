@@ -77,5 +77,28 @@ public class XxxServiceImpl implements XxxService {
         return sendPage;
     }
 
+    @Override
+    public WenZhang querySites(WenZhang wenZhang) {
+        return xxxMapper.querySites(wenZhang);
+    }
+
+    @Override
+    public Integer getSites(Integer sites) {
+        return xxxMapper.getSites(sites);
+    }
+
+    @Override
+    public void updateSitesByIntSites(Integer intSites, Integer id, Integer sites) {
+        System.out.println("之前"+intSites);
+        xxxMapper.updateBeforeSites(intSites,sites);
+        System.out.println("之后"+intSites);
+        xxxMapper.updateSitesByIntSites(intSites,id);
+    }
+
+    @Override
+    public Integer getDownSite(Integer sites) {
+        return xxxMapper.getDownSite(sites);
+    }
+
 
 }

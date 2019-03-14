@@ -89,5 +89,29 @@ public class XxxController {
         SendPage sendPage=xxxService.getLog(receivePage);
         return sendPage;
     }
+    @ResponseBody
+    @RequestMapping("upSites")
+    public String upSites(WenZhang wenZhang) {
+        WenZhang wenz=xxxService.querySites(wenZhang);
+        Integer intSites=xxxService.getSites(wenz.getSites());
+        if (intSites==null) {
+            return "intSitesFail";
+        }else{
+            xxxService.updateSitesByIntSites(intSites,wenz.getId(),wenz.getSites());
+            return "intSitesOk";
+        }
+    }
+    @ResponseBody
+    @RequestMapping("downSites")
+    public String downSites(WenZhang wenZhang) {
+        WenZhang wenz=xxxService.querySites(wenZhang);
+        Integer downSites=xxxService.getDownSite(wenz.getSites());
+        if (downSites==null) {
+            return "downSitesFail";
+        }else{
+            xxxService.updateSitesByIntSites(downSites,wenz.getId(),wenz.getSites());
+            return "downSitesOk";
+        }
+    }
 
 }

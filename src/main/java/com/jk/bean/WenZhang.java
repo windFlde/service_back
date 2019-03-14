@@ -26,6 +26,6 @@ public class WenZhang implements Serializable {
     @JsonFormat(pattern="yyyy-MM-dd'T'hh:mm",timezone="GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm")
     Date fabuTime;
-
+    Integer sites;
 
 }

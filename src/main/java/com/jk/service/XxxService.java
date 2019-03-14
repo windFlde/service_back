@@ -17,4 +17,12 @@ public interface XxxService {
     void deleteWenXian(String ids);
 
     SendPage getLog(ReceivePage receivePage);
+
+    WenZhang querySites(WenZhang wenZhang);
+
+    Integer getSites(Integer sites);
+
+    void updateSitesByIntSites(Integer intSites, Integer id, Integer sites);
+
+    Integer getDownSite(Integer sites);
 }

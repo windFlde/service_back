@@ -22,4 +22,14 @@ public interface XxxMapper {
     void deleteWenXian(@Param("ids") String ids);
 
     void insertWenXian(WenXian wenZhang);
+
+    WenZhang querySites(WenZhang wenZhang);
+
+    Integer getSites(@Param("sites") Integer sites);
+
+    void updateSitesByIntSites(@Param("intSites") Integer intSites, @Param("id") Integer id);
+
+    void updateBeforeSites(@Param("intSites") Integer intSites,@Param("sites") Integer sites);
+
+    Integer getDownSite(@Param("sites") Integer sites);
 }

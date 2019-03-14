@@ -59,14 +59,76 @@
         $('#dialog_add').dialog('close');
         $("#div2").hide();
     });
+
+    function upSites(id) {
+        var id=id;
+            /*ajax   start*/
+                    $.ajax({
+                       url:"/xjw/upSites",
+                       type:"POST",
+                       data:{id:id},
+                       beforeSend:function(){
+                              ii = layer.msg('加载中', {
+                              icon: 16
+                              ,shade: 0.01
+                              });
+                        },
+                       success:function(a){
+                           if (a=="intSitesFail") {
+                               layer.msg("已经最上了");
+                               return ;
+                           }else if(a=="intSitesOk"){
+                               getData();
+                               layer.msg("上移成功");
+                           }
+                       },
+                       error:function(){
+                          layer.msg("ajax失败");
+                       },complete:function(){
+                             layer.close(ii);
+                        }
+                   });
+                 /*ajax   end*/
+    }
+
+    function downSites(id) {
+        var id=id;
+            /*ajax   start*/
+                    $.ajax({
+                       url:"/xjw/downSites",
+                       type:"POST", 
+                       data:{id:id},
+                       beforeSend:function(){
+                              ii = layer.msg('加载中', {
+                              icon: 16
+                              ,shade: 0.01
+                              });
+                        },
+                       success:function(a){
+                           if (a=="downSitesFail") {
+                               layer.msg("已经到底了");
+                           }else if (a=="downSitesOk") {
+                               getData();
+                               layer.msg("下移成功");
+                           }
+
+                       },
+                       error:function(){
+                          layer.msg("ajax失败");
+                       },complete:function(){
+                             layer.close(ii);
+                        }
+                   });
+                 /*ajax   end*/
+    }
     function getData(){
         $("#dg").datagrid({
             url:'/xjw/queryWenZhang',
             striped:true,
             pagePosition:'both',
             pagination:true,
-            pageList:[3,4,5,6,7],
-            pageSize: 4,
+            pageList:[3,4,5,6,7,30,50],
+            pageSize: 7,
             /* 奇数偶数行不同颜色 start */
             rowStyler: function(index,row){
                 if (index%2==0){
@@ -97,6 +159,7 @@
                     // }
                 },
                 {field:'zeid',title:'zeid',width:50},
+                {field:'sites',title:'sites',width:50},
                 {field:'strat',title:'发布状态',width:50,
                     formatter: function(value,row,index){
                         return value==1?"已发布":"等待发布";
@@ -106,6 +169,8 @@
                     formatter: function(value,row,index){
                         var content="<a href='javascript:void(0)' onclick=updateItem("+row.id+")>修改</a>";
                         content+=" | <a href='javascript:void(0)' onclick=deleteItemsById("+row.id+",'"+row.name+"')>删除</a>";
+                        content+=" | <a href='javascript:void(0)' onclick=upSites("+row.id+")>上移</a>";
+                        content+=" | <a href='javascript:void(0)' onclick=downSites("+row.id+")>下移</a>";
                         return content;
                     }
                     /* 操作end */
