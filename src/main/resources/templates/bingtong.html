@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <script src="/js/jquery-2.1.1.min.js"></script>
+    <script src="/js/easyui1.5/jquery.easyui.min.js"></script>
+    <link rel="stylesheet" href="/js/easyui1.5/themes/icon.css">
+    <link rel="stylesheet" href="/js/easyui1.5/themes/default/easyui.css">
+    <link rel="stylesheet" href="/js/uploadify/uploadify.css" />
+    <script src="/js/uploadify/jquery.uploadify.min.js"></script>
+
+</head>
+<script type="text/javascript"  th:inline="none">
+    $(function () {
+        getData();
+        addData();
+        $('#dialog').dialog('close');
+        prpeFile();
+    })
+
+    function del(id){
+        $.ajax({
+            url:"/bck/delEx",
+            data:{ids:id},
+            success:function(result){
+                $("#table").datagrid('reload');//reload 会重新请求数据 但会停留在当前页
+                $.messager.show({
+                    title: '消息',
+                    msg: '删除成功!!',
+                    timeout: 1000,//提示框出来的时间
+                    showType: 'slide'
+                });
+            },
+            error:function(){
+                alert("失败了");
+            }
+        });
+    }
+
+    function getData(){
+        $("#table").datagrid({
+            url:'/bck/queryEx',
+                fit:true,
+                toolbar:'#p',
+                pagination:true,
+                pageList:[1,3,5,9],
+                pageSize:3,
+                loadMsg:'正在加载,别着急',
+            columns:[[
+                {field:'xxx',title:'复选框',width:50,checkbox:true},
+                {field:'id',title:'id',width:100},
+                {field: 'em_title',title: '标题',align: 'center'},
+                {field: 'dt_name',title: '作者',align: 'center'},
+                {field: 'em_img',title: '图片',align: 'center',
+                formatter: function(value,row,index){
+                     console.info(index)
+                     return "<img src='"+value+"' width='88px'/>";
+                 }},
+                {field: 'em_createtime',title: '添加日期',align: 'center',},
+                {field: 'em_browse',title: '浏览量',align: 'center'},
+                {field: 'em_medal',title: '勋章',align: 'center'},
+                {field: 'xxxx',title: '操作',align: 'center',formatter: function(value,row,index){
+                        temp = "<a href='javascript:void(0)' onclick='del(" + row.id + ")' >删除</a>";
+                        return temp;
+                    }},
+            ]],
+        });
+    }
+
+    function add() {
+        $('#dialog').dialog('open');
+        clearFormData();
+    }
+
+    function clearFormData(){
+        $("#form-id").form('clear'); //清空form组件内容
+    }
+    
+    function addData() {
+        $('#au').combobox({
+            url:'/bck/quertAu',
+            valueField:'id',
+            textField:'dt_name',
+        })
+    }
+
+    function addInfo(){
+        $("#form-id").form({
+            url:"/bck/addEx",
+            success:function(data){   //在表单提交成功以后触发 data是后台返回的数据
+                $("#dialog").dialog('close'); //关闭对话框
+                $("#table").datagrid('reload');// //重新加载数据     reload 会重新请求数据 但会停留在当前页
+            }
+        });
+        $("#form-id").form('submit');
+    }
+
+    function prpeFile(){
+        $("#front").uploadify({
+            //插件自带  不可忽略的参数
+            'swf': '<%=request.getContextPath()%>/js/uploadify/uploadify.swf',
+            //前台请求后台的url 不可忽略的参数
+            'uploader': '<%=path%>/addFile.do',
+            //给div的进度条加背景 不可忽略
+            'queueID': 'divFront',
+            //上传文件文件名
+            'fileObjName' : 'file',//对应后后台接收文件的参数名字
+            //给上传按钮设置文字
+            'buttonText': '上传图片',
+            //设置文件是否自动上传
+            'auto': true,
+            //可以同时选择多个文件 默认为true  不可忽略
+            'multi': false,
+            //上传文件的个数，项目中一共可以上传文件的个数
+            'uploadLimit':  -1,
+            //进度条消失的时间
+            'removeTimeout' : 1,
+            //开始执行上传
+            'onUploadStart':function(files){
+                console.log("文件开始上传了")
+            },
+            //上传失败
+            'onUploadError':function(){
+                alert("上传失败");
+            },
+
+            //不支持flash时调用
+            'onFallback':function(){alert('不支持flash')},
+            //成功回调函数 file：文件对象。data后台输出数据
+            'onUploadSuccess':function(file,data,response){
+
+                console.log(file+" -- " + data+"--"+response);
+                //file 上传的文件
+                //data 文件上传接口的返回值
+                //response  如果有响应就是true
+                $("#imgFront").prop("src","<%=basePath%>upload/"+data)
+                $("[name='burl']").val(data);
+            }
+        });
+    }
+</script>
+<body>
+<div id="p">
+    <a  href="JavaScript:void(0)" onclick="add()" class="easyui-linkbutton" data-options="iconCls:'icon-add'">新增</a>
+</div>
+<table id="table"></table>
+<div id="dialog"  class="easyui-dialog" title="My Dialog" style="width:800px;height:300px;"
+     data-options="iconCls:'icon-save',resizable:true,modal:true,
+				buttons:[{
+					text:'保存',
+					iconCls:'icon-ok',
+					handler:function(){
+						addInfo();//调用另一个方法
+					}
+				},{
+					text:'取消',
+					iconCls:'icon-clear',
+					handler:function(){
+						clearFormData();//新增之后 清除表单数据
+						$('#dialog').dialog('close'); //关闭对话框
+					}
+				}]">
+
+    <!-- 表单数据 -->
+    <form id="form-id">
+        <input  name="id"  type="hidden">
+        文章标题:<input id="username"  name="em_title" class="easyui-textbox"><br/>
+        作者:<input id="au" name="em_zeid" value="请选择"><br>
+        图片:
+        <input name="em_img"  type="text"><br>
+        <!-- 上传完显示的图片  -->
+        内容:<textarea name="em_content"></textarea>
+    </form>
+</div>
+</body>
+</html>

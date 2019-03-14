@@ -7,7 +7,7 @@
         (em_title,em_zeid,em_createtime,
         em_browse,em_medal,em_img,em_mp3,em_content
         )values (#{em_title},#{em_zeid},NOW(),
-        #{em_browse},#{em_medal},#{em_img},#{em_mp3},
+        0,0,#{em_img},0,
         #{em_content}
         )
     </insert>
@@ -18,12 +18,20 @@
     </update>
 
     <select id="queryEx" resultType="Example">
-        select * from `t_ example`
+        select e.*,d.dt_name from `t_ example` e,t_docutor_expert d where e.em_zeid = d.id
     </select>
 
     <select id="quertAu" resultType="Exprent">
         select id,dt_name from t_docutor_expert
     </select>
+
+    <select id="getEx" resultType="Example">
+        select * from `t_ example` where id = #{id}
+    </select>
+
+    <delete id="delEx">
+         delete from `t_ example` where id in (${_parameter})
+    </delete>
 
 
 </mapper>
