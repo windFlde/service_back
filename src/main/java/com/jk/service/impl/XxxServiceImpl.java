@@ -100,5 +100,23 @@ public class XxxServiceImpl implements XxxService {
         return xxxMapper.getDownSite(sites);
     }
 
+    @Override
+    public WenZhang toTop(WenZhang wenZhang) {
+        return xxxMapper.toTop(wenZhang);
+    }
+
+
+    @Override
+    public Integer queryMinSites() {
+        return xxxMapper.queryMinSites();
+    }
+
+
+    @Override
+    public void updateSitesByMinSites(Integer minSites, Integer id, Integer sites) {
+        xxxMapper.updateMinSites(minSites,sites);
+        xxxMapper.updateSitesByMinSites(minSites,id);
+    }
+
 
 }

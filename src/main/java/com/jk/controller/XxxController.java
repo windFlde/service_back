@@ -89,6 +89,7 @@ public class XxxController {
         SendPage sendPage=xxxService.getLog(receivePage);
         return sendPage;
     }
+    //上移
     @ResponseBody
     @RequestMapping("upSites")
     public String upSites(WenZhang wenZhang) {
@@ -101,6 +102,7 @@ public class XxxController {
             return "intSitesOk";
         }
     }
+    //下移
     @ResponseBody
     @RequestMapping("downSites")
     public String downSites(WenZhang wenZhang) {
@@ -111,6 +113,24 @@ public class XxxController {
         }else{
             xxxService.updateSitesByIntSites(downSites,wenz.getId(),wenz.getSites());
             return "downSitesOk";
+        }
+    }
+    //置顶
+    @ResponseBody
+    @RequestMapping("toTop")
+    public String toTop(WenZhang wenZhang) {
+        WenZhang wenz=xxxService.toTop(wenZhang);
+        //获取一下数据库中的sites值
+        Integer wenzSites=wenz.getSites();
+        //查询出最小的sites
+        Integer minSites=xxxService.queryMinSites();
+        //
+        if (minSites==wenzSites) {
+            return "wenzSitesFtisExsits";
+        } else {
+            //不为空去后台修改最小值的sites段 和 要置顶的字段
+            xxxService.updateSitesByMinSites(minSites,wenz.getId(),wenz.getSites());
+            return "wenzSitesFtIsOk";
         }
     }
 

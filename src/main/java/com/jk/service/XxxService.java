@@ -25,4 +25,11 @@ public interface XxxService {
     void updateSitesByIntSites(Integer intSites, Integer id, Integer sites);
 
     Integer getDownSite(Integer sites);
+
+    WenZhang toTop(WenZhang wenZhang);
+
+
+    Integer queryMinSites();
+
+    void updateSitesByMinSites(Integer minSites, Integer id, Integer sites);
 }

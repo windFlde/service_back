@@ -111,4 +111,19 @@
         update t_wenzhang set sites=#{sites} where sites=#{intSites}
     </update>
 
+    <!--WenZhang toTop(WenZhang wenZhang);-->
+    <select id="toTop" resultType="wenzhang">
+        select * from t_wenzhang where id=#{id}
+
+    </select>
+
+
+    <!--void updateSitesByMinSites(@Param("minSites") Integer minSites, @Param("id") Integer id);-->
+    <update id="updateSitesByMinSites">
+        update t_wenzhang set sites=#{minSites} where id=#{id}
+    </update>
+    <!--void updateMinSites(@Param("minSites") Integer minSites, @Param("sites") Integer sites);-->
+    <update id="updateMinSites">
+        update t_wenzhang set sites=#{sites} where sites=#{minSites}
+    </update>
 </mapper>

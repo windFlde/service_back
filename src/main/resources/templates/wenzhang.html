@@ -121,6 +121,37 @@
                    });
                  /*ajax   end*/
     }
+
+    function toTop(id) {
+        var id=id;
+            /*ajax   start*/
+                    $.ajax({
+                       url:"/xjw/toTop",
+                       type:"POST",
+                       data:{id:id},
+                       beforeSend:function(){
+                              ii = layer.msg('加载中', {
+                              icon: 16
+                              ,shade: 0.01
+                              });
+                        },
+                       success:function(a){
+                           if (a=="wenzSitesFtisExsits") {
+                               layer.msg("已经置顶了!");
+                               return ;
+                           }else if (a=="wenzSitesFtIsOk") {
+                               layer.msg("置顶成功")
+                                getData();
+                           }
+                       },
+                       error:function(){
+                          layer.msg("ajax失败");
+                       },complete:function(){
+                             layer.close(ii);
+                        }
+                   });
+                 /*ajax   end*/
+    }
     function getData(){
         $("#dg").datagrid({
             url:'/xjw/queryWenZhang',
@@ -164,13 +195,17 @@
                     formatter: function(value,row,index){
                         return value==1?"已发布":"等待发布";
                     }},
-                {field:'xxx1',title:'操作',width:200,
+                {field:'xxx1',title:'操作',width:250,
                     /* 操作start */
                     formatter: function(value,row,index){
                         var content="<a href='javascript:void(0)' onclick=updateItem("+row.id+")>修改</a>";
                         content+=" | <a href='javascript:void(0)' onclick=deleteItemsById("+row.id+",'"+row.name+"')>删除</a>";
                         content+=" | <a href='javascript:void(0)' onclick=upSites("+row.id+")>上移</a>";
                         content+=" | <a href='javascript:void(0)' onclick=downSites("+row.id+")>下移</a>";
+                        content+=" | <a href='javascript:void(0)' onclick=toTop("+row.id+")>置顶</a>";
+                        if (row.sites=="1") {
+                            content+=" | <a href='javascript:void(0)' onclick=downSites("+row.id+")>取消置顶</a>";
+                        }
                         return content;
                     }
                     /* 操作end */

@@ -3,6 +3,7 @@ package com.jk.mapper;
 import com.jk.bean.WenXian;
 import com.jk.bean.WenZhang;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -32,4 +33,15 @@ public interface XxxMapper {
     void updateBeforeSites(@Param("intSites") Integer intSites,@Param("sites") Integer sites);
 
     Integer getDownSite(@Param("sites") Integer sites);
+
+    WenZhang toTop(WenZhang wenZhang);
+
+    Integer queryWenzSitesFt(Integer wenzSites);
+
+    @Select("select min(sites) from t_wenzhang")
+    Integer queryMinSites();
+
+    void updateSitesByMinSites(@Param("minSites") Integer minSites, @Param("id") Integer id);
+
+    void updateMinSites(@Param("minSites") Integer minSites, @Param("sites") Integer sites);
 }
