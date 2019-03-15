@@ -1,19 +1,17 @@
 package com.jk.controller;
 
-import com.jk.bean.*;
+import com.jk.bean.ReceivePage;
+import com.jk.bean.SendPage;
+import com.jk.bean.WenXian;
+import com.jk.bean.WenZhang;
 import com.jk.service.XxxService;
-import com.jk.utils.OssUpFileUtil;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
-import java.util.Map;
 
 @Controller
 @RequestMapping("xjw")
@@ -55,25 +53,6 @@ public class XxxController {
     public String insertWenXian(WenXian wenZhang) {
         xxxService.insertWenXian(wenZhang);
         return "";
-    }
-    /**
-     * 上传文件
-     */
-    String filename = "";
-    @ResponseBody
-    @PostMapping("toUploadBlog")
-    public String toUploadBlog(@RequestParam("file") MultipartFile file){
-        Map<String, Object> stringObjectMap = OssUpFileUtil.uploadFile(file);
-        System.out.println(stringObjectMap);
-        String count = "";
-        for (String key : stringObjectMap.keySet()) {
-            Object o = stringObjectMap.get(key);
-            System.out.println("key: " + key + " value: " + o);
-            if(key=="url"){
-                count+=o;
-                filename = count;
-            } }
-        return count;
     }
 
     @ResponseBody
