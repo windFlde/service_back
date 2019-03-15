@@ -41,7 +41,9 @@ public interface XxxMapper {
     @Select("select min(sites) from t_wenzhang")
     Integer queryMinSites();
 
+    void updateMinSites(@Param("minSites") Integer minSites, @Param("sites") Integer sites);
+
     void updateSitesByMinSites(@Param("minSites") Integer minSites, @Param("id") Integer id);
 
-    void updateMinSites(@Param("minSites") Integer minSites, @Param("sites") Integer sites);
+    void updateBeforeMinSites(@Param("minSites") Integer minSites,@Param("sitesVal") Integer sitesVal);
 }

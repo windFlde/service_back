@@ -32,4 +32,6 @@ public interface XxxService {
     Integer queryMinSites();
 
     void updateSitesByMinSites(Integer minSites, Integer id, Integer sites);
+
+    void updateBeforeSites(Integer id, Integer minSites, Integer sitesVal);
 }

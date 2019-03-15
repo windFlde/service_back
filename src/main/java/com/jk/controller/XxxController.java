@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @Controller
@@ -115,23 +116,42 @@ public class XxxController {
             return "downSitesOk";
         }
     }
+
     //置顶
     @ResponseBody
     @RequestMapping("toTop")
-    public String toTop(WenZhang wenZhang) {
+    public String toTop(WenZhang wenZhang, HttpSession session) {
         WenZhang wenz=xxxService.toTop(wenZhang);
         //获取一下数据库中的sites值
         Integer wenzSites=wenz.getSites();
         //查询出最小的sites
         Integer minSites=xxxService.queryMinSites();
-        //
+
         if (minSites==wenzSites) {
             return "wenzSitesFtisExsits";
         } else {
+            //将现在的sites存入session 取消置顶时使用
+            session.setAttribute("beforeSites",wenzSites);
             //不为空去后台修改最小值的sites段 和 要置顶的字段
             xxxService.updateSitesByMinSites(minSites,wenz.getId(),wenz.getSites());
             return "wenzSitesFtIsOk";
         }
     }
+    @ResponseBody
+    @RequestMapping("backTop")
+    public String backTop(Integer id,Integer sitesVal,HttpSession session) {
+        //查询出最小的sites
+        Integer minSites=xxxService.queryMinSites();
+        if (sitesVal==null) {
+            return "backTopNo";
+        }else{
+            //siewsVal为作用域中存入的sites
+            xxxService.updateBeforeSites(minSites,id,sitesVal);
+            session.removeAttribute("beforeSites");
+            return "backTopOk";
+
+        }
+    }
+
 
 }

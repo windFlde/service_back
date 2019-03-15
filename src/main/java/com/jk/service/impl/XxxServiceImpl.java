@@ -118,5 +118,11 @@ public class XxxServiceImpl implements XxxService {
         xxxMapper.updateSitesByMinSites(minSites,id);
     }
 
+    @Override
+    public void updateBeforeSites(Integer id, Integer minSites, Integer sitesVal) {
+        xxxMapper.updateBeforeMinSites(minSites,sitesVal);
+        xxxMapper.updateSitesByMinSites(sitesVal,id);
+    }
+
 
 }

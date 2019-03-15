@@ -126,4 +126,9 @@
     <update id="updateMinSites">
         update t_wenzhang set sites=#{sites} where sites=#{minSites}
     </update>
+
+    <!--void updateBeforeMinSites(@Param("minSites") Integer minSites,@Param("sitesVal") Integer sitesVal);-->
+    <update id="updateBeforeMinSites">
+        update t_wenzhang set sites=#{minSites} where sites=#{sitesVal}
+    </update>
 </mapper>
