@@ -14,7 +14,7 @@
 
     <insert id="insertWenZhang">
 
-        insert into t_wenzhang (title,name,img,music,content,browse,creaTime,zeid,strat,fabuTime)VALUES(
+        insert into t_wenzhang (title,name,img,music,content,browse,creaTime,zeid,strat,fabuTime,sites)VALUES(
           #{title},
           #{name},
           #{img},
