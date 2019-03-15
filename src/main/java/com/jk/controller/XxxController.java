@@ -45,6 +45,8 @@ public class XxxController {
     @ResponseBody
     @RequestMapping("insertWenZhang")
     public String insertWenZhang(WenZhang wenZhang) {
+        Integer maxSites=xxxService.queryMaxSites();
+        wenZhang.setSites(maxSites+1);
         xxxService.insertWenZhang(wenZhang);
         return "";
     }

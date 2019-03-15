@@ -124,5 +124,10 @@ public class XxxServiceImpl implements XxxService {
         xxxMapper.updateSitesByMinSites(sitesVal,id);
     }
 
+    @Override
+    public Integer queryMaxSites() {
+        return xxxMapper.queryMaxSites();
+    }
+
 
 }

@@ -34,4 +34,6 @@ public interface XxxService {
     void updateSitesByMinSites(Integer minSites, Integer id, Integer sites);
 
     void updateBeforeSites(Integer id, Integer minSites, Integer sitesVal);
+
+    Integer queryMaxSites();
 }
