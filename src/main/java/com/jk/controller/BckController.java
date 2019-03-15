@@ -5,14 +5,14 @@ import com.jk.bean.Exprent;
 import com.jk.bean.ReceivePage;
 import com.jk.bean.SendPage;
 import com.jk.service.BckService;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("bck")
 public class BckController {
 
