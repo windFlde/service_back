@@ -1,6 +1,9 @@
 package com.jk.service;
 
-import com.jk.bean.*;
+import com.jk.bean.ReceivePage;
+import com.jk.bean.SendPage;
+import com.jk.bean.WenXian;
+import com.jk.bean.WenZhang;
 
 public interface XxxService {
 
@@ -33,7 +36,8 @@ public interface XxxService {
 
     void updateSitesByMinSites(Integer minSites, Integer id, Integer sites);
 
-    void updateBeforeSites(Integer id, Integer minSites, Integer sitesVal);
+    void updateBeforeSites(Integer minSites, Integer id, Integer maxSites);
 
     Integer queryMaxSites();
+
 }

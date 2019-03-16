@@ -4,6 +4,7 @@ import com.jk.bean.Exprent;
 import com.jk.bean.ReceivePage;
 import com.jk.bean.SendPage;
 import com.jk.bean.ZG;
+import com.jk.service.XxxService;
 import com.jk.service.ZGService;
 import com.jk.utils.OssUpFileUtil;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -81,11 +84,13 @@ public class ZGController {
         zgService.addZG(zg);
     }
 
+    @Resource
+    XxxService xxxService;
     /**
      * 跳页面
      */
     @RequestMapping("toView")
-    public String toView(String viewname){
+    public String toView(String viewname, HttpSession session){
         return viewname;
     }
 

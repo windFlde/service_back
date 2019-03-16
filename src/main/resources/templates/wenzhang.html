@@ -203,10 +203,11 @@
                         content+=" | <a href='javascript:void(0)' onclick=upSites("+row.id+")>上移</a>";
                         content+=" | <a href='javascript:void(0)' onclick=downSites("+row.id+")>下移</a>";
                         content+=" | <a href='javascript:void(0)' onclick=toTop("+row.id+")>置顶</a>";
-                        // var sitesVal=$("#sitesVal").val();
-                        // if (sitesVal!=null&&sitesVal!=""&&row.sites=="1") {
-                        //     content+=" | <a href='javascript:void(0)' onclick=backTop("+row.id+")>取消置顶</a>";
-                        // }
+                        var minSites=$("#minSites").val();
+                        console.log("minSites================================="+minSites);
+                        if (index==0) {
+                            content+=" | <a href='javascript:void(0)' onclick=backTop("+row.id+")>取消置顶</a>";
+                        }
                         return content;
                     }
                     /* 操作end */
@@ -216,37 +217,33 @@
         });
     }
 
-    // function backTop(id) {
-    //     var sitesVal=$("#sitesVal").val();
-    //     if (sitesVal==null || sitesVal=="") {
-    //         return ;
-    //     }
-    //         /*ajax   start*/
-    //                 $.ajax({
-    //                    url:"/xjw/backTop",
-    //                    type:"POST",
-    //                    data:{id:id,sitesVal:sitesVal},
-    //                    beforeSend:function(){
-    //                           ii = layer.msg('加载中', {
-    //                           icon: 16
-    //                           ,shade: 0.01
-    //                           });
-    //                     },
-    //                    success:function(a){
-    //                        if (a=="backTopOk") {
-    //                            getData();
-    //                        }else{
-    //
-    //                        }
-    //                    },
-    //                    error:function(){
-    //                       layer.msg("ajax失败");
-    //                    },complete:function(){
-    //                          layer.close(ii);
-    //                     }
-    //                });
-    //              /*ajax   end*/
-    // }
+    function backTop(id) {
+            /*ajax   start*/
+                    $.ajax({
+                       url:"/xjw/backTop",
+                       type:"POST",
+                       data:{id:id},
+                       beforeSend:function(){
+                              ii = layer.msg('加载中', {
+                              icon: 16
+                              ,shade: 0.01
+                              });
+                        },
+                       success:function(a){
+                           if (a=="backTopOk") {
+                               getData();
+                           }else{
+
+                           }
+                       },
+                       error:function(){
+                          layer.msg("ajax失败");
+                       },complete:function(){
+                             layer.close(ii);
+                        }
+                   });
+                 /*ajax   end*/
+    }
     function deleteItemsById(id,username){
         $.messager.confirm('确认','您确认想要删除'+username+'这条记录吗？',function(r){
             if (r){//点击确认
@@ -345,7 +342,7 @@
     }
 </script>
 <body>
-<input type="hidden" id="sitesVal" th:value="${session?.beforeSites}">
+<input type="hidden" id="minSites" th:value="${session?.minSites}">
 <a id="btn_add" onclick="addData()" href="javascript:void(0)"class="easyui-linkbutton" data-options="iconCls:'icon-remove'">增加</a>
 <table id="dg" height="500" width="100%"></table>
 <!-- 弹框增加start -->

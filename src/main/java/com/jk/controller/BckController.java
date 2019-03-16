@@ -5,11 +5,13 @@ import com.jk.bean.Exprent;
 import com.jk.bean.ReceivePage;
 import com.jk.bean.SendPage;
 import com.jk.service.BckService;
+import com.jk.service.XxxService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -19,8 +21,10 @@ public class BckController {
     @Resource
     BckService bckService;
 
+    @Resource
+    XxxService xxxService;
     @RequestMapping("toPage")
-    public String toPage(String name){
+    public String toPage(String name, HttpSession session){
         return name;
     }
 

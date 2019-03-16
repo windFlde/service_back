@@ -4,6 +4,7 @@ import com.jk.bean.Hotspot;
 import com.jk.bean.ReceivePage;
 import com.jk.bean.SendPage;
 import com.jk.service.RdzxService;
+import com.jk.service.XxxService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,6 +15,9 @@ public class RdzxController {
 
     @Resource
     private RdzxService rdzxService;
+
+    @Resource
+    XxxService xxxService;
 
     @RequestMapping("queryRdzx")
     public SendPage queryRdzx(Hotspot hotspot,ReceivePage receivePage) {

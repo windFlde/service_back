@@ -1,6 +1,9 @@
 package com.jk.controller;
 
-import com.jk.bean.*;
+import com.jk.bean.ReceivePage;
+import com.jk.bean.SendPage;
+import com.jk.bean.WenXian;
+import com.jk.bean.WenZhang;
 import com.jk.service.XxxService;
 import com.jk.utils.OssUpFileUtil;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -26,14 +29,16 @@ public class XxxController {
     private MongoTemplate mongoTemplate;
 
     @RequestMapping("toView")
-    public String toView(String v) {
+    public String toView(String v,HttpSession session) {
         return v;
     }
+
 
     @ResponseBody
     @RequestMapping("queryWenZhang")
     public SendPage queryWenZhang(WenZhang w, ReceivePage receivePage) {
         SendPage list =xxxService.queryWenZhang(w,receivePage);
+
         return list;
     }
     @ResponseBody
@@ -132,8 +137,6 @@ public class XxxController {
         if (minSites==wenzSites) {
             return "wenzSitesFtisExsits";
         } else {
-            //将现在的sites存入session 取消置顶时使用
-            session.setAttribute("beforeSites",wenzSites);
             //不为空去后台修改最小值的sites段 和 要置顶的字段
             xxxService.updateSitesByMinSites(minSites,wenz.getId(),wenz.getSites());
             return "wenzSitesFtIsOk";
@@ -141,18 +144,14 @@ public class XxxController {
     }
     @ResponseBody
     @RequestMapping("backTop")
-    public String backTop(Integer id,Integer sitesVal,HttpSession session) {
-        //查询出最小的sites
-        Integer minSites=xxxService.queryMinSites();
-        if (sitesVal==null) {
-            return "backTopNo";
-        }else{
-            //siewsVal为作用域中存入的sites
-            xxxService.updateBeforeSites(minSites,id,sitesVal);
-            session.removeAttribute("beforeSites");
+    public String backTop(WenZhang wenZhang,HttpSession session) {
+            WenZhang wenz=xxxService.toTop(wenZhang);
+            //查询出最小的sites
+            Integer minSites=xxxService.queryMinSites();
+            Integer maxSites=xxxService.queryMaxSites();
+            xxxService.updateBeforeSites(minSites,wenZhang.getId(),maxSites);
             return "backTopOk";
 
-        }
     }
 
 

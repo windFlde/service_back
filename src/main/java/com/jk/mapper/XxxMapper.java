@@ -45,8 +45,10 @@ public interface XxxMapper {
 
     void updateSitesByMinSites(@Param("minSites") Integer minSites, @Param("id") Integer id);
 
-    void updateBeforeMinSites(@Param("minSites") Integer minSites,@Param("sitesVal") Integer sitesVal);
 
     @Select("select max(sites) from t_wenzhang")
     Integer queryMaxSites();
+
+    void updateNowSites(@Param("maxSites") Integer maxSites,@Param("id") Integer id);
+
 }
