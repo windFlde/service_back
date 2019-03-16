@@ -59,4 +59,9 @@ public class ZGServiceImpl implements ZGService {
     public List<Exprent> poiDerive(String dis) {
         return zgMapper.poiDerive(dis);
     }
+
+    @Override
+    public List<Exprent> getAllData() {
+        return zgMapper.getAllData();
+    }
 }

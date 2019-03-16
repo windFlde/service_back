@@ -66,4 +66,9 @@
     <select id="poiDerive" resultType="exprent">
         select * from t_docutor_expert where id in (${dis})
     </select>
+
+    <!--List<Exprent> getAllData();-->
+    <select id="getAllData" resultType="exprent">
+        select * from t_docutor_expert where id &lt;= 1000
+    </select>
 </mapper>

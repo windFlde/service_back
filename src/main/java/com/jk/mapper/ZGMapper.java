@@ -24,4 +24,6 @@ public interface ZGMapper {
     void updateTask(@Param("id") Integer id);
 
     List<Exprent> poiDerive(@Param("dis") String dis);
+
+    List<Exprent> getAllData();
 }

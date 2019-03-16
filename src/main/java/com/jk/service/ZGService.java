@@ -21,4 +21,6 @@ public interface ZGService {
     void updateTask(Integer id);
 
     List<Exprent> poiDerive(String dis);
+
+    List<Exprent> getAllData();
 }

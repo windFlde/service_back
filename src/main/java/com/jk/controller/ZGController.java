@@ -4,9 +4,10 @@ import com.jk.bean.Exprent;
 import com.jk.bean.ReceivePage;
 import com.jk.bean.SendPage;
 import com.jk.bean.ZG;
-import com.jk.service.XxxService;
 import com.jk.service.ZGService;
 import com.jk.utils.OssUpFileUtil;
+import com.jk.utils.PoiExportExcel;
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -18,8 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletResponse;
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -84,13 +84,137 @@ public class ZGController {
         zgService.addZG(zg);
     }
 
-    @Resource
-    XxxService xxxService;
+   /**
+     * for循环赋值
+     *//*
+    @ResponseBody
+    @RequestMapping("addZG2")
+    public void addZG2(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                long count = 20000L;
+                int num = 0;
+                int add = 111111;//线程编号
+                for (long i = 0; i < count; i++) {
+                    num++;  qwe(num);
+                    System.out.println("线程编号==="+add); }
+            }
+        }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                long count = 20000L;
+                int num = 20000;
+                int add = 222222;//线程编号
+                for (long i = 0; i < count; i++) {
+                    num++;  qwe(num);
+                    System.out.println("线程编号==="+add); }
+            }
+        }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                long count = 20000L;
+                int num = 40000;
+                int add = 333333;//线程编号
+                for (long i = 0; i < count; i++) {
+                    num++;  qwe(num);
+                    System.out.println("线程编号==="+add); }
+            }
+        }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                long count = 20000L;
+                int num = 60000;
+                int add = 444444;//线程编号
+                for (long i = 0; i < count; i++) {
+                    num++;  qwe(num);
+                    System.out.println("线程编号==="+add); }
+            }
+        }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                long count = 20000L;
+                int num = 80000;
+                int add = 555555;//线程编号
+                for (long i = 0; i < count; i++) {
+                    num++;  qwe(num);
+                    System.out.println("线程编号==="+add); }
+            }
+        }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                long count = 20000L;
+                int num = 100000;
+                int add = 666666;//线程编号
+                for (long i = 0; i < count; i++) {
+                    num++;  qwe(num);
+                    System.out.println("线程编号==="+add); }
+            }
+        }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                long count = 20000L;
+                int num = 120000;
+                int add = 777777;//线程编号
+                for (long i = 0; i < count; i++) {
+                    num++;  qwe(num);
+                    System.out.println("线程编号==="+add); }
+            }
+        }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                long count = 20000L;
+                int num = 140000;
+                int add = 888888;//线程编号
+                for (long i = 0; i < count; i++) {
+                    num++;  qwe(num);
+                    System.out.println("线程编号==="+add); }
+            }
+        }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                long count = 20000L;
+                int num = 180000;
+                for (long i = 0; i < count; i++) {
+                    num++;  qwe(num); }
+            }
+        }).start(); new Thread(new Runnable() {
+            @Override
+            public void run() {
+                long count = 20000L;
+                int num = 200000;
+                for (long i = 0; i < count; i++) {
+                    num++;  qwe(num); }
+            }
+        }).start();
+    }
+    public void qwe(int num){
+        ZG zg = new ZG();
+        zg.setDt_name("name"+num);
+        zg.setDt_zc("zc"+num);
+        zg.setDt_addr("addr"+num);
+        zg.setDt_img("img"+num);
+        zg.setDt_jj("jj"+num);
+        zg.setDt_modle("model"+num);
+        zg.setDt_level(5);
+        zg.setDt_qw(1);
+        addZG(zg);
+    }*/
+
+
     /**
      * 跳页面
      */
     @RequestMapping("toView")
-    public String toView(String viewname, HttpSession session){
+    public String toView(String viewname){
         return viewname;
     }
 
@@ -116,6 +240,49 @@ public class ZGController {
 
     /**
      * POI导出
+     *//*
+    @ResponseBody
+    @RequestMapping("poiDerive")
+    public ResponseEntity<byte[]> poiDerive(String dis){
+        //格式化时间戳
+        *//*   SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-ddHH:mm:ss");
+        String format = simpleDateFormat.format(new Date());
+        String toString = format.toString();*//*
+        String sheetName="商品列表";
+        String titleName="我的列表";
+        String replace = UUID.randomUUID().toString().replace("-", "");
+        String[] headers = {"主键id", "专家名字", "职称", "地址", "图片地址", "简介", "合作项目", "等级","权威"};
+        List<Exprent> dataSet = zgService.poiDerive(dis);
+        String fileDir = "D:\\poi\\";
+        File file = new File(fileDir);
+
+        if (!file.exists()) {
+            file.mkdirs();}
+
+        String randomPaths = fileDir + replace+".xls";
+        String pattern = "yyyy-MM-dd";
+        ExportExcel.exportExcel(sheetName, titleName, headers, dataSet, randomPaths, pattern);
+
+        return FileUtil.FileDownload(randomPaths,"fileName.xls");
+    }*/
+
+    /**
+     * POI导出所有数据
+     */
+    @ResponseBody
+    @RequestMapping("deriveAllData")
+    public String deriveAllData(HttpServletRequest request, HttpServletResponse response){
+
+        List<Exprent>  psgList = zgService.getAllData();
+        String fileName = "sad.xls";
+        response.reset();// 清空response
+        response.addHeader("Content-Disposition", "attachment;filename="+fileName);// 设置response的Header
+        response.setContentType("application/octet-stream");
+        PoiExportExcel.PoiWriteExcel("工作薄",psgList,request,response);
+        return "1";
+    }
+    /**
+     * POI导出
      */
     @ResponseBody
     @RequestMapping("poiDerive")
@@ -131,6 +298,7 @@ public class ZGController {
         String resultUrl = com.getPath() + "//" + format + ".xls";     //文件路径
 
         List<Exprent> data = zgService.poiDerive(dis);
+
         HSSFWorkbook workbook  = new HSSFWorkbook(); //创建一个文档
 
         HSSFSheet sheet = workbook.createSheet("Test");// 创建工作表(Sheet)
@@ -161,4 +329,5 @@ public class ZGController {
         out.close();//关闭文件流
         return "1";
     }
+
 }
