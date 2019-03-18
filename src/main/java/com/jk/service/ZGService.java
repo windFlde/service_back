@@ -2,6 +2,7 @@ package com.jk.service;
 
 import com.jk.bean.*;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ZGService {
@@ -23,4 +24,12 @@ public interface ZGService {
     List<Exprent> poiDerive(String dis);
 
     List<Exprent> getAllData();
+
+    List<User> sendPhone();
+
+    void updateFS();
+
+    void contmoney(Integer id);
+
+    void addtime(Integer id, Date date1);
 }

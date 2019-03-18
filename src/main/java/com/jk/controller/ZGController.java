@@ -237,35 +237,6 @@ public class ZGController {
             } }
         return count;
     }
-
-    /**
-     * POI导出
-     *//*
-    @ResponseBody
-    @RequestMapping("poiDerive")
-    public ResponseEntity<byte[]> poiDerive(String dis){
-        //格式化时间戳
-        *//*   SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-ddHH:mm:ss");
-        String format = simpleDateFormat.format(new Date());
-        String toString = format.toString();*//*
-        String sheetName="商品列表";
-        String titleName="我的列表";
-        String replace = UUID.randomUUID().toString().replace("-", "");
-        String[] headers = {"主键id", "专家名字", "职称", "地址", "图片地址", "简介", "合作项目", "等级","权威"};
-        List<Exprent> dataSet = zgService.poiDerive(dis);
-        String fileDir = "D:\\poi\\";
-        File file = new File(fileDir);
-
-        if (!file.exists()) {
-            file.mkdirs();}
-
-        String randomPaths = fileDir + replace+".xls";
-        String pattern = "yyyy-MM-dd";
-        ExportExcel.exportExcel(sheetName, titleName, headers, dataSet, randomPaths, pattern);
-
-        return FileUtil.FileDownload(randomPaths,"fileName.xls");
-    }*/
-
     /**
      * POI导出所有数据
      */

@@ -7,6 +7,7 @@ import com.jk.service.ZGService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -64,4 +65,28 @@ public class ZGServiceImpl implements ZGService {
     public List<Exprent> getAllData() {
         return zgMapper.getAllData();
     }
+
+    @Override
+    public List<User> sendPhone() {
+        return zgMapper.sendPhone();
+    }
+
+    @Override
+    public void updateFS() {
+        zgMapper.updateFS();
+    }
+
+    @Override
+    public void contmoney(Integer id) {
+        zgMapper.contmoney(id);
+    }
+
+    @Override
+    public void addtime(Integer id, Date date1) {
+        zgMapper.addtime(id,date1);
+    }
+
+
+
+
 }

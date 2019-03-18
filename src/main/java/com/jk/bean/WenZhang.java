@@ -3,10 +3,8 @@ package com.jk.bean;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import java.io.Serializable;
 import java.util.Date;
-
 @Data
 public class WenZhang implements Serializable {
 
@@ -24,7 +22,6 @@ public class WenZhang implements Serializable {
     Integer strat;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    //@DateTimeFormat
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     Date fabuTime;
 
