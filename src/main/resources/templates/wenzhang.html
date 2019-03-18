@@ -20,7 +20,6 @@
         normal2ajax();
         $('#dialog_add').dialog('close');
         $("#div2").hide();
-        preFile();
     });
 
     function upSites(id) {
@@ -84,46 +83,6 @@
                    });
                  /*ajax   end*/
     }
-    function preFile(){
-        //上传插件
-        $("#file").uploadify({
-            //插件自带  不可忽略的参数
-            'swf': '/js/uploadify/uploadify.swf',
-            //前台请求后台的url 不可忽略的参数                          //*****要修改路经 !!!!!!!!!!!!!!!!!!!!!!!!
-            'uploader': '/zhuanjia/toUploadBlog',
-            //给div的进度条加背景 不可忽略
-            'queueID': 'fileQueue',
-            //上传文件文件名 !!!!!!!!!!!!!!!!!!与后台接口参数名字需要完全一致!!!!!!!!!!!!!!!!!!!!!!!!
-            'fileObjName' : 'file',
-            //给上传按钮设置文字
-            'buttonText': '上传图片',
-            //设置文件是否自动上传
-            'auto': true,
-            //可以同时选择多个文件 默认为true  不可忽略
-            'multi': true,
-            //上传后队列是否消失
-            'removeCompleted': true,
-            //队列消失时间
-            'removeTimeout' : 1,
-            //上传文件的个数，项目中一共可以上传文件的个数
-            'uploadLimit':  -1,
-            'onFallback':function(){alert("浏览器不支持,请更换其他浏览器,或打开Flash插件");},
-            //上传失败
-            'onUploadError':function(){
-                alert("上传失败");
-            },
-            //成功回调函数 file：文件对象。data后台输出数据
-            'onUploadSuccess':function(file,data,response){
-                //  for (data)
-                var imgurl =data
-                //alert(data);
-                //给img框赋值进行展示
-                $("#testImg").attr("src",data);
-                //给隐藏的文本框赋值 传到后台
-                $('#hideImg').val(data); //改!!!!!!!!!!11111
-            }
-        });
-    }
     function toTop(id) {
         var id=id;
             /*ajax   start*/
@@ -184,15 +143,10 @@
                 },
                 {field:'music',title:'music',width:100},
                 {field:'content',title:'content',width:100},
-                {field:'creaTime',title:'creaTime',width:100,
-                    // formatter:function(value,row,index){
-                    //     var mydate = new Date(value);
-                    //     var str = mydate.toLocaleDateString();
-                    //     return str;
-                    // }
-                },
+                {field:'creaTime',title:'creaTime',width:100,},
                 {field:'zeid',title:'zeid',width:50},
                 {field:'sites',title:'sites',width:50},
+                {field:'site',title:'site',width:50},
                 {field:'strat',title:'发布状态',width:50,
                     formatter: function(value,row,index){
                         return value==1?"已发布":"等待发布";
@@ -205,10 +159,11 @@
                         content+=" | <a href='javascript:void(0)' onclick=upSites("+row.id+")>上移</a>";
                         content+=" | <a href='javascript:void(0)' onclick=downSites("+row.id+")>下移</a>";
                         content+=" | <a href='javascript:void(0)' onclick=toTop("+row.id+")>置顶</a>";
-                        // var sitesVal=$("#sitesVal").val();
-                        // if (sitesVal!=null&&sitesVal!=""&&row.sites=="1") {
-                        //     content+=" | <a href='javascript:void(0)' onclick=backTop("+row.id+")>取消置顶</a>";
-                        // }
+                        var minSites=$("#minSites").val();
+                        console.log("minSites================================="+minSites);
+                        if (index==0) {
+                            content+=" | <a href='javascript:void(0)' onclick=backTop("+row.id+")>取消置顶</a>";
+                        }
                         return content;
                     }
                     /* 操作end */
@@ -218,37 +173,33 @@
         });
     }
 
-    // function backTop(id) {
-    //     var sitesVal=$("#sitesVal").val();
-    //     if (sitesVal==null || sitesVal=="") {
-    //         return ;
-    //     }
-    //         /*ajax   start*/
-    //                 $.ajax({
-    //                    url:"/xjw/backTop",
-    //                    type:"POST",
-    //                    data:{id:id,sitesVal:sitesVal},
-    //                    beforeSend:function(){
-    //                           ii = layer.msg('加载中', {
-    //                           icon: 16
-    //                           ,shade: 0.01
-    //                           });
-    //                     },
-    //                    success:function(a){
-    //                        if (a=="backTopOk") {
-    //                            getData();
-    //                        }else{
-    //
-    //                        }
-    //                    },
-    //                    error:function(){
-    //                       layer.msg("ajax失败");
-    //                    },complete:function(){
-    //                          layer.close(ii);
-    //                     }
-    //                });
-    //              /*ajax   end*/
-    // }
+    function backTop(id) {
+            /*ajax   start*/
+                    $.ajax({
+                       url:"/xjw/backTop",
+                       type:"POST",
+                       data:{id:id},
+                       beforeSend:function(){
+                              ii = layer.msg('加载中', {
+                              icon: 16
+                              ,shade: 0.01
+                              });
+                        },
+                       success:function(a){
+                           if (a=="backTopOk") {
+                               getData();
+                           }else{
+
+                           }
+                       },
+                       error:function(){
+                          layer.msg("ajax失败");
+                       },complete:function(){
+                             layer.close(ii);
+                        }
+                   });
+                 /*ajax   end*/
+    }
     function deleteItemsById(id,username){
         $.messager.confirm('确认','您确认想要删除'+username+'这条记录吗？',function(r){
             if (r){//点击确认
@@ -346,9 +297,67 @@
         $("#div2").hide();
         $("#time1").val(" ");
     }
+
+
+    function queryLngAndLat() {
+            /*ajax   start*/
+                    $.ajax({
+                       url:"/http/queryLngAndLat",
+                       type:"POST",
+                       beforeSend:function(){
+                              ii = layer.msg('正在获取当前位置', {
+                              icon: 16
+                              ,shade: 0.01
+                              });
+                        },
+                       success:function(a){
+                            console.log(a);
+                            var x=a.x;
+                            var y=a.y;
+                           makeUserSite(x,y);
+                       },
+                       error:function(){
+                          layer.msg("ajax失败");
+                       },complete:function(){
+                             layer.close(ii);
+                        }
+                   });
+                 /*ajax   end*/
+    }
+    function makeUserSite(x,y) {
+        var x=x;
+        var y =y;
+        /*ajax   start*/
+        $.ajax({
+            url:"/http/makeUserSite",
+            type:"GET",
+            data:{x:x,y:y},
+            beforeSend:function(){
+                ii = layer.msg('正在获取当前位置', {
+                    icon: 16
+                    ,shade: 0.01
+                });
+            },
+            success:function(a){
+                var content="";
+                var district=a.district;
+                var city=a.city;
+                var province=a.province;
+                content+=province+"  "+city+"  "+district;
+                console.log("content=========="+content);
+                $("#getSite").html(content);
+            },
+            error:function(){
+                layer.msg("ajax失败");
+            },complete:function(){
+                layer.close(ii);
+            }
+        });
+        /*ajax   end*/
+    }
 </script>
 <body>
-<input type="hidden" id="sitesVal" th:value="${session?.beforeSites}">
+<input type="hidden" id="minSites" th:value="${session?.minSites}">
 <a id="btn_add" onclick="addData()" href="javascript:void(0)"class="easyui-linkbutton" data-options="iconCls:'icon-remove'">增加</a>
 <table id="dg" height="500" width="100%"></table>
 <!-- 弹框增加start -->
@@ -384,7 +393,9 @@
         zeid:<input name="zeid" class="easyui-textbox" data-options="iconCls:'icon-man'" style="width:200px"><br>
         发布状态：延迟发布<input onclick="setTime()" value="0" type="radio" name="strat" > 立即发布<input onclick="setTime2()" type="radio" value="1" name="strat" >
         <div id="div2">设置延迟时间：<input id="time1" editable=false  name="fabuTime" data-options="iconCls:'icon-man'" class="easyui-datetimebox" />
-        </div>
+        </div> <br/>
+        所在位置: 获取当前位置<input onclick="queryLngAndLat()" value="0" type="radio" name="site" >
+        <div id="getSite"></div>
     </form>
 </div>
 <!-- 弹框增加end -->

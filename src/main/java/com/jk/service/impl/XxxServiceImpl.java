@@ -119,15 +119,15 @@ public class XxxServiceImpl implements XxxService {
     }
 
     @Override
-    public void updateBeforeSites(Integer id, Integer minSites, Integer sitesVal) {
-        xxxMapper.updateBeforeMinSites(minSites,sitesVal);
-        xxxMapper.updateSitesByMinSites(sitesVal,id);
+    public void updateBeforeSites(Integer minSites, Integer id,  Integer maxSites) {
+        xxxMapper.updateNowSites(maxSites+1,id);
     }
 
     @Override
     public Integer queryMaxSites() {
         return xxxMapper.queryMaxSites();
     }
+
 
 
 }

@@ -14,7 +14,7 @@
 
     <insert id="insertWenZhang">
 
-        insert into t_wenzhang (title,name,img,music,content,browse,creaTime,zeid,strat,fabuTime,sites)VALUES(
+        insert into t_wenzhang (title,name,img,music,content,browse,creaTime,zeid,strat,fabuTime)VALUES(
           #{title},
           #{name},
           #{img},
@@ -127,8 +127,9 @@
         update t_wenzhang set sites=#{sites} where sites=#{minSites}
     </update>
 
-    <!--void updateBeforeMinSites(@Param("minSites") Integer minSites,@Param("sitesVal") Integer sitesVal);-->
-    <update id="updateBeforeMinSites">
-        update t_wenzhang set sites=#{minSites} where sites=#{sitesVal}
+    <!-- void updateNowSites(@Param("maxSites") Integer minSites,@Param("id") Integer id);-->
+    <update id="updateNowSites">
+        update t_wenzhang set sites = #{maxSites} where id = #{id}
     </update>
+
 </mapper>

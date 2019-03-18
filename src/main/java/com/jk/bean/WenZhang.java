@@ -26,5 +26,6 @@ public class WenZhang implements Serializable {
     Date fabuTime;
 
     Integer sites;
+    String site;
 
 }
