@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <link rel="stylesheet" href="/js/easyui1.5/themes/icon.css">
+    <link rel="stylesheet" href="/js/easyui1.5/themes/default/easyui.css">
+    <script src="/js/jquery-2.1.1.min.js"></script>
+    <script src="/js/easyui1.5/jquery.easyui.min.js"></script>
+    <script src="/js/easyui1.5/locale/easyui-lang-zh_CN.js"></script>
+    <link rel="stylesheet" href="/js/uploadify/uploadify.css" />
+    <script src="/js/uploadify/jquery.uploadify.min.js"></script>
+</head>
+
+<body>
+<div class="easyui-dialog" data-options="title:'注册',modal:true,
+		buttons:[
+		{
+			text:'注册',
+			handler:function(){
+				reg();
+			}
+		}]" style="width: 400px;height: 200px">
+    <form id="regForm" method="post">
+        <table>
+            <tr>
+                <td>用户名：</td>
+                <td> <input type="text" id="username" name="username" class="easyui-textbox" data-options="required:true,missingMessage:'请输入用户名'"/> </td>
+            </tr>
+            <tr>
+                <td>账号：</td>
+                <td> <input type="text" id="loginacct" name="loginacct" class="easyui-textbox" data-options="required:true,missingMessage:'请输入注册账号'"/> </td>
+            </tr>
+            <tr>
+                <td>密码：</td>
+                <td> <input type="text" id="userpswd" name="userpswd" class="easyui-passwordbox" data-options="required:true,missingMessage:'请输入密码'"/> </td>
+            </tr>
+            <tr>
+                <td>确认密码：</td>
+                <td>
+                    <input type="text" id="password2" class="easyui-passwordbox" data-options="required:true,missingMessage:'请确定密码'"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+<script type="text/javascript">
+
+    function reg() {
+
+        var loginacct=$("#loginacct").textbox('getValue');
+        var username=$("#username").textbox('getValue');
+        var userpswd=$("#userpswd").textbox('getValue');
+        var password2=$("#password2").textbox('getValue');
+        if (username==null||username=="") {
+            $.messager.alert('提示','用户名不能为空','info');
+            return;
+        }
+        if (loginacct == null || loginacct == "") {
+           $.messager.alert('提示','账号不能为空','info');
+            return;
+        }
+        if (userpswd == null || userpswd == "") {
+            $.messager.alert('提示','密码不能为空','info');
+            return;
+        }
+        if (password2 != userpswd) {
+            $.messager.alert('提示','确认密码要和密码保持一致','info');
+            return;
+        }
+
+         $.ajax({
+                 url:'/addCode',
+                 type:'post',
+                 data:$("#regForm").serialize(),
+                 success:function (data) {
+
+                     if (data) {
+
+                         $.messager.alert('提示','注册成功','info');
+                         location.href="/toView?viewName=denglu";
+                     }else{
+                         $.messager.alert('提示','注册失败','info');
+                     }
+
+
+                 },error:function () {
+                     alert("ajax访问失败,请查看控制台");
+                 }
+
+                 })
+
+
+
+    }
+
+</script>
+</html>

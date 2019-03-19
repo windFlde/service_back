@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <script src="/js/jquery-2.1.1.min.js"></script>
+    <link rel="stylesheet" href="/js/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <script src="/js/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+</head>
+<body>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form role="form" class="form-inline">
+                <div class="form-group">
+                    <label for="exampleInputPassword1">未分配角色列表</label><br>
+                    <select
+                            id="leftSelect" class="form-control" multiple size="10"
+                            style="width: 100px; overflow-y: auto;">
+                        <option  th:each="role:${unassignRole}" th:value="${role.id}" th:text="${role.name}">
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <ul>
+                        <li class="btn btn-default glyphicon glyphicon-chevron-right"
+                            onclick="addRole()"></li>
+                        <br>
+                        <li class="btn btn-default glyphicon glyphicon-chevron-left"
+                            style="margin-top: 20px;" onclick="removeRole()"></li>
+                    </ul>
+                </div>
+                <div class="form-group" style="margin-left: 40px;">
+                    <label for="exampleInputPassword1">已分配角色列表</label><br>
+                    <select
+                            id="rightSelect" class="form-control" multiple size="10"
+                            style="width: 100px; overflow-y: auto;">
+
+                        <option  th:each="role:${assignRole}" th:value="${role.id}" th:text="${role.name}">
+                        </option>
+
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+    <input type="hidden" th:value="${msg}" id="userId">
+</body>
+    <script type="text/javascript">
+       var userId=$("#userId").val();
+        //给用户设置角色
+        function addRole() {
+
+            var param = {userId:userId};
+
+
+            if($("#leftSelect :selected").size()==0){
+
+                alert("至少选择一个角色")
+                return;
+            }
+
+            $.each($("#leftSelect :selected"),function(index,obj){
+
+                console.log(obj)
+
+                param["roid["+index+"]"]= obj.value;
+
+            })
+
+
+            console.log(param)
+
+            $.ajax({
+                url:"/addRoleByUserId",
+                type : "POST",
+                data : param,
+                success : function(result) {
+                   //成功之后 刷新界面
+                    //location.reload()
+                    //
+                    $("#rightSelect").append($("#leftSelect :selected"))
+                },
+                error : function() {
+                    alert("ajax访问失败了,查看控制台");
+                }
+            });
+
+        }
+
+        function removeRole(){
+
+            var param = {userId:userId};
+
+            if($("#rightSelect :selected").size()==0){
+
+                alert("至少选择一个角色")
+
+                return;
+            }
+
+            $.each($("#rightSelect :selected"),function(index,obj){
+
+                param["roid["+index+"]"] = $(obj).val();
+
+            })
+
+            $.ajax({
+                url:"/removeRoleByUserId",
+                type:"POST",
+                data:param,
+                success:function(result){
+                    //location.reload()
+                    //判断数据库的数据确实已经改变了 再改变前台的数据
+                    $("#leftSelect").append($("#rightSelect :selected"))
+                },
+                error:function(){
+                    alert("ajax访问失败了,查看控制台");
+                }
+            });
+        }
+
+
+    </script>
+</html>

@@ -12,9 +12,9 @@
 </head>
 <script type="text/javascript">
     $(function(){
-        getTreeData();
+        ininMyTree();
     })
-    function getTreeData(){
+   /* function getTreeData(){
         $('#tree').tree({
             data:[{
                 "id": 1,
@@ -24,52 +24,48 @@
                     "id": 11,
                     "text": "专家信息管理",
                     "url":"zg"
+                },{
+                    "id": 12,
+                    "text": "用户管理",
+                    "url":"user"
+                },{
+                    "id": 13,
+                    "text": "角色管理",
+                    "url":"role"
+                },{
+                    "id": 14,
+                    "text": "权限管理",
+                    "url":"control"
                 },
                     {
-                        "id": 12,
+                        "id": 15,
                         "text": "文章管理",
                         "url":"wenzhang"
                     },{
-                        "id": 13,
+                        "id": 16,
                         "text": "热点资讯管理",
                         "url":"rdzx"
                     },{
-                        "id": 13,
+                        "id": 17,
                         "text": "标题管理",
                         "url":"title"
                     },{
-                        "id": 15,
+                        "id": 18,
                         "text": "病例荟萃管理",
                         "url":"bingtong"
                     },{
-                        "id": 16,
-                        "text": "评论",
-                        "url":"PingLun"
-                    },{
-                        "id": 18,
+                        "id": 19,
                         "text": "文献",
                         "url":"wenxian"
                     },{
-                        "id": 19,
+                        "id": 20,
                         "text": "日志",
                         "url":"loginLog"
-                    },{
-                        "id": 20,
-                        "text": "公告",
-                        "url":"gonggao"
-                    },{
-                        "id": 21,
-                        "text": "黑名单",
-                        "url":"blackUser"
-                    },{
-                        "id": 22,
-                        "text": "评论敏感字体",
-                        "url":"sensitivity"
                     }
                     ],
-            }],
+            }],*/
             /* 新建一个面板 */
-            onClick:function(node){
+            /*onClick:function(node){
                 if(node.children!=null||node.state=='closed'){return;}
                 if(node.url==null){return;}
                 if($("#center_tabs").tabs('exists',node.text)){
@@ -97,17 +93,62 @@
     }
     function toView(url){
         return '<iframe scrolling="auto" frameborder="0"  src="/xjw/toView?v='+url+ '" style="width:100%;height:100%;"></iframe>';
+    }*/
+
+    function ininMyTree(){
+        $('#myTree').tree({
+            url:'/queryTree',
+            lines:true,
+            onClick:function(node){
+                if (node.children.length <= 0) {
+                    var exists = $('#myTabs').tabs('exists',node.text);
+                    if (exists) {
+                        $('#myTabs').tabs('select',node.text);
+                    }else{
+                        $('#myTabs').tabs('add',{
+                            title:node.text,
+                            closable:true,
+                            tools:[{
+                                iconCls:'icon-mini-refresh',
+                                handler:function(){
+                                    $('#myTabs').tabs('update', {
+                                        tab: $('#myTabs').tabs('getSelected'),
+                                        options: {
+                                            content:createIframe(node.url)
+                                        }
+                                    });
+                                }
+                            }],
+                            content:createIframe(node.url),
+                        })
+                    }
+                }
+            }
+        })
+    }
+    function createIframe(url){
+        return '<iframe scrolling="auto" frameborder="0"  src="/xjw/toView?v='+ url + '" style="width:100%;height:100%;"></iframe>';
     }
 </script>
-<body class="easyui-layout" id = "ll">
-
-<div data-options="region:'west',title:'West',split:true" style="height:500px;width:300px">
-    <ul id="tree">
-    </ul>
-</div>
-
-<div data-options="region:'center',title:'center title'" style="padding:5px;background:#eee;">
-    <div fit = true id="center_tabs" class="easyui-tabs" style="width:500px;height:250px;"></div>
-</div>
+<body>
+        <div class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'north',title:'头部'" style="height: 10%">
+                <!--<a href="/toView?viewName=login">注销</a>-->
+            </div>
+            <div data-options="region:'west',title:'导航',iconCls:'icon-search'" style="width: 20%">
+                <div class="easyui-accordion" data-options="fit:true">
+                    <div data-options="title:'同步树',selected:true">
+                        <ul id="myTree"></ul>
+                    </div>
+                </div>
+            </div>
+            <div data-options="region:'center',title:'功能区'" style="width: 80%">
+                <div id="myTabs" class="easyui-tabs" data-options="fit:true">
+                    <div data-options="title:'欢迎'">
+                        欢迎使用
+                    </div>
+                </div>
+            </div>
+        </div>
 </body>
 </html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <link rel="stylesheet" href="/js/easyui1.5/themes/icon.css">
+    <link rel="stylesheet" href="/js/easyui1.5/themes/default/easyui.css">
+    <script src="/js/jquery-2.1.1.min.js"></script>
+    <script src="/js/easyui1.5/jquery.easyui.min.js"></script>
+    <script src="/js/easyui1.5/locale/easyui-lang-zh_CN.js"></script>
+    <link rel="stylesheet" href="/js/uploadify/uploadify.css" />
+    <script src="/js/uploadify/jquery.uploadify.min.js"></script>
+
+</head>
+
+<body>
+<div class="easyui-dialog" data-options="title:'登录',modal:true,
+		buttons:[
+		{
+			text:'登录',
+			handler:function(){
+				login();
+			}
+		},{
+			text:'注册',
+			handler:function(){
+				code();
+			}
+		}]" style="width: 450px;height: 300px">
+    <form method="post" >
+        <table>
+            <tr>
+                <td>用户名：</td>
+                <td> <input type="text" id="username" class="easyui-textbox"/> </td>
+            </tr>
+            <tr>
+                <td>密码：</td>
+                <td> <input type="text" id="password" class="easyui-passwordbox"/> </td>
+            </tr>
+            <tr>
+                <td>验证码：</td>
+                <td>
+                    <input type="text" id="checkCodeInput" class="easyui-textbox" style="width: 70px"/>
+                    <img id="checkCode" src="/getCodeName" width="150px" height="40px"/>
+                    <a href="javascript:changerCode();">看不清,换一张(区分大小写)</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+<script>
+
+    function login() {
+
+       var username=$("#username").val();
+        var password=$("#password").val();
+        var checkCodeInput=$("#checkCodeInput").val();
+        $.ajax({
+            url:'/login',
+            type:'post',
+            data:{loginacct:username,userpswd:password,checkCode:checkCodeInput},
+            success:function (data) {
+
+                if (data.code != 3) {
+
+                    alert(data.msg);
+                }else{
+
+                    location.href = "/toView?viewName=index";
+                }
+
+
+
+            },error:function () {
+                alert("ajax访问失败,请查看控制台");
+            }
+
+        })
+
+
+    }
+    function changerCode(){
+        $('#checkCode').attr('src','/getCodeName?t='+new Date().getTime())
+    }
+
+    function code(){
+
+        location.href="/toView?viewName=code";
+    }
+
+
+
+
+</script>
+</html>
