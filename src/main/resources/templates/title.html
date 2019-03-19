@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>专家</title>
+    <script src="/js/layer/layer.js"></script>
+    <link rel="stylesheet" href="/js/easyui1.5/themes/icon.css">
+    <link rel="stylesheet" href="/js/easyui1.5/themes/default/easyui.css">
+    <script src="/js/jquery-2.1.1.min.js"></script>
+    <script src="/js/easyui1.5/jquery.easyui.min.js"></script>
+    <link rel="stylesheet" href="/js/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <script src="/js/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <script src="/layui/layui.all.js"></script>
+
+
+</head>
+<script type="text/javascript" th:inline="none">
+    var ii = 0;
+    $(function(){
+        getData();
+        layui.use('rate', function(){
+            var rate = layui.rate;//渲染
+            var ins1 = rate.render({
+                elem: '#test1',  //绑定元素
+                length:5,
+                value:0,
+                theme:'#FFB800',
+                text:true,
+                choose: function(value){
+                    $("#fen").val(value);
+                }
+            });});
+    })
+    function getData(){
+        $("#table").datagrid({
+            url:'/title/queryTitle',
+            striped:true,
+            pagination:true,
+            pageList:[3,4,5,6,7],
+            pageSize: 4,
+            /* 奇数偶数行不同颜色 start */
+            rowStyler: function(index,row){
+                if (index%2==0){
+                    return 'background-color:#6293BB;color:#fff;';
+                }else{
+                    return "background-color:#ccfffcc;color:red;";
+                }
+            },
+            /* 奇数偶数行不同颜色 end */
+            columns:[[
+                {field:'xxx',title:'复选框',width:50,checkbox:true},
+                {field:'id',title:'id',width:100},
+                {field: 'title',title: '标题',align: 'center'},
+                {field: 'href',title: '访问路径',align: 'center'},
+                {field: 'state',title: '显示状态',align: 'center',
+                    formatter: function(value,row,index){
+                        var asd1 = (value == 1)?"显示":"隐藏";
+                        return asd1;
+                    }},
+                {field: 'block',title: '展示位置',align: 'center',
+                    formatter: function(value,row,index){
+                        var asd2 = (value == 1)?"区域一":"区域二";
+                        return asd2;
+                    }},
+                {field: 'ss',title: '操作',align: 'center',
+                    formatter: function(value,row,index){
+                        var asd3 ="<a onclick='deleteItem("+row.id+")'>删除 |</a>";
+                            asd3+="<a onclick='updateTitle("+row.id+","+row.state+")'> 修改显示</a>";
+                            asd3+="";
+                        return asd3;
+                    }},
+            ]],
+            checkOnSelect:false
+        });
+    }
+    function updateTitle(id,state){
+        /*ajax   start*/
+                $.ajax({
+                   url:"/title/updateTitle",
+                   type:"POST",
+                   data:{id:id,state:state},
+                   beforeSend:function(){
+                          ii = layer.msg('加载中', {
+                          icon: 16
+                          ,shade: 0.01
+                          });
+                    },
+                   success:function(a){
+                       $("#table").datagrid('reload');//reload 会重新请求数据 但会停留在当前页
+                   },
+                   error:function(){
+                      layer.msg("ajax失败");
+                   },complete:function(){
+                         layer.close(ii);
+                    }
+               });
+             /*ajax   end*/
+    }
+    function tijiao() {
+        /*ajax   start*/
+        $.ajax({
+            url:"/title/insertTitle",
+            type:"POST",
+            data:$("#form").serialize(),
+            beforeSend:function(){
+                ii = layer.msg('加载中', {
+                    icon: 16
+                    ,shade: 0.01
+                });
+            },
+            success:function(a){
+                if (a == 0){
+                    layer.msg("该区域没有空位了，请先删除再添加。")
+                } else{
+                    layer.msg("添加成功！")
+                    $("#form").clean();
+                    $("#table").datagrid('reload');//reload 会重新请求数据 但会停留在当前页
+                }
+            },
+            error:function(){
+                layer.msg("ajax失败");
+            },complete:function(){
+                layer.close(ii);
+            }
+        });
+        /*ajax   end*/
+    }
+    function removes(){
+        var rows = $("#table").datagrid('getChecked');
+        var ids = "";
+        $.each(rows,function(index,obj){
+            ids += ids== ''?obj.id:","+obj.id;
+        });
+        deleteItem(ids);
+    }
+    function deleteItem(ids){
+        if(ids != null && ids != ""){
+            $.messager.confirm('确认','您确认想要删除记录吗？',function(r){
+                if (r){
+                    $.ajax({
+                        url:"/title/deleteTitle",
+                        type:"POST",
+                        data:{ids:ids},
+                        success:function(pageUtil){
+                            $.messager.show({
+                                itle:'删除消息',
+                                msg:'删除成功！',
+                                timeout:3000,
+                                showType:'slide'
+                            });
+                            $("#table").datagrid('reload');//reload 会重新请求数据 但会停留在当前页
+                        },
+                        error:function(){
+                            alert("失败了");
+                        }
+                    });
+                }else{
+                    $.messager.show({
+                        title:'删除消息',
+                        msg:'没有删哦！',
+                        timeout:3000,
+                        showType:'slide'
+                    });
+                    $("#table").datagrid('reload');//reload 会重新请求数据 但会停留在当前页
+                }
+            });
+        }else{
+            $.messager.show({
+                title:'删除消息',
+                msg:'请先选中！',
+                timeout:3000,
+                showType:'slide'
+            });
+        }
+    }
+</script>
+<body>
+<div id="p">
+    <!-- 按钮触发模态框 -->
+    <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+        新增标题
+    </button>
+    <button class="btn btn-primary" onclick="removes()" >
+        批量删除
+    </button>
+</div>
+<table id="table" height="500" width="100%"></table>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    新增标题
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form id="form">
+                    <table>
+                        <tr>
+                            <td>标题：</td>
+                            <td><input type="text" name="title" class="form-control" placeholder="请输入标题"></td>
+                        </tr>
+                        <tr>
+                            <td>访问路径：</td>
+                            <td><input type="text" name="href" class="form-control" placeholder="请输入访问路径"></td>
+                        </tr>
+                        <tr>
+                            <td>显示状态</td>
+                            <td><input type="radio" name="state" value="1">显示&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="state" value="0">隐藏</td>
+                        </tr>
+                        <tr>
+                            <td>显示区域</td>
+                            <td><input type="radio" name="block" value="1">区域一&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="block" value="2">区域二</td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    关闭
+                </button>
+                <button type="button" onclick="tijiao()" class="btn btn-primary" data-dismiss="modal">
+                    保存
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+</body>
+</html>

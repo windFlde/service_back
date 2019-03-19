@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jk.mapper.TitleMapper">
+
+    <!--List<Title> queryTitle();-->
+    <select id="queryTitle" resultType="Title" >
+        select * from t_title
+    </select>
+
+    <!--void deleteTitle(String ids);-->
+    <delete id="deleteTitle">
+        delete from  t_title where id in (#{ids})
+    </delete>
+
+    <!--void insertTitle(Title title);-->
+    <insert id="insertTitle">
+        INSERT INTO t_title (title, href, state, block)
+    VALUES
+        (#{title},#{href},#{state},#{block})
+    </insert>
+
+    <!--void updateTitle(String id ,Integer state);-->
+    <update id="updateTitle">
+        update t_title set state = #{state} where id = #{id}
+    </update>
+
+    <!-- Integer getcot(Integer block);-->
+    <select id="getcot" resultType="Integer">
+        select COUNT(id) from t_title where block = #{block}
+    </select>
+
+</mapper>
