@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <script src="/js/jquery-2.1.1.min.js"></script>
+    <link rel="stylesheet" href="/js/easyui1.5/themes/icon.css">
+    <link rel="stylesheet" href="/js/easyui1.5/themes/default/easyui.css">
+    <script src="/js/easyui1.5/jquery.easyui.min.js"></script>
+    <script src="/js/easyui1.5/locale/easyui-lang-zh_CN.js"></script>
+    <script src="/js/layer/layer.js"></script>
+</head>
+<script type="text/javascript"  th:inline="none">
+    var ii = 0;
+    $(function () {
+        getData();
+    });
+    function getData(){
+        $("#dg").datagrid({
+            url:'/bck/quertPingLun',
+            striped:true,
+            pagePosition:'both',
+            pagination:true,
+            pageList:[3,4,5,6,7],
+            pageSize: 4,
+            /* 奇数偶数行不同颜色 end */
+            columns:[[
+                {field:'xxx',title:'复选框',width:50,checkbox:true},
+                {field:'_id',title:'id',width:100},
+                {field:'name',title:'用户名',width:100},
+                {field:'time',title:'评论的时间',width:100},
+                {field:'content',title:'评论内容',width:100},
+                {field:'huifu',title:'回复',width:100},
+                {field:'black',title:'是否有敏感字',width:100,
+                    formatter: function(value,row,index){
+                        var content="";
+                        ii= value;
+                        if(value==0){
+                            content+="<font color='red'>含有</font>";
+                        }else {
+                            content+="<font color='blue'>没有</font>";
+                        }
+                        return content;
+                    }},{field:'xxxx',title:'操作',width:100,
+                    formatter: function(value,row,index){
+                        var content="";
+                        content +="<a href='javascript:void(0)' onclick=deletePingLun('"+row._id+"')>删除</a>";
+                        if(ii==0){
+                            content +=" 丨<a href='javascript:void(0)' onclick=updatePingLun('"+row._id+"',1)>展示</a>"
+                        }else {
+                            content +=" 丨<a href='javascript:void(0)' onclick=updatePingLun('"+row._id+"',0)>取消展示</a>"
+                        }
+
+                        return content;
+                    }}
+            ]],
+            checkOnSelect:false,
+        });
+    }
+
+    function updatePingLun(id,black){
+        $.ajax({
+            url:"/bck/updatePingLun",
+            data:{id:id,black:black},
+            success:function(pageUtil){
+                getData();
+            },
+            error:function(pageUtil) {
+                alert("代码错误");
+            }
+        });
+    }
+
+    function deletePingLun(id){
+        $.ajax({
+            url:"/bck/deletePingLun",
+            data:{id:id},
+            success:function(pageUtil){
+                /* deleteItems start */
+                $.messager.show({
+                    title:'删除',
+                    msg:'删除成功',
+                    timeout:2000,
+                    showType:'slide'
+                });
+                getData();
+            },
+            error:function(pageUtil) {
+                alert("代码错误");
+            }
+        });
+    }
+
+</script>
+<body>
+<table id="dg" height="500" width="100%"></table>
+</body>
+</html>

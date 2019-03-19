@@ -33,5 +33,16 @@
          delete from `t_ example` where id in (${_parameter})
     </delete>
 
+    <select id="querySs" resultType="Sensitivity">
+        select * from t_sensitivity
+    </select>
+
+    <insert id="addSs">
+        insert into t_sensitivity (content) values (#{content})
+    </insert>
+
+    <delete id="delSs">
+       delete from t_sensitivity where id = #{id}
+    </delete>
 
 </mapper>
