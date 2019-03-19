@@ -1,7 +1,11 @@
 package com.jk.mapper;
 
+import com.jk.bean.BlackUser;
+import com.jk.bean.User;
 import com.jk.bean.WenXian;
 import com.jk.bean.WenZhang;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -51,4 +55,18 @@ public interface XxxMapper {
 
     void updateNowSites(@Param("maxSites") Integer maxSites,@Param("id") Integer id);
 
+    @Select("select * from t_user_black")
+    List<BlackUser> queryBlackUser();
+
+    @Insert("insert into t_user_black (userId,name,loginacct) values(#{userId},#{name},#{loginacct})")
+    void insertBlackUser(BlackUser blackUser);
+
+    @Delete("delete from t_user_black where id in (  ${ids} )")
+    void deleteBlackUser(@Param("ids") String  ids);
+
+    @Select("select * from t_user ")
+    List<User> getUser();
+
+    @Select("select count(id) from t_user_black  where userId =#{id}")
+    Integer queryUserFt(Integer id);
 }

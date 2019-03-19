@@ -128,6 +128,50 @@ public class XxxServiceImpl implements XxxService {
         return xxxMapper.queryMaxSites();
     }
 
+    @Override
+    public SendPage queryTitleName(ReceivePage receivePage) {
+        Query query = new Query();
+        int count = (int) mongoTemplate.count(query, TitleName.class);
+        // skipNum = (pageNow-1)*pageSize
+        query.skip((receivePage.getPage() - 1) * receivePage.getRows());
+        query.limit(receivePage.getRows());
+        List<TitleName> logList = mongoTemplate.find(query, TitleName.class);
+        SendPage sendPage = new SendPage(count, logList);
+        return sendPage;
+    }
+
+    @Override
+    public SendPage queryBlackUser(ReceivePage r) {
+        List<BlackUser> count = xxxMapper.queryBlackUser();
+        PageHelper.startPage(r.getPage(),r.getRows());
+        List<BlackUser> list = xxxMapper.queryBlackUser();
+        SendPage ss = new SendPage(count.size(), list);
+        return ss;
+    }
+
+    @Override
+    public void insertBlackUser(BlackUser blackUser) {
+        xxxMapper.insertBlackUser(blackUser);
+    }
+
+    @Override
+    public void deleteBlackUser(String ids) {
+        xxxMapper.deleteBlackUser(ids);
+    }
+
+    @Override
+    public SendPage getUser(ReceivePage r) {
+        List<User> count = xxxMapper.getUser();
+        PageHelper.startPage(r.getPage(),r.getRows());
+        List<User> list = xxxMapper.getUser();
+        SendPage ss = new SendPage(count.size(), list);
+        return ss;
+    }
+
+    @Override
+    public Integer queryUserFt(Integer id) {
+        return xxxMapper.queryUserFt(id);
+    }
 
 
 }

@@ -1,9 +1,6 @@
 package com.jk.controller;
 
-import com.jk.bean.ReceivePage;
-import com.jk.bean.SendPage;
-import com.jk.bean.WenXian;
-import com.jk.bean.WenZhang;
+import com.jk.bean.*;
 import com.jk.service.XxxService;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
@@ -28,6 +25,19 @@ public class XxxController {
         return v;
     }
 
+    @ResponseBody
+    @RequestMapping("insertTitleName")
+    public String insertTitleName(TitleName titleName) {
+        TitleName titleName1=new TitleName(null,titleName.getTitleContent());
+        mongoTemplate.save(titleName1);
+        return "1";
+    }
+    @ResponseBody
+    @RequestMapping("queryTitleName")
+    public SendPage queryTitleName(ReceivePage receivePage) {
+        SendPage list= xxxService.queryTitleName(receivePage);
+        return list;
+    }
 
     @ResponseBody
     @RequestMapping("queryWenZhang")
@@ -129,6 +139,50 @@ public class XxxController {
             return "backTopOk";
 
     }
+    @ResponseBody
+    @RequestMapping("queryBlackUser")
+    public SendPage queryBlackUser(ReceivePage receivePage) {
+        SendPage sp=xxxService.queryBlackUser(receivePage);
+        return sp;
+    }
+    @ResponseBody
+    @RequestMapping("insertBlackUser")
+    public String insertBlackUser(BlackUser  blackUser) {
+        xxxService.insertBlackUser(blackUser);
+        return "1";
+    }
+    @ResponseBody
+    @RequestMapping("deleteBlackUser")
+    public void deleteBlackUser(String ids) {
+        xxxService.deleteBlackUser(ids);
+    }
+    @ResponseBody
+    @RequestMapping("getUser")
+    public SendPage getUser(ReceivePage receivePage) {
+        SendPage sp=xxxService.getUser(receivePage);
+        return sp;
 
+    }
+    @ResponseBody
+    @RequestMapping("insertById")
+    public String insertById(User user) {
+        BlackUser blackUser = new BlackUser();
+        Integer count=xxxService.queryUserFt(user.getId());
+        if (count>0) {
+            return "0";
+        }
+        blackUser.setLoginacct(user.getLoginacct());
+        blackUser.setUserId(user.getId());
+        blackUser.setName(user.getUsername());
+        xxxService.insertBlackUser(blackUser);
+        return "1";
+    }
+    @ResponseBody
+    @RequestMapping("deleteItemsGongGao")
+    public void deleteItemsGongGao(String ids) {
+        TitleName titleName = new TitleName();
+        titleName.setId(ids);
+        mongoTemplate.remove(titleName);
+    }
 
 }

@@ -1,9 +1,6 @@
 package com.jk.service;
 
-import com.jk.bean.ReceivePage;
-import com.jk.bean.SendPage;
-import com.jk.bean.WenXian;
-import com.jk.bean.WenZhang;
+import com.jk.bean.*;
 
 public interface XxxService {
 
@@ -40,4 +37,15 @@ public interface XxxService {
 
     Integer queryMaxSites();
 
+    SendPage queryTitleName(ReceivePage receivePage);
+
+    SendPage queryBlackUser(ReceivePage receivePage);
+
+    void insertBlackUser(BlackUser blackUser);
+
+    void deleteBlackUser(String ids);
+
+    SendPage getUser(ReceivePage receivePage);
+
+    Integer queryUserFt(Integer id);
 }

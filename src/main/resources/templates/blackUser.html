@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <script src="/js/jquery-2.1.1.min.js"></script>
+    <link rel="stylesheet" href="/js/easyui1.5/themes/icon.css">
+    <link rel="stylesheet" href="/js/easyui1.5/themes/default/easyui.css">
+    <script src="/js/easyui1.5/jquery.easyui.min.js"></script>
+    <script src="/js/easyui1.5/locale/easyui-lang-zh_CN.js"></script>
+    <script src="/js/layer/layer.js"></script>
+</head>
+<script type="text/javascript" th:inline="none">
+    var ii = 0;
+    $(function () {
+        getData();
+        setEvent();
+        $("#dialog_add").dialog("close");
+    });
+    function getData(){
+        $("#dg").datagrid({
+            url:'/xjw/queryBlackUser',
+            striped:true,
+            pagePosition:'both',
+            pagination:true,
+            pageList:[3,4,5,6,7,30,50],
+            pageSize: 7,
+            /* 奇数偶数行不同颜色 start */
+            rowStyler: function(index,row){
+                if (index%2==0){
+                    return 'background-color:#6293BB;color:#fff;';
+                }else{
+                    return "background-color:#ccfffcc;color:red;";
+                }
+            },
+            /* 奇数偶数行不同颜色 end */
+            columns:[[
+                {field:'xxx',title:'复选框',width:50,checkbox:true},
+                {field:'id',title:'id',width:100},
+                {field:'name',title:'name',width:100},
+                {field:'userId',title:'userId',width:100},
+                {field:'loginacct',title:'loginacct',width:100},
+                {field:'xxx1',title:'操作',width:250,
+                    /* 操作start */
+                    formatter: function(value,row,index){
+                        var content="";
+                        content+=" | <a href='javascript:void(0)' onclick=deleteItemsById("+row.id+")>移除黑名单</a>";
+                        return content;
+
+                    }
+                    /* 操作end */
+                },
+            ]],
+            checkOnSelect:false,
+        });
+    }
+
+
+    function deleteItemsById(id,username){
+        $.messager.confirm('确认','您确认想要删除这条记录吗？',function(r){
+            if (r){//点击确认
+                deleteItems(id);
+            }
+        });
+    }
+    function setEvent(){
+        $("#btn_delete").linkbutton({
+            onClick:function(){
+                var rows=$("#dg").datagrid("getChecked");
+                var ids="";
+                $.each(rows,function(index,obj){
+                    ids+=ids==''?obj.id:","+obj.id;
+                });
+                deleteItems(ids);
+            }
+        });
+    }
+    function deleteItems(ids){
+        $.ajax({
+            url:"/xjw/deleteBlackUser",
+            type:"POST",
+            data:{ids:ids},
+            success:function(pageUtil){
+                /* deleteItems start */
+                $.messager.show({
+                    title:'删除',
+                    msg:'删除成功',
+                    timeout:2000,
+                    showType:'slide'
+                });
+                getData();
+                /* deleteItems end */
+            },
+            error:function(pageUtil){
+                if(pageUtil==0){
+                    alert("代码错误");
+                }else{
+                    alert("删除失败");
+                }
+            }
+        });
+    }
+</script>
+<body>
+<a href="/xjw/toView?v=user">添加新的黑名单人员</a>
+<a id="btn_delete" href="javascript:void(0)" class="easyui-linkbutton"data-options="iconCls:'icon-remove'">批量删除</a>
+<table id="dg" height="500" width="100%"></table>
+</body>
+</html>
