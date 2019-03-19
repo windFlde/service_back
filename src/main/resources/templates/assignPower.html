@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <link rel="stylesheet" href="/js/easyui1.5/themes/icon.css">
+    <link rel="stylesheet" href="/js/easyui1.5/themes/default/easyui.css">
+    <script src="/js/jquery-2.1.1.min.js"></script>
+    <script src="/js/easyui1.5/jquery.easyui.min.js"></script>
+
+</head>
+<script type="text/javascript">
+
+    $(function(){
+        loadTree();
+    })
+
+    var id=$("#mg").val();
+    function loadTree(){
+        $('#myTree').tree({
+            url:'/queryTreeByRoleId?roid='+id,
+            checkbox:true,
+            lines:true
+        });
+    }
+    function addPowerToRole(){
+
+        //获取选中的和不确定的
+        var nodes=$('#myTree').tree('getChecked',['checked','indeterminate']);
+
+        console.log(nodes)
+        var param = {roid:id}
+        $.each(nodes,function(index,obj){//权限的id
+
+            param["powerId["+index+"]"] = obj.id;
+        })
+        $.ajax({
+            url:"/addPowerToRole",
+            type:"POST",
+            data:param,//加上loading框
+            success:function(result){
+                layer.msg("分配成功");
+            },
+            error:function(){
+                alert("ajax访问失败了,查看控制台");
+            }
+        });
+    }
+
+</script>
+<body>
+<input type="text" th:value="${msg}" id="mg">
+        <ul id="myTree"></ul>
+        <a id="btn" href="javascript:void(0)" onclick="addPowerToRole()" class="easyui-linkbutton" data-options="iconCls:'icon-add'">
+            增加权限
+        </a>
+</body>
+</html>

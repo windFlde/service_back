@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jk.mapper.UserMapper">
+
+   <!--  List<User> queryUser();-->
+    <select id="queryUser" resultType="Users">
+
+        select * from t_user
+    </select>
+    
+    <!-- void addUser(Users user);-->
+    
+   <insert id="addUser">
+
+       insert into t_user(loginacct,userpswd,username,email,createtime,phone,img,count,vip)
+       values(#{loginacct},#{userpswd},#{username},#{email},#{createtime},#{phone},#{img},#{count},#{vip})
+   </insert>
+
+     <!--void updateUser(Users user);
+-->
+    <update id="updateUser">
+         update t_user set
+        loginacct=#{loginacct},userpswd=#{userpswd},username=#{username},
+        email=#{email},createtime=#{createtime},
+        phone=#{phone},img=#{img},count=#{count},vip=#{vip}
+        where id=#{id}
+    </update>
+
+   <!--   void deleteUser(String[] ids);-->
+    <delete id="deleteUser">
+
+        delete from t_user where id in(
+
+        <foreach collection="array" item="item" separator="," index="index">
+
+            #{item}
+        </foreach>
+        )
+    </delete>
+
+    <!--  Users editUser(Integer id);-->
+    <select id="editUser" resultType="Users">
+
+        select * from t_user where id=#{id}
+    </select>
+
+    <!--ArrayList<Role> getAllRole();
+
+    List<Integer> getRoleIdByUserId(String userId);-->
+
+    <!--查询所有角色-->
+    <select id="getAllRole" resultType="Role">
+        select * from t_role
+    </select>
+
+    <!--查询已有的角色的ID-->
+    <select id="getRoleIdByUserId" resultType="java.lang.Integer">
+         select r.id from  t_role r , t_user_role ur where r.id=ur.roleid and ur.userid=#{id}
+
+    </select>
+
+
+</mapper>
