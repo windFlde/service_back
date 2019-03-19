@@ -1,9 +1,6 @@
 package com.jk.service;
 
-import com.jk.bean.Example;
-import com.jk.bean.Exprent;
-import com.jk.bean.ReceivePage;
-import com.jk.bean.SendPage;
+import com.jk.bean.*;
 
 import java.util.List;
 
@@ -18,5 +15,11 @@ public interface BckService {
 
     void delEx(String ids);
 
+    SendPage querySs(ReceivePage receivePage);
 
+    void addSs(Sensitivity sensitivity);
+
+    void delSs(Integer id);
+
+    SendPage quertPingLun(ReceivePage receivePage);
 }

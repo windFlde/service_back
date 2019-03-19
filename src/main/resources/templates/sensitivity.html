@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <script src="/js/jquery-2.1.1.min.js"></script>
+    <script src="/js/easyui1.5/jquery.easyui.min.js"></script>
+    <link rel="stylesheet" href="/js/easyui1.5/themes/icon.css">
+    <link rel="stylesheet" href="/js/easyui1.5/themes/default/easyui.css">
+    <link rel="stylesheet" href="/js/uploadify/uploadify.css" />
+    <script src="/js/uploadify/jquery.uploadify.min.js"></script>
+
+</head>
+<script type="text/javascript" th:inline="none">
+    $(function () {
+        getData();
+        $('#dialog').dialog('close');
+    })
+
+    function del(id){
+        $.ajax({
+            url:"/bck/delSs",
+            data:{id:id},
+            success:function(result){
+                $("#table").datagrid('reload');//reload 会重新请求数据 但会停留在当前页
+                $.messager.show({
+                    title: '消息',
+                    msg: '删除成功!!',
+                    timeout: 1000,//提示框出来的时间
+                    showType: 'slide'
+                });
+            },
+            error:function(){
+                alert("失败了");
+            }
+        });
+    }
+
+    function getData(){
+        $("#table").datagrid({
+            url:'/bck/querySs',
+            fit:true,
+            toolbar:'#p',
+            pagination:true,
+            pageList:[1,3,5,9],
+            pageSize:3,
+            loadMsg:'正在加载,别着急',
+            columns:[[
+                {field:'xxx',title:'复选框',width:50,checkbox:true},
+                {field:'id',title:'id',width:100},
+                {field: 'content',title: '敏感词',align: 'center'},
+                {field: 'xxxx',title: '操作',align: 'center',formatter: function(value,row,index){
+                        temp = "<a href='javascript:void(0)' onclick='del(" + row.id + ")' >删除</a>";
+                        return temp;
+                    }},
+            ]],
+        });
+    }
+
+    function add() {
+        $('#dialog').dialog('open');
+        clearFormData();
+    }
+    function clearFormData(){
+        $("#form-id").form('clear'); //清空form组件内容
+    }
+    function addInfo(){
+        $("#form-id").form({
+            url:"/bck/addSs",
+            success:function(data){   //在表单提交成功以后触发 data是后台返回的数据
+                $("#dialog").dialog('close'); //关闭对话框
+                $("#table").datagrid('reload');// //重新加载数据     reload 会重新请求数据 但会停留在当前页
+            }
+        });
+        $("#form-id").form('submit');
+    }
+
+    function add() {
+        $('#dialog').dialog('open');
+        clearFormData();
+    }
+</script>
+<body>
+<div id="p">
+    <a  href="JavaScript:void(0)" onclick="add()" class="easyui-linkbutton" data-options="iconCls:'icon-add'">新增</a>
+</div>
+<table id="table"></table>
+<div id="dialog"  class="easyui-dialog" title="My Dialog" style="width:800px;height:300px;"
+     data-options="iconCls:'icon-save',resizable:true,modal:true,
+				buttons:[{
+					text:'保存',
+					iconCls:'icon-ok',
+					handler:function(){
+						addInfo();//调用另一个方法
+					}
+				},{
+					text:'取消',
+					iconCls:'icon-clear',
+					handler:function(){
+						clearFormData();//新增之后 清除表单数据
+						$('#dialog').dialog('close'); //关闭对话框
+					}
+				}]">
+
+    <!-- 表单数据 -->
+    <form id="form-id">
+        <input  name="id"  type="hidden"><br>
+        请输入你要屏蔽的敏感字或词语：<input name="content">
+    </form>
+</div>
+</body>
+</html>
