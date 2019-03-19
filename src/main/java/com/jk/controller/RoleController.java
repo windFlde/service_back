@@ -3,6 +3,7 @@ package com.jk.controller;
 import com.jk.bean.*;
 import com.jk.service.RoleService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,11 +25,7 @@ public class RoleController {
         return sendPage;
     }
 
-    @RequestMapping("toPower")
-    public String toPower(String id){
 
-        return "assignPower";
-    }
 
 
 
@@ -36,7 +33,7 @@ public class RoleController {
     @ResponseBody
     @RequestMapping("addPowerToRole")
     public String addPowerToRole(QueryParam queryParam){
-        roleService.deletePermissionToRole(queryParam.getRoid());
+        roleService.deletePermissionToRole(queryParam.getRoleid());
         roleService.addPowerToRole(queryParam);
 
         return "";

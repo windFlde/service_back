@@ -8,36 +8,38 @@
         select * from t_role
     </select>
 
-    <!--void addRoleByUserId(@Param("userId")Integer userId, @Param("roleId")Integer roleId);
+    <!-- void addRoleByUserId(@Param("userid")Integer userid, @Param("roid")List<Integer> roid);
 
-    void removeRoleByUserId(@Param("userId")Integer userId, @Param("roleId")Integer roleId);-->
+    void removeRoleByUserId(@Param("userid")Integer userid, @Param("roid")List<Integer> roid);-->
 
     <insert id="addRoleByUserId">
         insert into t_user_role(userid,roleid) values
-        <foreach separator="," item="id" collection="roid">(#{userId},#{id}) </foreach>
+        <foreach separator="," item="id" collection="roid">(#{userid},#{id}) </foreach>
     </insert>
 
+
+
     <delete id="removeRoleByUserId">
-        delete from t_user_role where userid = #{userId} and roleid in (
+        delete from t_user_role where userid = #{userid} and roleid in (
         <foreach separator="," item="id" collection="roid">#{id} </foreach>
         )
     </delete>
 
-    <!--void addPowerToRole(@Param("roleId") Integer roleId, @Param("powerId")List<Integer> powerId);-->
+
+    <!-- void addPowerToRole(@Param("rid")Integer roleid, @Param("powerId")List<Integer> powerId);-->
     <insert id="addPowerToRole">
         insert into t_role_permission(roleid,permissionid)
-
         VALUES
         <foreach collection="powerId" item="id" separator=",">
-            (#{roleId},#{id})
+            (#{rid},#{id})
         </foreach>
-
     </insert>
 
-    <!--void deletePermissionToRole(List<Integer> roid);-->
+    <!-- void deletePermissionToRole(Integer roleid);-->
     <delete id="deletePermissionToRole">
         delete from t_role_permission where roleid=#{roleid}
     </delete>
+
 
 
 

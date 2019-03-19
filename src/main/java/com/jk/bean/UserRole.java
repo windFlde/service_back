@@ -7,7 +7,9 @@ import lombok.Data;
 public class UserRole {
 
     private Integer id;
-    private Integer userId;
-    private Integer roleId;
+
+    private Integer uid;
+
+    private Integer rid;
 
 }

@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Title</title>
-<<<<<<< Updated upstream
     <script src="/js/jquery-2.1.1.min.js"></script>
     <link rel="stylesheet" href="/js/easyui1.5/themes/icon.css">
     <link rel="stylesheet" href="/js/easyui1.5/themes/default/easyui.css">
@@ -11,94 +10,6 @@
     <script src="/js/easyui1.5/locale/easyui-lang-zh_CN.js"></script>
     <script src="/js/layer/layer.js"></script>
 </head>
-<script type="text/javascript" th:inline="none">
-    var ii = 0;
-    function getUser(){
-        $("#dg").datagrid({
-            url:'/xjw/getUser',
-            striped:true,
-            pagePosition:'both',
-            pagination:true,
-            pageList:[3,4,5,6,7,30,50],
-            pageSize: 7,
-            /* 奇数偶数行不同颜色 start */
-            rowStyler: function(index,row){
-                if (index%2==0){
-                    return 'background-color:#6293BB;color:#fff;';
-                }else{
-                    return "background-color:#ccfffcc;color:red;";
-                }
-            },
-            /* 奇数偶数行不同颜色 end */
-            columns:[[
-                {field:'xxx',title:'复选框',width:50,checkbox:true},
-                {field:'id',title:'id',width:100},
-                {field:'loginacct',title:'loginacct',width:100},
-                {field:'username',title:'username',width:100},
-                {field:'xxx1',title:'操作',width:250,
-                    /* 操作start */
-                    formatter: function(value,row,index){
-                        var content="";
-                        content+="  <a href='javascript:void(0)' onclick=insertById("+row.id+",'"+row.username+"','"+row.loginacct+"')>加入黑名单</a>";
-                        return content;
-
-                    }
-                    /* 操作end */
-                },
-            ]],
-            checkOnSelect:false,
-        });
-    }
-
-    function insertById(id,username,loginacct) {
-            /*ajax   start*/
-                    $.ajax({
-                       url:"/xjw/insertById",
-                       type:"POST",
-                       data:{id:id,username:username,loginacct:loginacct},
-                       beforeSend:function(){
-                              ii = layer.msg('加载中', {
-                              icon: 16
-                              ,shade: 0.01
-                              });
-                        },
-                       success:function(a){
-                           if (a=="0") {
-                               layer.msg("黑名单中已经有了")
-                           }else{
-                               layer.msg("加入成功")
-                           }
-                         getUser();
-                       },
-                       error:function(){
-                          layer.msg("ajax失败");
-                       },complete:function(){
-                             layer.close(ii);
-                        }
-                   });
-                 /*ajax   end*/
-    }
-
-    $(function () {
-        getUser();
-    });
-</script>
-<body>
-<a href="/xjw/toView?v=blackUser">返回黑名单</a>
-<table id="dg" height="500" width="100%"></table>
-</body>
-</html>
-=======
-    <link rel="stylesheet" href="/js/easyui1.5/themes/icon.css">
-    <link rel="stylesheet" href="/js/easyui1.5/themes/default/easyui.css">
-    <script src="/js/jquery-2.1.1.min.js"></script>
-    <script src="/js/easyui1.5/jquery.easyui.min.js"></script>
-    <script src="/js/easyui1.5/locale/easyui-lang-zh_CN.js"></script>
-    <link rel="stylesheet" href="/js/uploadify/uploadify.css" />
-    <script src="/js/uploadify/jquery.uploadify.min.js"></script>
-
-</head>
-
 <body>
     <div id="toolbar">
         <a onclick="openDialog()" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">新增</a>
@@ -255,7 +166,7 @@
 
                         return '<a href="javascript:delOne('+row.id+');">删除</a>|' +
                             '<a href="javascript:editUser('+row.id+');">修改</a>|' +
-                            '<a href="/assignrole?userId='+row.id+'" target="_blank" >角色</a>';
+                            '<a href="/assignrole?id='+row.id+'" target="_blank" >角色</a>';
 
                         }}
 
@@ -447,4 +358,4 @@
 
     </script>
 </html>
->>>>>>> Stashed changes
+

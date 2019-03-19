@@ -8,14 +8,14 @@ import com.jk.bean.Tree;
 import java.util.List;
 
 public interface RoleService {
+    SendPage queryRole(ReceivePage receivePage);
 
     void addRoleByUserId(QueryParam queryParam);
 
     void removeRoleByUserId(QueryParam queryParam);
 
-    SendPage queryRole(ReceivePage receivePage);
-
     void addPowerToRole(QueryParam queryParam);
 
-    void deletePermissionToRole(List<Integer> roid);
+
+    void deletePermissionToRole(Integer roleid);
 }

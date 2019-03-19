@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <link rel="stylesheet" href="/js/easyui1.5/themes/icon.css">
+    <link rel="stylesheet" href="/js/easyui1.5/themes/default/easyui.css">
+    <script src="/js/jquery-2.1.1.min.js"></script>
+    <script src="/js/easyui1.5/jquery.easyui.min.js"></script>
+</head>
+<script type="text/javascript">
+    $(function() {
+        loadTree();
+        $("#dd").dialog("close");
+    })
+
+    function remove(){
+
+        var node = $("#myTree").tree("getSelected")
+
+        $.ajax({
+            url:"/removeItem",
+            type:"POST",
+            data:{id:node.id},
+            success:function(result){
+                $("#myTree").tree("reload")
+            },
+            error:function(){
+                alert("ajax访问失败了,查看控制台");
+            }
+        });
+
+    }
+
+    //添加菜单树的子条目
+    function sendRequest(){
+        var node = $("#myTree").tree("getSelected")
+        var parentNode = $("#myTree").tree("getParent",node.target);//获取当前树的父节点
+        //判断当前选中的节点有没有父节点 如果有父节点 就是给当前选中的条目增加兄弟节点
+        //如果没有父节点 就是给当前条目增加子节点
+        if(parentNode==null){
+            parentNode={}; //初始化一个对象
+            //此时点击的已经是父节点
+            parentNode.id=node.id
+        }
+
+        console.log("=====")
+        console.log(node)
+        console.log(parentNode)
+
+
+        $.ajax({
+            url:"/addTreeItemToTreeId",
+            type : "POST",
+            data : {
+                url:$("[name='treeUrl']").val(),
+                state : $("[name='location']").val(), //树的位置
+                text : $("#treeName").val() , //树添加条目的名字
+                pid:node.id  //给哪个树添加子条目
+            },//发送的参数 只要有id  text即可
+            success : function(result) {
+
+                layer.msg('添加成功', {time:1000, icon:5, shift:6})
+
+                $("#dd").dialog("close");
+                //重新加载树的数据
+                $("#myTree").tree("reload")
+
+                //清空表单
+                $("#treeName").val('')
+            },
+            error : function() {
+                alert("ajax访问失败了,查看控制台");
+            }
+        });
+
+
+    }
+
+
+    //点击添加按钮 会执行这个方法
+    function append(){
+        //打开对话框
+        $("#dd").dialog("open");
+    }
+
+    //更改选中的条目的名字
+    function editItem(){
+        //获取当前选中的节点
+        var node = $("#myTree").tree("getSelected")
+
+        console.log(node.text)
+        $('#myTree').tree('beginEdit',node.target)
+    }
+
+    function loadTree(){
+        $('#myTree').tree({
+            url:'/queryTree',
+            onDblClick:function(node){
+
+                editItem()
+            },
+            onAfterEdit:function(node){
+                $.ajax({
+                    url:"/updateTreeItem",
+                    type : "POST",
+                    data : {
+                        id : node.id,
+                        text : node.text
+                    },//发送的参数 只要有id  text即可
+                    success : function(result) {
+                        layer.msg("右侧菜单树更新成功,左侧菜单树需重新加载,请刷新界面。")
+                    },
+                    error : function() {
+                        alert("ajax访问失败了,查看控制台");
+                    }
+                });
+
+            },
+            onContextMenu : function(e, node) {
+                //阻止默认事件
+                e.preventDefault();
+                // 查找节点  右击会选中当前点击条目
+                $('#tree').tree('select', node.target);
+
+                console.log(e)
+                // 显示快捷菜单
+                $('#mm').menu('show', {
+                    left : e.pageX,
+                    top : e.pageY
+                });
+            }
+        });
+    }
+</script>
+<body>
+<ul id="myTree"></ul>
+
+
+
+<div id="mm" class="easyui-menu" style="width: 120px;">
+    <div onclick="append()" data-options="iconCls:'icon-add'">添加</div>
+    <div onclick="remove()" data-options="iconCls:'icon-remove'">移除</div>
+    <div onclick="editItem()" data-options="iconCls:'icon-edit'">编辑</div>
+</div>
+
+
+<div id="dd" class="easyui-dialog" title="My Dialog"
+     style="width: 400px; height: 200px;"
+     data-options="iconCls:'icon-save',resizable:true,modal:true,
+			buttons:[{
+				text:'保存',
+				handler:function(){
+					sendRequest();
+				}
+			},{
+				text:'关闭',
+				handler:function(){
+				$('#dd').dialog('close');
+				}
+			}]">
+
+    条目的名字 :<input id="treeName">
+    <br/>
+    访问的URL :<input id="treeUrl">
+    <br/>
+
+    条目的位置
+    <input checked name="location" type="radio" value="0">两侧都添加
+    <input name="location" type="radio" value="1">仅许可管理
+</div>
+</body>
+</html>

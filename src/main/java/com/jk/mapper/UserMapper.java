@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface UserMapper {
 
-
     List<User> queryUser();
 
     void addUser(Users user);
@@ -19,14 +18,16 @@ public interface UserMapper {
 
     Users editUser(Integer id);
 
-
     ArrayList<Role> getAllRole();
 
-    List<Integer> getRoleIdByUserId(String userId);
-
-    @Select("select * from t_tree t where pid=#{pid}")
+    @Select("select * from t_tree  where pid=#{id}")
     List<Tree> queryPermission(String id);
 
-    @Select("select * from t_role_permission where roleid= #{roleId}")
-    List<Integer> getPermissionIdByRoleId(Integer roleId);
+    @Select("select permissionid from t_role_permission where roleid= #{roleid}")
+    List<Integer> getPermissionIdByRoleId(Integer roleid);
+
+    List<Integer> getRoleIdByUserId(String id);
+
+
+
 }

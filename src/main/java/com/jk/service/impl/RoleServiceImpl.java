@@ -15,15 +15,17 @@ public class RoleServiceImpl implements RoleService {
     @Resource
     private RoleMapper roleMapper;
 
+    //====给用户赋角色
     @Override
     public void addRoleByUserId(QueryParam queryParam) {
 
-        roleMapper.addRoleByUserId(queryParam.getUserId(), queryParam.getRoid());
+        roleMapper.addRoleByUserId(queryParam.getUserid(),queryParam.getRoid());
     }
 
+    //=====移除角色
     @Override
     public void removeRoleByUserId(QueryParam queryParam) {
-        roleMapper.removeRoleByUserId(queryParam.getUserId(),queryParam.getRoid());
+        roleMapper.removeRoleByUserId(queryParam.getUserid(),queryParam.getRoid());
     }
 
     @Override
@@ -36,21 +38,18 @@ public class RoleServiceImpl implements RoleService {
     }
 
 
-
+    //===给用户赋权限
     @Override
     public void addPowerToRole(QueryParam queryParam) {
-        //把之前的权限清理掉
-        roleMapper.removePowerByRoleId(queryParam.getRoleId());
 
-        roleMapper.addPowerToRole(queryParam.getRoleId(),queryParam.getPowerId());
+
+        roleMapper.addPowerToRole(queryParam.getRoleid(),queryParam.getPowerId());
     }
 
     @Override
-    public void deletePermissionToRole(List<Integer> roid) {
-        roleMapper.deletePermissionToRole(roid);
+    public void deletePermissionToRole(Integer roleid) {
+        roleMapper.deletePermissionToRole(roleid);
     }
-
-
 
 
 }

@@ -52,7 +52,7 @@
     <select id="getAllRole" resultType="Role">
         select * from t_role
     </select>
-
+    <!--List<Integer> getRoleIdByUserId(String id);-->
     <!--查询已有的角色的ID-->
     <select id="getRoleIdByUserId" resultType="java.lang.Integer">
          select r.id from  t_role r , t_user_role ur where r.id=ur.roleid and ur.userid=#{id}

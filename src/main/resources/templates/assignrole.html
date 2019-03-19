@@ -46,70 +46,46 @@
     <input type="hidden" th:value="${msg}" id="userId">
 </body>
     <script type="text/javascript">
-       var userId=$("#userId").val();
-        //给用户设置角色
+
+        var userid=$("#userId").val();
         function addRole() {
-
-            var param = {userId:userId};
-
-
+            var param = {userid:userid};
             if($("#leftSelect :selected").size()==0){
-
                 alert("至少选择一个角色")
                 return;
             }
-
             $.each($("#leftSelect :selected"),function(index,obj){
-
-                console.log(obj)
-
                 param["roid["+index+"]"]= obj.value;
-
             })
-
-
             console.log(param)
-
             $.ajax({
                 url:"/addRoleByUserId",
                 type : "POST",
                 data : param,
                 success : function(result) {
-                   //成功之后 刷新界面
-                    //location.reload()
-                    //
+                    //判断数据库的数据确实已经改变了 再改变前台的数据
                     $("#rightSelect").append($("#leftSelect :selected"))
                 },
                 error : function() {
                     alert("ajax访问失败了,查看控制台");
                 }
             });
-
         }
-
+        //移除角色
         function removeRole(){
-
-            var param = {userId:userId};
-
+            var param = {userid:userid};
             if($("#rightSelect :selected").size()==0){
-
                 alert("至少选择一个角色")
-
                 return;
             }
-
             $.each($("#rightSelect :selected"),function(index,obj){
-
                 param["roid["+index+"]"] = $(obj).val();
-
             })
-
             $.ajax({
                 url:"/removeRoleByUserId",
                 type:"POST",
                 data:param,
                 success:function(result){
-                    //location.reload()
                     //判断数据库的数据确实已经改变了 再改变前台的数据
                     $("#leftSelect").append($("#rightSelect :selected"))
                 },

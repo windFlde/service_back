@@ -22,5 +22,25 @@ public class TreeController {
         
     }
 
+    @RequestMapping("removeItem")
+    public String removeItem(Integer id) {
+
+        treeService.removeItem(id);
+        return "";
+    }
+
+    @RequestMapping("addTreeItemToTreeId")
+    public String addTreeItemToTreeId(Tree tree){
+        treeService.addTreeItemToTreeId(tree);
+        return "1";
+    }
+
+  /*  @RequestMapping("queryTree")
+    public List<Tree> queryPermission(){
+        List<Tree> list = treeService.queryPermission();
+        return list;
+    }*/
+
+
 
 }

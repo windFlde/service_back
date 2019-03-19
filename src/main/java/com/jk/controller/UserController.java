@@ -1,14 +1,11 @@
 package com.jk.controller;
 
 import com.jk.bean.*;
-import com.jk.service.RoleService;
 import com.jk.service.UserService;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -75,9 +72,9 @@ public class UserController {
 
 
    @RequestMapping("assignrole")
-    public String assignRole(String userId,Model model) {
+    public String assignRole(String id,Model model) {
 
-       model.addAttribute("msg",userId);
+       model.addAttribute("msg",id);
 
         ArrayList<Role> assignRole = new ArrayList<>();
 
@@ -88,7 +85,7 @@ public class UserController {
         // {id:1,name:xxx},{id:2,name:xxx},{id:3,name:xxx},{id:4,name:xxx}
 
         // 查询当前用户拥有角色id 2,4
-        List<Integer> roleIds=userService.getRoleIdByUserId(userId);
+        List<Integer> roleIds=userService.getRoleIdByUserId(id);
 
         for (Role role : allRole) {
 
@@ -106,12 +103,18 @@ public class UserController {
 
     }
 
+    @RequestMapping("toPower")
+    public String toPower(String id, Model model){
+        model.addAttribute("msg",id);
+        return "assignpower";
+    }
+
     //====根据角色查询权限
     @RequestMapping("queryTreeByRoleId")
     @ResponseBody
     public List<Tree> queryTreeByRoleId(QueryParam queryParam) {
-
-        return userService.queryTreeByRoleId(queryParam);
+        List<Tree> list=userService.queryTreeByRoleId(queryParam);
+        return list;
     }
 
 

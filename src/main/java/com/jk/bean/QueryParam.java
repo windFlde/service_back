@@ -24,18 +24,17 @@ import java.util.List;
  */
 @Data
 public class QueryParam {
-	
-	private Integer userId;
-	
-	private Integer roleId;
-	
-	private List<Integer> roid;//接受的角色id
-	
-	private List<Integer> powerId;//接受的权限id
-	
-	private List<User> user;//接受批量新增数据
-	
-	private String phone_no;//发送验证码的手机号
-	
-	private String verify_code;//用户输入的验证码
+
+	private Integer userid;
+
+	private List<Integer> roid;
+
+	private Integer roleid; //角色id
+
+	private List<Integer> powerId;// 接收权限id
+
+	private String getCode;//用户输入的验证码
+	/**发送验证码的手机号*/
+	private String userPhone;//发送验证码的手机号
+
 }

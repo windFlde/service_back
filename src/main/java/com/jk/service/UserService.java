@@ -19,8 +19,7 @@ public interface UserService {
 
     ArrayList<Role> getAllRole();
 
-    List<Integer> getRoleIdByUserId(String userId);
-
-
     List<Tree> queryTreeByRoleId(QueryParam queryParam);
+
+    List<Integer> getRoleIdByUserId(String id);
 }
