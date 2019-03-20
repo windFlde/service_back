@@ -27,4 +27,6 @@ public interface BckMapper {
     void delSs(Integer id);
 
     void updatePay(@Param("id")Integer id,@Param("pay")Integer pay);
+
+    void updateStop(@Param("id")Integer id, @Param("stop")Integer stop);
 }

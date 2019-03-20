@@ -110,4 +110,10 @@ public class BckController {
     public void updatePay(Integer id, Integer pay) {
         bckService.updatePay(id, pay);
     }
+
+    @ResponseBody
+    @RequestMapping("updateStop")
+    public void updateStop(Integer id, Integer stop) {
+        bckService.updateStop(id,stop);
+    }
 }

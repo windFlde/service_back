@@ -97,4 +97,9 @@ public class BckServiceImpl implements BckService {
         bckMapper.updatePay(id,pay);
     }
 
+    @Override
+    public void updateStop(Integer id, Integer stop) {
+        bckMapper.updateStop(id,stop);
+    }
+
 }

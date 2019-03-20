@@ -48,4 +48,8 @@
     <update id="updatePay">
         update `t_ example` set pay = #{pay} where id = #{id}
     </update>
+
+    <update id="updateStop">
+        update t_user set stop = #{stop} where id = #{id}
+    </update>
 </mapper>
