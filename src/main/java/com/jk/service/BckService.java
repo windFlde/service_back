@@ -22,4 +22,8 @@ public interface BckService {
     void delSs(Integer id);
 
     SendPage quertPingLun(ReceivePage receivePage);
+
+    void updatePay(Integer id, Integer pay);
+
+    void updateStop(Integer id, Integer stop);
 }

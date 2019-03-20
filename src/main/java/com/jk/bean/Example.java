@@ -20,4 +20,5 @@ public class Example {
     private String em_img;
      String em_mp3;
      String em_content;
+     Integer pay;
 }

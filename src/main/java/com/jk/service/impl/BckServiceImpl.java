@@ -92,4 +92,14 @@ public class BckServiceImpl implements BckService {
         return sendPage;
     }
 
+    @Override
+    public void updatePay(Integer id, Integer pay) {
+        bckMapper.updatePay(id,pay);
+    }
+
+    @Override
+    public void updateStop(Integer id, Integer stop) {
+        bckMapper.updateStop(id,stop);
+    }
+
 }

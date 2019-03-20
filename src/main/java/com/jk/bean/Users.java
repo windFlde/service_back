@@ -19,4 +19,5 @@ public class Users {
     private Integer balance;
     private String openId;
     private Integer vip;
+    Integer stop;
 }
