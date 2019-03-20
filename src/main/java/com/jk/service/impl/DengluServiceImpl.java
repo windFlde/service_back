@@ -6,6 +6,7 @@ import com.jk.service.DengluService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class DengluServiceImpl implements DengluService {
@@ -22,4 +23,9 @@ public class DengluServiceImpl implements DengluService {
     public void addCode(Users users) {
         dengluMapper.addCode(users);
     }
+
+  /*  @Override
+    public List<String> getAccessableUrlByUserId(Integer id) {
+        return dengluMapper.getAccessableUrlByUserId(id);
+    }*/
 }

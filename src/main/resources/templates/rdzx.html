@@ -10,6 +10,7 @@
     <script src="/js/easyui1.5/locale/easyui-lang-zh_CN.js"></script>
     <link rel="stylesheet" href="/js/uploadify/uploadify.css" />
     <script src="/js/uploadify/jquery.uploadify.min.js"></script>
+    <script src="/js/layer/layer.js"></script>
 </head>
 
 <body>
@@ -107,10 +108,13 @@
                     {field:'rd_browse',title:'访问量',width:80},
                     {field:'rd_createtime',title:'时间',width:100},
                     {field:'rd_content',title:'内容',width:300},
-                    {field:'123',title:'操作',width:100,formatter:function(value,row,index){
+                    {field:'sites',title:'排序',width:50},
+                    {field:'123',title:'操作',width:200,formatter:function(value,row,index){
 
                          return '<a href="javascript:delOne('+row.id+');">删除</a>'+" | "+
-                                '<a href="javascript:editHotspot('+row.id+');">修改</a>';
+                                '<a href="javascript:editHotspot('+row.id+');">修改</a>|' +
+                             '<a href="javascript:upSites('+row.id+');">上移 </a>|' +
+                             '<a href="javascript:downSites('+row.id+');">下移</a>';
                     }}
 
 
@@ -118,6 +122,53 @@
                 ]]
 
             })
+        }
+
+
+        function upSites(id) {
+            /*ajax   start*/
+            $.ajax({
+                url:"/upSites",
+                type:"POST",
+                data:{id:id},
+                success:function(a){
+                    if (a=="intSitesFail") {
+                        layer.msg("已经最上了");
+                        return ;
+                    }else if(a=="intSitesOk"){
+                        initTable();
+                        layer.msg("上移成功");
+                    }
+                },
+                error:function(){
+                    layer.msg("ajax失败");
+                },complete:function(){
+                    layer.close(ii);
+                }
+            });
+            /*ajax   end*/
+        }
+
+        function downSites(id) {
+            /*ajax   start*/
+            $.ajax({
+                url:"/downSites",
+                type:"POST",
+                data:{id:id},
+                success:function(a){
+                    if (a=="downSitesFail") {
+                        layer.msg("已经到底了");
+                    }else if (a=="downSitesOk") {
+                        initTable();
+                        layer.msg("下移成功");
+                    }
+
+                },
+                error:function(){
+                    layer.msg("ajax失败");
+                }
+            });
+
         }
 
 

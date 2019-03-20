@@ -5,9 +5,9 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class Tree {
+public class TreeTwo {
 
-	private String id;
+	private Integer id;
 	
 	private String text;
 	
@@ -17,9 +17,10 @@ public class Tree {
 	
 	private String state; 
 	
-	private List<Tree> children;
+	private List<TreeTwo> children;
 
-	private List<Tree> nodes;
+	private boolean checked;
+
 
 
 }

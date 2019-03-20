@@ -13,4 +13,5 @@ public class Hotspot {
     private String rd_createtime;
     private String rd_content;
     private String rd_mp3;
+    Integer sites;
 }

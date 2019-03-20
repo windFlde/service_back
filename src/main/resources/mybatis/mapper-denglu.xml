@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jk.mapper.DengluMapper">
+
+    <!-- List<String> getAccessableUrlByUserId(Integer id);-->
+           <!-- <select id="getAccessableUrlByUserId" resultType="java.lang.String">
+                    select t.url from
+
+                    t_tree t,
+                    t_role_permission trp,
+                    t_user_role tur
+                    where
+                    tur.roleid = trp.roleid
+                    and
+                    trp.permissionid = t.id
+                    AND
+                    tur.userid=#{id}
+                    and  t.url is not null
+        </select>-->
+</mapper>

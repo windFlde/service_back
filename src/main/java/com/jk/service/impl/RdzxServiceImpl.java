@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Service
-public class RdzxServiceImpl  implements RdzxService {
+public class RdzxServiceImpl  implements RdzxService{
 
     @Resource
     private RdzxMapper rdzxMapper;
@@ -48,5 +48,28 @@ public class RdzxServiceImpl  implements RdzxService {
     @Override
     public Hotspot editHotspot(Hotspot hotspot) {
         return rdzxMapper.rdzxMapper(hotspot);
+    }
+
+    @Override
+    public Hotspot querySites(Hotspot hotspot) {
+        return rdzxMapper.querySites(hotspot);
+    }
+
+    @Override
+    public Integer getSites(Integer sites) {
+        return rdzxMapper.getSites(sites);
+    }
+
+    @Override
+    public void updateSitesByIntSites(Integer intSites, Integer id, Integer sites) {
+        System.out.println("之前"+intSites);
+        rdzxMapper.updateBeforeSites(intSites,sites);
+        System.out.println("之后"+intSites);
+        rdzxMapper.updateSitesByIntSites(intSites,id);
+    }
+
+    @Override
+    public Integer getDownSite(Integer sites) {
+        return rdzxMapper.getDownSite(sites);
     }
 }

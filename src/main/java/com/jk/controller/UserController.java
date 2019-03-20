@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping
 public class UserController {
 
 
@@ -112,10 +111,16 @@ public class UserController {
     //====根据角色查询权限
     @RequestMapping("queryTreeByRoleId")
     @ResponseBody
-    public List<Tree> queryTreeByRoleId(QueryParam queryParam) {
-        List<Tree> list=userService.queryTreeByRoleId(queryParam);
+    public List<TreeTwo> queryTreeByRoleId(QueryParam queryParam) {
+        List<TreeTwo> list=userService.queryTreeByRoleId(queryParam);
         return list;
     }
+
+   /* @RequestMapping("queryTreeRight")
+    public List<Tree> queryPermission(){
+        List<Tree> list = userService.queryPermission();
+        return list;
+    }*/
 
 
 }

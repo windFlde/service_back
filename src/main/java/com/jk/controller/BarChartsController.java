@@ -31,11 +31,9 @@ public class BarChartsController {
         String futitle = "数据纯属虚构";
         //图例
         String tuli = "注册量";
-        //图示  线形 line  柱形 bar
-        String type = "line";
         //总数据
         List<ListData> list = barChartsService.getEchart();
-        BarBean asd = asd(list, title, futitle,tuli,type);
+        BarBean asd = asd(list, title, futitle,tuli);
         return asd;
     }
 
@@ -50,11 +48,9 @@ public class BarChartsController {
         String futitle = "数据纯属虚构";
         //图例
         String tuli = "开通数";
-        //图示  线形 line  柱形 bar
-        String type = "bar";
         //总数据
         List<ListData> list = barChartsService.getVIP();
-        BarBean asd = asd(list, title, futitle,tuli,type);
+        BarBean asd = asd(list, title, futitle,tuli);
         return asd;
     }
 
@@ -69,11 +65,9 @@ public class BarChartsController {
         String futitle = "数据纯属虚构";
         //图例
         String tuli = "点击量";
-        //图示  线形 line  柱形 bar
-        String type = "line";
         //总数据
         List<ListData> list = barChartsService.getWZData();
-        BarBean asd = asd(list, title, futitle,tuli,type);
+        BarBean asd = asd(list, title, futitle,tuli);
         return asd;
     }
 
@@ -88,15 +82,13 @@ public class BarChartsController {
         String futitle = "数据纯属虚构";
         //图例
         String tuli = "发表量";
-        //图示  线形 line  柱形 bar
-        String type = "bar";
         //总数据
         List<ListData> list = barChartsService.getWXData();
-        BarBean asd = asd(list, title, futitle,tuli,type);
+        BarBean asd = asd(list, title, futitle,tuli);
         return asd;
     }
 
-    public BarBean asd(List<ListData> list,String title,String futitle,String tuli,String type){
+    public BarBean asd(List<ListData> list,String title,String futitle,String tuli){
         BarBean barBean = new BarBean();
         //标题
         barBean.setText(title);
@@ -116,7 +108,7 @@ public class BarChartsController {
         //图例
         barSeries.setName(tuli);
         //图示 line  bar
-        barSeries.setType(type);
+        barSeries.setType("line");
 
         barSeries.setData(arrayList2);
         List<BarSeries> asd = new ArrayList<>();

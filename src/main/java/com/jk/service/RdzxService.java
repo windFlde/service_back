@@ -14,4 +14,12 @@ public interface RdzxService {
     void updateHotspot(Hotspot hotspot);
 
     Hotspot editHotspot(Hotspot hotspot);
+
+    Hotspot querySites(Hotspot hotspot);
+
+    Integer getSites(Integer sites);
+
+    void updateSitesByIntSites(Integer intSites, Integer id, Integer sites);
+
+    Integer getDownSite(Integer sites);
 }

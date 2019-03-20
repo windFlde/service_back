@@ -1,6 +1,7 @@
 package com.jk.mapper;
 
 import com.jk.bean.*;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.ArrayList;
@@ -20,13 +21,13 @@ public interface UserMapper {
 
     ArrayList<Role> getAllRole();
 
-    @Select("select * from t_tree  where pid=#{id}")
-    List<Tree> queryPermission(String id);
+    List<Integer> getRoleIdByUserId(String id);
 
-    @Select("select permissionid from t_role_permission where roleid= #{roleid}")
+    @Select("select permissionid as pid from t_role_permission where roleid= #{roleid}")
     List<Integer> getPermissionIdByRoleId(Integer roleid);
 
-    List<Integer> getRoleIdByUserId(String id);
+    @Select("select * from t_tree2  where pid=#{id}")
+    List<TreeTwo> queryPermission(int id);
 
 
 

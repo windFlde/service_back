@@ -25,5 +25,4 @@ public class User {
     Integer vip;
     Integer xufei;
     Integer fasong;
-    Integer stop;
 }

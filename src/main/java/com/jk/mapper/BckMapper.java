@@ -3,7 +3,6 @@ package com.jk.mapper;
 import com.jk.bean.Example;
 import com.jk.bean.Exprent;
 import com.jk.bean.Sensitivity;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -25,8 +24,4 @@ public interface BckMapper {
     void addSs(Sensitivity sensitivity);
 
     void delSs(Integer id);
-
-    void updatePay(@Param("id")Integer id,@Param("pay")Integer pay);
-
-    void updateStop(@Param("id")Integer id, @Param("stop")Integer stop);
 }

@@ -5,7 +5,7 @@
     <!--List<Hotspot> queryRdzx(Hotspot hotspot);-->
     <select id="queryRdzx" resultType="Hotspot">
 
-        select * from t_hottop
+        select * from t_hottop order by sites
     </select>
     
     <!--void deleteHosport(String[] ids);-->
@@ -48,5 +48,38 @@
         rd_content=#{rd_content}
         where id=#{id}
     </update>
+
+    <!-- Hotspot querySites(Hotspot hotspot);-->
+     <select id="querySites" resultType="Hotspot">
+        select * from t_hottop where id=#{id}
+    </select>
+
+    <!--Integer getSites(Integer sites);-->
+    <select id="getSites" resultType="int">
+        SELECT ifnull(sites, 1) nextOrder
+        FROM t_hottop
+        WHERE  sites &lt; #{sites}
+        order by sites desc limit 0,1
+    </select>
+
+    <!--void updateBeforeSites(Integer intSites, Integer sites);-->
+    <update id="updateBeforeSites">
+        update t_hottop set sites=#{sites} where sites=#{intSites}
+    </update>
+
+   <!-- void updateSitesByIntSites(Integer intSites, Integer id);-->
+    <update id="updateSitesByIntSites">
+        update t_hottop set sites=#{intSites} where id= #{id}
+    </update>
+
+   <!-- Integer getDownSite(Integer sites);-->
+    <select id="getDownSite" resultType="int">
+        SELECT ifnull(sites, 1) nextOrder
+        FROM t_hottop
+        WHERE  sites &gt; #{sites}
+        order by sites  limit 0,1
+    </select>
+
+
 
 </mapper>

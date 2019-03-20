@@ -60,13 +60,8 @@
                 {field: 'em_createtime',title: '添加日期',align: 'center',},
                 {field: 'em_browse',title: '浏览量',align: 'center'},
                 {field: 'em_medal',title: '勋章',align: 'center'},
-                {field: 'pay',title: '操作',align: 'center',formatter: function(value,row,index){
+                {field: 'xxxx',title: '操作',align: 'center',formatter: function(value,row,index){
                         temp = "<a href='javascript:void(0)' onclick='del(" + row.id + ")' >删除</a>";
-                        if(value==1){
-                            temp += "丨<a href='javascript:void(0)' onclick='pay(" + row.id + ",0)' >取消收费</a>";
-                        }else {
-                            temp += "丨<a href='javascript:void(0)' onclick='pay(" + row.id + ",1)' >收费</a>";
-                        }
                         return temp;
                     }},
             ]],
@@ -76,16 +71,6 @@
     function add() {
         $('#dialog').dialog('open');
         clearFormData();
-    }
-
-    function pay(id,pay) {
-        $.ajax({
-            url:"/bck/updatePay",
-            data:{id:id,pay:pay},
-            success:function(result){
-                $("#table").datagrid('reload');
-            }
-        })
     }
 
     function clearFormData(){

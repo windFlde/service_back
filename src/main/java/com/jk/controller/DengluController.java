@@ -3,7 +3,9 @@ package com.jk.controller;
 import com.jk.bean.Users;
 import com.jk.service.DengluService;
 import com.jk.utils.CheckImgUtil;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -12,14 +14,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
-@RestController
+@Controller
 public class DengluController {
 
     @Resource
     private DengluService dengluService;
 
     @RequestMapping("login")
+    @ResponseBody
     public HashMap<String, String> login(Users user, String checkCode, HttpServletRequest request) {
 
         HashMap<String, String> param = new HashMap<>();
@@ -52,13 +56,26 @@ public class DengluController {
             param.put("msg", "密码错误");
             return param;
         }
-
         session.setAttribute(session.getId(),users);
+
+        /*// 登录成功 当前登录的用户放到session中
+        session.setAttribute("user", users);
+        //查询当前用户可以访问的url
+        List<String> urls = dengluService.getAccessableUrlByUserId(users.getId());
+        session.setAttribute("urls", urls);*/
+        session.setAttribute("mag","欢迎   "+users.getUsername());
+
         param.put("code", "3");
         param.put("msg", "登陆成功");
         return param;
 
 
+    }
+
+    @RequestMapping("logot")
+    public String logot(HttpSession session) {
+        session.invalidate();
+        return "denglu";
     }
 
     /**
@@ -75,6 +92,7 @@ public class DengluController {
      * 注册
      */
     @RequestMapping("addCode")
+    @ResponseBody
     public Boolean addCode(Users users) {
 
         try {

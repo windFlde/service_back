@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface RoleMapper {
 
-    void addRoleByUserId(@Param("userid")Integer userid, @Param("roid")List<Integer> roid);
+    void addRoleByUserId(@Param("userid") Integer userid, @Param("roid") List<Integer> roid);
 
-    void removeRoleByUserId(@Param("userid")Integer userid, @Param("roid")List<Integer> roid);
+    void removeRoleByUserId(@Param("userid") Integer userid, @Param("roid") List<Integer> roid);
 
     List<Role> queryRole();
 
-    void addPowerToRole(@Param("rid")Integer roleid, @Param("powerId")List<Integer> powerId);
+    void addPowerToRole(@Param("rid") Integer roleid, @Param("powerId") List<Integer> powerId);
 
     void deletePermissionToRole(Integer roleid);
 

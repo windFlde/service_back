@@ -34,7 +34,7 @@ public interface XxxMapper {
 
     void updateSitesByIntSites(@Param("intSites") Integer intSites, @Param("id") Integer id);
 
-    void updateBeforeSites(@Param("intSites") Integer intSites,@Param("sites") Integer sites);
+    void updateBeforeSites(@Param("intSites") Integer intSites, @Param("sites") Integer sites);
 
     Integer getDownSite(@Param("sites") Integer sites);
 
@@ -53,7 +53,7 @@ public interface XxxMapper {
     @Select("select max(sites) from t_wenzhang")
     Integer queryMaxSites();
 
-    void updateNowSites(@Param("maxSites") Integer maxSites,@Param("id") Integer id);
+    void updateNowSites(@Param("maxSites") Integer maxSites, @Param("id") Integer id);
 
     @Select("select * from t_user_black")
     List<BlackUser> queryBlackUser();
@@ -62,10 +62,9 @@ public interface XxxMapper {
     void insertBlackUser(BlackUser blackUser);
 
     @Delete("delete from t_user_black where id in (  ${ids} )")
-    void deleteBlackUser(@Param("ids") String  ids);
+    void deleteBlackUser(@Param("ids") String ids);
 
-//    @Select("select t.* from t_user t,t_user_black ub where t.id not in ( ub.userId ) GROUP BY t.id ")
-    @Select("select t.* from t_user t ")
+    @Select("select * from t_user ")
     List<User> getUser();
 
     @Select("select count(id) from t_user_black  where userId =#{id}")

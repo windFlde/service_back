@@ -12,7 +12,7 @@ public interface TitleMapper {
 
     void insertTitle(Title title);
 
-    void updateTitle(@Param("id") String id,@Param("state") Integer state);
+    void updateTitle(@Param("id") String id, @Param("state") Integer state);
 
     Integer getcot(@Param("block") Integer block);
 }

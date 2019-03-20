@@ -2,20 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jk.mapper.TreeMapper">
 
-    <!--void removeItem(@Param("ids") ArrayList<String> ids);-->
-    <delete id="removeItem" >
+    <!-- List<Tree> queryTree(@Param("pid")String id,@Param("user")Users user);-->
+    <!--<select id="queryTree" resultType="Tree">
 
-        delete from t_tree where id in(
+         SELECT
+    DISTINCT t.*
+    FROM
+    t_user_role tur,
 
-        <foreach collection="ids" item="id" separator=",">
-            #{id}
-        </foreach>
+    t_role_permission trp,
 
-        )
-    </delete>
+    t_tree t
+    WHERE
 
-    <!--void addTreeItemToTreeId(Tree tree);-->
-    <insert id="addTreeItemToTreeId">
-	  insert into t_tree (text,pid,state) values(#{text},#{pid},#{state})
-	</insert>
+    tur.roleid = trp.roleid
+    AND trp.permissionid = t.id
+    AND tur.userid =#{user.id}
+    and t.pid= #{pid}
+    and state = 0
+    </select>-->
+
 </mapper>

@@ -11,5 +11,5 @@ public interface TitleService {
 
     String insertTitle(Title title);
 
-    void updateTitle(String id,Integer state);
+    void updateTitle(String id, Integer state);
 }

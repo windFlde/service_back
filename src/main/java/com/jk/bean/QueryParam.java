@@ -27,9 +27,9 @@ public class QueryParam {
 
 	private Integer userid;
 
-	private List<Integer> roid;
-
 	private Integer roleid; //角色id
+
+	private List<Integer> roid;
 
 	private List<Integer> powerId;// 接收权限id
 
