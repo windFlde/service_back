@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图标</title>
+    <script src="/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
+
+    <script>
+        var option = null;
+        $(function () {
+            // 指定图表的配置项和数据
+            option = {
+                title: {
+                    textStyle :{
+                        color:'#ff00ff',
+                        fontStyle :'oblique',
+                        borderColor :'#ccc'
+                    }
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                toolbox: {
+                    show: true,
+                    feature: {
+                        dataZoom: {
+                            yAxisIndex: 'none'
+                        },
+                        dataView: {readOnly: false},
+                        magicType: {type: ['line', 'bar']},
+                        restore: {},
+                        saveAsImage: {}
+                    }
+                },
+                legend: {},
+                xAxis: {},
+                yAxis: {},
+                series: [{
+                    markPoint: {
+                        data: [
+                            {type: 'average', name: '平均值'},
+                            {type: 'min', name: '最小值'}
+                        ]
+                    },
+                    markLine: {
+                        data: [
+                            {type: 'average', name: '平均值'}
+                        ]
+                    }
+                }]
+            };
+            getChart();
+        })
+        function getChart() {
+            $.ajax({
+                url: "/chart/getVIP",
+                type: "POST",
+                success: function (result) {
+                    option.title.text= result.text
+                    option.title.subtext=result.subtext
+                    option.xAxis.data= result.xaxisData
+                    option.series=result.series
+                    //option-->string
+                    console.log(JSON.stringify(option))
+                    // 基于准备好的dom，初始化echarts实例
+                    var myChart = echarts.init($("#main")[0]);
+                    myChart.setOption(option);
+                },
+                error: function () {
+                    alert("ajax访问失败了,查看控制台");
+                }
+            });
+        }
+    </script>
+
+</head>
+<body>
+<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+<div id="main" style="width: 600px;height:400px;"></div>
+</body>
+</html>
