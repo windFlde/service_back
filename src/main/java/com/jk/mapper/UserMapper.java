@@ -30,5 +30,11 @@ public interface UserMapper {
     List<TreeTwo> queryPermission(int id);
 
 
+    String getPassword(String userName);
 
+    List<User> getuserName();
+
+    List<Role> getUserRole(String loginacct);
+
+    List<TreeTwo> getUserPer(Integer id);
 }

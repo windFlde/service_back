@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <script src="/js/jquery-2.1.1.min.js"></script>
+    <link rel="shortcut icon" type="image/icon" href="/images/jd.ico">
+    <link rel="stylesheet" type="text/css" href="/css/login.css">
+    <script src="/js/layer/layer.js"></script>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/js/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <script src="/js/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+    <script src="/js/bootstrap-bootbox/bootbox.js"></script>
+    <link rel="stylesheet" href="/js/layui/css/layui.css">
+    <script src="/js/layui/layui.js"></script>
+    <script src="//cstaticdun.126.net/load.min.js"></script>
+</head>
+<script type="text/javascript">
+    var ii=0;
+    function toLogin() {
+        var reUrl=$("#reUrl").val();
+            /*ajax   start*/
+                    $.ajax({
+                       url:"/toLogin",
+                       type:"POST",
+                       data:$("#login_form").serialize(),
+                       beforeSend:function(){
+                              ii = layer.msg('加载中', {
+                              icon: 16
+                              ,shade: 0.01
+                              });
+                        },
+                       success:function(a){
+                           if (a ==1) {
+                               window.location.href = "/toView?viewName=index";
+                           }else if (a!=2) {
+                               layer.msg(a);
+                               return ;
+                           }
+                          
+                       },
+                       error:function(){
+                          layer.msg("ajax失败");
+                       },complete:function(){
+                             layer.close(ii);
+                        }
+                   });
+                 /*ajax   end*/
+
+    }
+    function keyLogin(){
+        if (event.keyCode==13)  //回车键的键值为13
+            toLogin();//调用登录按钮的登录事件
+    }
+</script>
+<body onkeypress="keyLogin()">
+<input type="hidden" id="reUrl" th:value="${session.reUrl?.requestUrl}">
+<div class="up" >
+    <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553096671454&di=4e8ad338c9d2c2a79c9fa80b0cf8726a&imgtype=0&src=http%3A%2F%2Fphoto.16pic.com%2F00%2F01%2F01%2F16pic_101455_b.jpg" width="60px" height="60px;" class="hy_img">
+    <div class="hy">
+        欢迎登录
+    </div>
+</div>
+<div class="middle" style="background:#ccffff">
+    <div>
+        <div style="margin-top: 50px;background: #ef4d4d;height: 70px" >
+
+        </div>
+    </div>
+    <div style="margin-left: 50px;margin-top: 50px;">
+        </div>
+    <!--login start-->
+    <div class="login" style="margin-top: 3px;margin-left: 100px;">
+        <!--ul start-->
+        <ul id="myTab" class="nav nav-tabs">
+            <li class="active">
+                <a href="#home" data-toggle="tab">
+                    账号密码登录
+                </a>
+            </li>
+
+        </ul>
+        <!--ul end-->
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade in active" id="home">
+                <!--start-->
+                <div class="l1 ">
+                    <div class="l1_font_01 ">您好,欢迎登录!</div>
+                    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+                </div>
+
+                <form  id="login_form" method="post">
+                        <input type="text" name="loginacct">
+                        <input type="password" name="userpswd">
+                </form>
+                <div class="box_01">
+                        <div class="box_01_both">
+                            <div class="box_01_both_2">忘记密码？</div>
+                        </div>
+                    </div>
+                <div class="blank_01"></div>
+                <a href="#" class="aline">
+                    <div style="background: #FF8C69;" class="red_button" onclick="toLogin()">
+                        登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录
+                    </div>
+                </a>
+                <div class="blank_01"></div>
+                <div class="blank_01"></div>
+                <div class="box_down">
+                    <div class="box_down_1">京东钱包&nbsp;&nbsp;|&nbsp;&nbsp;QQ
+                        &nbsp;&nbsp;|&nbsp;&nbsp;微信
+                    </div>
+                </div>
+                <!--end-->
+            </div>
+
+
+        </div>
+
+        <!--login end-->
+    </div>
+</div>
+
+<div class="down">
+    <font size="2px">本网站由Copyright © 360.CN 奇虎360旗下搜索服务</font>
+</div>
+
+</body>
+</html>
+
+

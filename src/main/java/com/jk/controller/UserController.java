@@ -2,6 +2,12 @@ package com.jk.controller;
 
 import com.jk.bean.*;
 import com.jk.service.UserService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -122,5 +128,36 @@ public class UserController {
         return list;
     }*/
 
+    @ResponseBody
+    @RequestMapping("toLogin")
+    public String login(Users user) {
+        Subject subject = SecurityUtils.getSubject();
+        UsernamePasswordToken token = new UsernamePasswordToken(user.getLoginacct(),user.getUserpswd());
+        try {
+            subject.login(token);
+        } catch (IncorrectCredentialsException e) {
+            System.out.println("账号或密码错误");
+            return "账号或密码错误";
+        } catch (UnknownAccountException e) {
+            System.out.println("未知账号");
+            return "未知账号";
+        } catch (AuthenticationException e) {
+            e.printStackTrace();
+            return "未知异常";
+        }
+        System.out.println("登陆成功");
+        return "1";
+    }
 
+    @RequestMapping("login")
+    public String login() {
+
+        return "login";
+    }
+
+    @RequestMapping("weishouquan")
+    public String weishouquan() {
+
+        return "weishouquan";
+    }
 }

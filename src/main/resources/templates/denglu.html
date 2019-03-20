@@ -57,7 +57,7 @@
         var password=$("#password").val();
         var checkCodeInput=$("#checkCodeInput").val();
         $.ajax({
-            url:'/login',
+            url:'/logins',
             type:'post',
             data:{loginacct:username,userpswd:password,checkCode:checkCodeInput},
             success:function (data) {

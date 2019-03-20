@@ -104,6 +104,25 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    @Override
+    public String getPassword(String userName) {
+        return userMapper.getPassword(userName);
+    }
+
+    @Override
+    public List<User> getuserName() {
+        return userMapper.getuserName();
+    }
+
+    @Override
+    public List<Role>  getUserRole(String loginacct) {
+        return userMapper.getUserRole(loginacct);
+    }
+
+    @Override
+    public List<TreeTwo> getUserPer(Integer id) {
+        return userMapper.getUserPer(id);
+    }
 
 
 

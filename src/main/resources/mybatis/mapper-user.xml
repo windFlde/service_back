@@ -60,4 +60,41 @@
     </select>
 
 
+    <!--String getPassword(String userName);-->
+    <select id="getPassword" resultType="string">
+        select userpswd from t_user where loginacct =#{userName}
+    </select>
+
+    <!-- List<User> getuserName();-->
+    <select id="getuserName" resultType="user">
+        select loginacct from t_user
+    </select>
+
+    <!--List<String> getUserRole(Integer id);-->
+    <select id="getUserRole" resultType="role">
+       SELECT
+	r.*
+FROM
+	t_user u
+JOIN t_role r
+JOIN t_user_role ur
+WHERE
+	u.id = ur.userid
+AND ur.roleid = r.id
+AND u.loginacct = #{loginacct}
+    </select>
+
+    <!--    List<Permission> getUserPer(Integer id);-->
+    <select id="getUserPer" resultType="treetwo">
+        SELECT
+	p.*
+FROM
+	t_role r
+JOIN t_role_permission rp
+JOIN t_tree2 p
+WHERE
+	r.id = rp.roleid
+AND p.id = rp.permissionid
+AND r.id = #{id}
+    </select>
 </mapper>

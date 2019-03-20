@@ -24,4 +24,12 @@ public interface UserService {
     List<Integer> getRoleIdByUserId(String id);
 
     /*List<Tree> queryPermission();*/
+
+    String getPassword(String userName);
+
+    List<User> getuserName();
+
+    List<Role> getUserRole(String loginacct);
+
+    List<TreeTwo> getUserPer(Integer id);
 }

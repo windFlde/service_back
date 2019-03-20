@@ -22,7 +22,7 @@ public class DengluController {
     @Resource
     private DengluService dengluService;
 
-    @RequestMapping("login")
+    @RequestMapping("logins")
     @ResponseBody
     public HashMap<String, String> login(Users user, String checkCode, HttpServletRequest request) {
 
