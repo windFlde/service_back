@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jk.mapper.BarChartsMapper">
+
+
+    <!--ListData getEchart();-->
+    <select id="getEchart" resultType="com.jk.bean.ListData">
+    SELECT
+        count(*) as name ,
+        DATE_FORMAT(createtime, '%Y-%m') AS value
+    FROM
+        t_user
+    GROUP BY
+        value
+    </select>
+</mapper>
