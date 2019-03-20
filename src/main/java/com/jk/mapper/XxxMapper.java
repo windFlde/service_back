@@ -64,7 +64,8 @@ public interface XxxMapper {
     @Delete("delete from t_user_black where id in (  ${ids} )")
     void deleteBlackUser(@Param("ids") String  ids);
 
-    @Select("select * from t_user ")
+//    @Select("select t.* from t_user t,t_user_black ub where t.id not in ( ub.userId ) GROUP BY t.id ")
+    @Select("select t.* from t_user t ")
     List<User> getUser();
 
     @Select("select count(id) from t_user_black  where userId =#{id}")
