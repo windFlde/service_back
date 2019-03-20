@@ -40,4 +40,15 @@
             GROUP BY
                 value
     </select>
+
+    <!-- List<ListData> getWZFWData();-->
+    <select id="getWZFWData" resultType="ListData">
+        SELECT
+                count name ,
+                DATE_FORMAT(createTime, '%Y-%m-%d') AS value
+            FROM
+                t_vistis
+            GROUP BY
+                value
+    </select>
 </mapper>

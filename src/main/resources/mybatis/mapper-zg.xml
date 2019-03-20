@@ -21,7 +21,7 @@
 
     <!--void deleteZG(String ids);-->
     <delete id="deleteZG">
-        delete from t_docutor_expert where id in (#{ids})
+        delete from t_docutor_expert where id in (${ids})
     </delete>
 
     <!--void addZG(ZG zg);-->

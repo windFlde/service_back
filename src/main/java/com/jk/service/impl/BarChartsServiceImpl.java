@@ -33,4 +33,9 @@ public class BarChartsServiceImpl implements BarChartsService {
     public List<ListData> getWXData() {
         return barChartsMapper.getWXData();
     }
+
+    @Override
+    public List<ListData> getWZFWData() {
+        return barChartsMapper.getWZFWData();
+    }
 }

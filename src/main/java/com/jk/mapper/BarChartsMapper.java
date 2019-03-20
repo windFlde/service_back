@@ -12,4 +12,6 @@ public interface BarChartsMapper {
     List<ListData> getWZData();
 
     List<ListData> getWXData();
+
+    List<ListData> getWZFWData();
 }

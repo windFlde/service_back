@@ -34,12 +34,12 @@
                     }
                 },
                 legend: {
-                    data:['开通量']
+                    data:['访问量']
                 },
                 xAxis: {},
                 yAxis: {},
                 series: [{
-                    name:'开通量',
+                    name: '访问量',
                     markPoint: {
                         data: [
                             {type: 'average', name: '平均值'},
@@ -57,7 +57,7 @@
         })
         function getChart() {
             $.ajax({
-                url: "/chart/getVIP",
+                url: "/chart/getWZFWData",
                 type: "POST",
                 success: function (result) {
                     option.title.text= result.text

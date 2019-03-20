@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jk.mapper.VIPMapper">
+
+    <!--List<VipInfo> queryVIP-->
+    <select id="queryVIP" resultType="VipInfo">
+        select * from t_vip_info
+    </select>
+
+    <!--void deleteVIP(String ids);-->
+    <delete id="deleteVIP">
+        delete from t_vip_info where id in (${ids})
+    </delete>
+
+    <!--void insertVIP(VipInfo vipInfo);-->
+    <insert id="insertVIP">
+    INSERT INTO t_vip_info (
+        vipone,
+        vipmoney,
+        vipthree,
+        vipfour,
+        info
+    )
+    VALUES
+        (#{vipone},#{vipmoney},#{vipthree},#{vipfour},#{info})
+    </insert>
+</mapper>

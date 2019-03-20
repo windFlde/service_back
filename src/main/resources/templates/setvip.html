@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>专家</title>
+    <script src="/js/layer/layer.js"></script>
+    <link rel="stylesheet" href="/js/easyui1.5/themes/icon.css">
+    <link rel="stylesheet" href="/js/easyui1.5/themes/default/easyui.css">
+    <script src="/js/jquery-2.1.1.min.js"></script>
+    <script src="/js/easyui1.5/jquery.easyui.min.js"></script>
+    <link rel="stylesheet" href="/js/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <script src="/js/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <script src="/layui/layui.all.js"></script>
+
+
+</head>
+<script type="text/javascript" th:inline="none">
+    var ii = 0;
+    $(function(){
+        getData();
+        layui.use('rate', function(){
+            var rate = layui.rate;//渲染
+            var ins1 = rate.render({
+                elem: '#test1',  //绑定元素
+                length:5,
+                value:0,
+                theme:'#FFB800',
+                text:true,
+                choose: function(value){
+                    $("#fen").val(value);
+                }
+
+
+            });});
+    })
+    function getData(){
+        $("#table").datagrid({
+            url:'/vip/queryVIP',
+            striped:true,
+            pagination:true,
+            pageList:[3,4,5,6,7],
+            pageSize: 4,
+            /* 奇数偶数行不同颜色 start */
+            rowStyler: function(index,row){
+                if (index%2==0){
+                    return 'background-color:#6293BB;color:#fff;';
+                }else{
+                    return "background-color:#ccfffcc;color:red;";
+                }
+            },
+            /* 奇数偶数行不同颜色 end */
+            columns:[[
+                {field:'xxx',title:'复选框',width:50,checkbox:true},
+                {field:'id',title:'id',width:100},
+                {field: 'vipone',title: '区域一',align: 'center'},
+                {field: 'vipmoney',title: 'VIP开通金额',align: 'center'},
+                {field: 'vipthree',title: '区域三',align: 'center'},
+                {field: 'vipfour',title: '区域四',align: 'center'},
+                {field: 'info',title: '金额||天数||是否续费',align: 'center'},
+            ]],
+            checkOnSelect:false
+        });
+    }
+    function tijiao() {
+        /*ajax   start*/
+        $.ajax({
+            url:"/vip/insertVIP",
+            type:"POST",
+            data:$("#form").serialize(),
+            beforeSend:function(){
+                ii = layer.msg('加载中', {
+                    icon: 16
+                    ,shade: 0.01
+                });
+            },
+            success:function(a){
+                $('#form').form("clear");
+                $("#table").datagrid('reload');//reload 会重新请求数据 但会停留在当前页
+            },
+            error:function(){
+                layer.msg("ajax失败");
+            },complete:function(){
+                layer.close(ii);
+            }
+        });
+        /*ajax   end*/
+    }
+    function removes(){
+        var rows = $("#table").datagrid('getChecked');
+        var ids = "";
+        $.each(rows,function(index,obj){
+            ids += ids== ''?obj.id:","+obj.id;
+        });
+        deleteItem(ids);
+    }
+    function deleteItem(ids){
+        if(ids != null && ids != ""){
+            $.messager.confirm('确认','您确认想要删除记录吗？',function(r){
+                if (r){
+                    $.ajax({
+                        url:"/vip/deleteVIP",
+                        type:"POST",
+                        data:{ids:ids},
+                        success:function(pageUtil){
+                            $.messager.show({
+                                itle:'删除消息',
+                                msg:'删除成功！',
+                                timeout:3000,
+                                showType:'slide'
+                            });
+                            $("#table").datagrid('reload');//reload 会重新请求数据 但会停留在当前页
+                        },
+                        error:function(){
+                            alert("失败了");
+                        }
+                    });
+                }else{
+                    $.messager.show({
+                        title:'删除消息',
+                        msg:'没有删哦！',
+                        timeout:3000,
+                        showType:'slide'
+                    });
+                    $("#table").datagrid('reload');//reload 会重新请求数据 但会停留在当前页
+                }
+            });
+        }else{
+            $.messager.show({
+                title:'删除消息',
+                msg:'请先选中！',
+                timeout:3000,
+                showType:'slide'
+            });
+        }
+    }
+</script>
+<body>
+<div id="p">
+    <!-- 按钮触发模态框 -->
+    <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+        VIP新增
+    </button>
+    <button class="btn btn-primary" onclick="removes()" >
+        批量删除
+    </button>
+</div>
+<table id="table" height="500" width="100%"></table>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    VIP新增
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form id="form">
+                    <table>
+                        <tr>
+                            <td>区域一</td>
+                            <td><input type="text" name="vipone" class="form-control" placeholder="请输入内容"></td>
+                        </tr>
+                        <tr>
+                            <td>VIP金额</td>
+                            <td><input type="text" name="vipmoney" class="form-control" placeholder="请输入金额"></td>
+                        </tr>
+                        <tr>
+                            <td>区域三</td>
+                            <td><input type="text" name="vipthree" class="form-control" placeholder="请输入内容"></td>
+                        </tr>
+                        <tr>
+                            <td>区域四</td>
+                            <td><input type="text" name="vipfour" class="form-control" placeholder="请输入内容"></td>
+                        </tr>
+                        <tr>
+                            <td>金额||天数||是否可以自动续费</td>
+                            <td>
+                                <input type="text" name="info1" class="form-control" placeholder="请输入指定金额"><br>
+                                <input type="text" name="info2" class="form-control" placeholder="请输入指定天数"><br>
+                                是否自动续费: &nbsp;&nbsp;是<input type="radio" name="info3" value="1">&nbsp;&nbsp;
+                                                          否<input type="radio" name="info3" value="0">
+                            </td>
+                        </tr>
+
+
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    关闭
+                </button>
+                <button type="button" onclick="tijiao()" class="btn btn-primary" data-dismiss="modal">
+                    保存
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+</body>
+</html>
