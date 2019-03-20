@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jk.mapper.PayMapper">
+
+ <!--List<Pay> getData();-->
+    <select id="getData" resultType="pay">
+        select p.*,e.em_title FROM `t_ example` e, t_pay p where e.id=p.emId
+    </select>
+</mapper>
