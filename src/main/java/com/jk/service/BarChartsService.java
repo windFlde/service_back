@@ -6,4 +6,10 @@ import java.util.List;
 
 public interface BarChartsService {
     List<ListData> getEchart();
+
+    List<ListData> getVIP();
+
+    List<ListData> getWZData();
+
+    List<ListData> getWXData();
 }

@@ -18,4 +18,19 @@ public class BarChartsServiceImpl implements BarChartsService {
     public List<ListData> getEchart() {
         return barChartsMapper.getEchart();
     }
+
+    @Override
+    public List<ListData> getVIP() {
+        return barChartsMapper.getVIPData();
+    }
+
+    @Override
+    public List<ListData> getWZData() {
+        return barChartsMapper.getWZData();
+    }
+
+    @Override
+    public List<ListData> getWXData() {
+        return barChartsMapper.getWXData();
+    }
 }
