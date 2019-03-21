@@ -132,4 +132,14 @@
         update t_wenzhang set sites = #{maxSites} where id = #{id}
     </update>
 
+    <!--void insertMainTitleName(MainContent mainContent);-->
+    <insert id="insertMainTitleName">
+        insert into t_main_content(mainContent,cdate) values(#{mainContent},#{cdate})
+    </insert>
+
+    <!--void insertOrder(UserOrder u);-->
+    <insert id="insertOrder">
+        insert into t_duihuan (img , feiyong,count,name) values( #{img},#{feiyong},#{count},#{name})
+    </insert>
+
 </mapper>

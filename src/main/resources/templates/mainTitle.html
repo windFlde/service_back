@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <script src="/js/jquery-2.1.1.min.js"></script>
+    <link rel="stylesheet" href="/js/easyui1.5/themes/icon.css">
+    <link rel="stylesheet" href="/js/easyui1.5/themes/default/easyui.css">
+    <script src="/js/easyui1.5/jquery.easyui.min.js"></script>
+    <script src="/js/easyui1.5/locale/easyui-lang-zh_CN.js"></script>
+    <script src="/js/layer/layer.js"></script>
+</head>
+<script type="text/javascript" th:inline="none">
+    var ii = 0;
+    $(function () {
+        getData();
+        normal2ajax();
+        setEvent();
+        $("#dialog_add").dialog("close");
+    });function deleteItemsById(id,username){
+        $.messager.confirm('确认','您确认想要删除这条记录吗？',function(r){
+            if (r){//点击确认
+                deleteItems(id);
+            }
+        });
+    }
+    function setEvent(){
+        $("#btn_delete").linkbutton({
+            onClick:function(){
+                var rows=$("#dg").datagrid("getChecked");
+                var ids="";
+                $.each(rows,function(index,obj){
+                    ids+=ids==''?obj.id:","+obj.id;
+                });
+                deleteItems(ids);
+            }
+        });
+    }
+    function deleteItems(ids){
+        $.ajax({
+            url:"/xjw/deleteMainItemsGongGao",
+            type:"POST",
+            data:{ids:ids},
+            success:function(pageUtil){
+                /* deleteItems start */
+                $.messager.show({
+                    title:'删除',
+                    msg:'删除成功',
+                    timeout:2000,
+                    showType:'slide'
+                });
+                getData();
+                /* deleteItems end */
+            },
+            error:function(pageUtil){
+                if(pageUtil==0){
+                    alert("代码错误");
+                }else{
+                    alert("删除失败");
+                }
+            }
+        });
+    }
+    function getData(){
+        $("#dg").datagrid({
+            url:'/xjw/queryMainTitleName',
+            striped:true,
+            pagePosition:'both',
+            pagination:true,
+            pageList:[3,4,5,6,7,30,50],
+            pageSize: 7,
+            /* 奇数偶数行不同颜色 start */
+            rowStyler: function(index,row){
+                if (index%2==0){
+                    return 'background-color:#6293BB;color:#fff;';
+                }else{
+                    return "background-color:#ccfffcc;color:red;";
+                }
+            },
+            /* 奇数偶数行不同颜色 end */
+            columns:[[
+                {field:'xxx',title:'复选框',width:50,checkbox:true},
+                {field:'id',title:'id',width:200},
+                {field:'mainContent',title:'mainContent',width:300},
+                {field:'cdate',title:'cdate',width:300},
+                {field:'xxx1',title:'操作',width:250,
+                    /* 操作start */
+                    formatter: function(value,row,index){
+                        var content="";
+                        content+=" | <a href='javascript:void(0)' onclick=deleteItemsById('"+row.id+"','"+row.titleContent+"')>删除</a>";
+                        return content;
+                    }
+                    /* 操作end */
+                },
+            ]],
+            checkOnSelect:false,
+        });
+    }
+    /* 提交================================================> start*/
+    function normal2ajax(){
+        $('#add_form').form({
+            url:'/xjw/insertMainTitleName',
+            onSubmit: function(){
+            },
+            success:function(data){
+                $("#div2").hide();
+                closedSubmitData();
+                $("#dialog_add").dialog("close");
+                $('#dg').datagrid('reload');
+
+            }
+        });
+    }
+    function submitData(){//进行提交表单
+        $("#add_form").form('submit')
+    }
+    function addData(){
+        $("#dialog_add").dialog("open");
+        closedSubmitData();
+    }
+    function closedSubmitData(){
+        $('#dialog_add').form("clear");
+    }
+    /* 提交================================================>end */
+</script>
+<body>
+<a id="btn_add" onclick="addData()" href="javascript:void(0)"class="easyui-linkbutton" data-options="iconCls:'icon-remove'">增加</a>
+<table id="dg" height="500" width="100%"></table>
+<!-- 弹框增加start -->
+<div id="dialog_add" class="easyui-dialog" title="My Dialog"
+     style="width:800px;height:400px;"
+     data-options="iconCls:'icon-save',resizable:true,modal:true,
+				buttons:[{
+					text:'保存',
+					iconCls:'icon-no',
+					handler:function(){
+						submitData()//调用另一个方法
+					}
+				},{
+					text:'关闭',
+					iconCls:'icon-more',
+					handler:function(){
+						closedSubmitData()
+						 $('#dialog_add').dialog('close');
+					}
+				}]">
+    <form id="add_form">
+        <input type="hidden" name="id">
+        title:<input name="mainContent" class="easyui-textbox" data-options="iconCls:'icon-man'" style="width:200px"><br>
+        date:<input name="cdate" class="easyui-datebox" data-options="iconCls:'icon-man'" style="width:200px"><br>
+    </form>
+</div>
+<!-- 弹框增加end -->
+</body>
+</html>

@@ -161,12 +161,16 @@
                         return value == 1 ? "会员" : "普通";
 
                         }},
-                    {field:'cz',title:'操作',width:'100px',formatter:function(value,row,index){
-
-
-                        return '<a href="javascript:delOne('+row.id+');">删除</a>|' +
-                            '<a href="javascript:editUser('+row.id+');">修改</a>|' +
-                            '<a href="/assignrole?id='+row.id+'" target="_blank" >角色</a>';
+                    {field:'stop',title:'操作',width:'200px',formatter:function(value,row,index){
+                            var tmp = "<a href='javascript:delOne("+row.id+")'>删除</a>|";
+                            tmp += "<a href='javascript:editUser("+row.id+")'>修改</a>|"
+                            tmp += "<a href='/assignrole?id="+row.id+"' target='_blank' >角色</a>|"
+                            if(value==1){
+                                tmp += "<a href='javascript:void(0)' onclick='stop00(" + row.id + ",0)' >禁言</a>";
+                            }else {
+                                tmp += "<a href='javascript:void(0)' onclick='stop00(" + row.id + ",1)' >取消禁言</a>";
+                            }
+                            return tmp;
 
                         }}
 
@@ -177,6 +181,17 @@
 
             })
         }
+
+        function stop00(id,stop) {
+            $.ajax({
+                url:"/bck/updateStop",
+                data:{id:id,stop:stop},
+                success:function(result){
+                    $("#myTable").datagrid('reload');
+                }
+            })
+        }
+
 
         function openDialog() {
             //重置表单

@@ -173,5 +173,43 @@ public class XxxServiceImpl implements XxxService {
         return xxxMapper.queryUserFt(id);
     }
 
+    @Override
+    public SendPage queryMainTitleName(ReceivePage r) {
+        List<MainContent> count = xxxMapper.queryMainTitleName();
+        PageHelper.startPage(r.getPage(),r.getRows());
+        List<MainContent> list = xxxMapper.queryMainTitleName();
+        SendPage ss = new SendPage(count.size(), list);
+        return ss;
+    }
+
+    @Override
+    public void insertMainTitleName(MainContent mainContent) {
+        xxxMapper.insertMainTitleName(mainContent);
+    }
+
+    @Override
+    public void deleteMainItemsGongGao(String ids) {
+        xxxMapper.deleteMainItemsGongGao(ids);
+    }
+
+    @Override
+    public SendPage queryXIaofei(ReceivePage r) {
+        List<Redeem> count = xxxMapper.queryXIaofei();
+        PageHelper.startPage(r.getPage(),r.getRows());
+        List<Redeem> list = xxxMapper.queryXIaofei();
+        SendPage ss = new SendPage(count.size(), list);
+        return ss;
+    }
+
+    @Override
+    public void deleteOrder(String ids) {
+        xxxMapper.deleteOrder(ids);
+    }
+
+    @Override
+    public void insertOrder(Redeem u) {
+        xxxMapper.insertOrder(u);
+    }
+
 
 }

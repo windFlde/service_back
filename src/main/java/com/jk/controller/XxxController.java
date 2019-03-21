@@ -184,5 +184,43 @@ public class XxxController {
         titleName.setId(ids);
         mongoTemplate.remove(titleName);
     }
+    @ResponseBody
+    @RequestMapping("queryMainTitleName")
+    public SendPage queryMainTitleName(ReceivePage receivePage) {
+        SendPage sp=xxxService.queryMainTitleName(receivePage);
+        return sp;
+    }
+
+    @ResponseBody
+    @RequestMapping("insertMainTitleName")
+    public String insertMainTitleName(MainContent mainContent) {
+        xxxService.insertMainTitleName(mainContent);
+        return "";
+    }
+
+    @ResponseBody
+    @RequestMapping("deleteMainItemsGongGao")
+    public void deleteMainItemsGongGao(String ids) {
+        xxxService.deleteMainItemsGongGao(ids);
+    }
+
+    @ResponseBody
+    @RequestMapping("queryXIaofei")
+    public SendPage queryXIaofei(ReceivePage receivePage) {
+        SendPage sp=xxxService.queryXIaofei(receivePage);
+        return sp;
+    }
+
+    @ResponseBody
+    @RequestMapping("deleteOrder")
+    public void deleteOrder(String ids) {
+        xxxService.deleteOrder(ids);
+    }
+    @ResponseBody
+    @RequestMapping("insertOrder")
+    public String insertOrder(Redeem u) {
+        xxxService.insertOrder(u);
+        return "";
+    }
 
 }

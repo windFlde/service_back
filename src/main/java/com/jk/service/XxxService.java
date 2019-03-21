@@ -48,4 +48,16 @@ public interface XxxService {
     SendPage getUser(ReceivePage receivePage);
 
     Integer queryUserFt(Integer id);
+
+    SendPage queryMainTitleName(ReceivePage receivePage);
+
+    void insertMainTitleName(MainContent mainContent);
+
+    void deleteMainItemsGongGao(String ids);
+
+    SendPage queryXIaofei(ReceivePage receivePage);
+
+    void deleteOrder(String ids);
+
+    void insertOrder(Redeem u);
 }

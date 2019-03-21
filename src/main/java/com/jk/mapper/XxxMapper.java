@@ -1,9 +1,6 @@
 package com.jk.mapper;
 
-import com.jk.bean.BlackUser;
-import com.jk.bean.User;
-import com.jk.bean.WenXian;
-import com.jk.bean.WenZhang;
+import com.jk.bean.*;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
@@ -69,4 +66,20 @@ public interface XxxMapper {
 
     @Select("select count(id) from t_user_black  where userId =#{id}")
     Integer queryUserFt(Integer id);
+
+    @Select("select * from t_main_content")
+    List<MainContent> queryMainTitleName();
+
+    void insertMainTitleName(MainContent mainContent);
+
+    @Delete("delete from t_main_content where id in (${ids})")
+    void deleteMainItemsGongGao(@Param("ids")String ids);
+
+    @Select("select * from t_duihuan ")
+    List<Redeem> queryXIaofei();
+
+    @Delete("delete from t_duihuan where id in (${ids})")
+    void deleteOrder(@Param("ids")String ids);
+
+    void insertOrder(Redeem u);
 }
