@@ -19,11 +19,14 @@
     var ii=0;
     function toLogin() {
         var reUrl=$("#reUrl").val();
+        var loginacct=$("#loginacct").val();
+        var userpswd=$("#userpswd").val();
+        var checkCodeInput=$("#checkCodeInput").val();
             /*ajax   start*/
                     $.ajax({
                        url:"/toLogin",
                        type:"POST",
-                       data:$("#login_form").serialize(),
+                       data:{loginacct:loginacct,userpswd:userpswd,checkCode:checkCodeInput},/*$("#login_form").serialize()*/
                        beforeSend:function(){
                               ii = layer.msg('加载中', {
                               icon: 16
@@ -37,7 +40,7 @@
                                layer.msg(a);
                                return ;
                            }
-                          
+
                        },
                        error:function(){
                           layer.msg("ajax失败");
@@ -52,6 +55,13 @@
         if (event.keyCode==13)  //回车键的键值为13
             toLogin();//调用登录按钮的登录事件
     }
+
+    //随机生成验证码
+    function changerCode(){
+        $('#checkCode').attr('src','/getCodeName?t='+new Date().getTime())
+    }
+
+
 </script>
 <body onkeypress="keyLogin()">
 <input type="hidden" id="reUrl" th:value="${session.reUrl?.requestUrl}">
@@ -90,8 +100,11 @@
                 </div>
 
                 <form  id="login_form" method="post">
-                        <input type="text" name="loginacct">
-                        <input type="password" name="userpswd">
+                        <input type="text" name="loginacct" id="loginacct">
+                        <input type="password" name="userpswd" id="userpswd">
+                        <input type="text" id="checkCodeInput" width="70px">
+                        <img id="checkCode" src="/getCodeName" width="150px" height="40px"/><br>
+                        <a href="javascript:changerCode();">看不清,换一张(区分大小写)</a>
                 </form>
                 <div class="box_01">
                         <div class="box_01_both">

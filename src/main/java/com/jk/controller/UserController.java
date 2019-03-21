@@ -2,6 +2,7 @@ package com.jk.controller;
 
 import com.jk.bean.*;
 import com.jk.service.UserService;
+import com.jk.utils.CheckImgUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -14,6 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,9 +135,12 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping("toLogin")
-    public String login(Users user) {
+    public String login(Users user, String checkCode, HttpSession session) {
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(user.getLoginacct(),user.getUserpswd());
+
+
+
         try {
             subject.login(token);
         } catch (IncorrectCredentialsException e) {
@@ -145,8 +153,32 @@ public class UserController {
             e.printStackTrace();
             return "未知异常";
         }
+        //session中的验证码
+        String OneCode = (String) session.getAttribute("checkcode");
+        if (!checkCode.equals(OneCode)) {
+
+            return "验证码错误";
+
+        }
         System.out.println("登陆成功");
         return "1";
+    }
+
+    /**
+     * 获取验证码
+     * @throws IOException
+     */
+    @RequestMapping("getCodeName")
+    private void getCodeName(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        CheckImgUtil.checkImg(request, response);
+    }
+
+    //注销
+    @RequestMapping("logot")
+    public String logot(HttpSession session) {
+        session.invalidate();
+        return "login";
     }
 
     @RequestMapping("login")

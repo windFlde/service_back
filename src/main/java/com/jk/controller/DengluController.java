@@ -22,7 +22,7 @@ public class DengluController {
     @Resource
     private DengluService dengluService;
 
-    @RequestMapping("logins")
+    /*@RequestMapping("logins")
     @ResponseBody
     public HashMap<String, String> login(Users user, String checkCode, HttpServletRequest request) {
 
@@ -58,11 +58,11 @@ public class DengluController {
         }
         session.setAttribute(session.getId(),users);
 
-        /*// 登录成功 当前登录的用户放到session中
+        登录成功 当前登录的用户放到session中
         session.setAttribute("user", users);
         //查询当前用户可以访问的url
         List<String> urls = dengluService.getAccessableUrlByUserId(users.getId());
-        session.setAttribute("urls", urls);*/
+        session.setAttribute("urls", urls);*//*
         session.setAttribute("mag","欢迎   "+users.getUsername());
 
         param.put("code", "3");
@@ -70,23 +70,23 @@ public class DengluController {
         return param;
 
 
-    }
-
+    }*/
+/*
     @RequestMapping("logot")
     public String logot(HttpSession session) {
         session.invalidate();
         return "denglu";
-    }
+    }*/
 
     /**
      * 获取验证码
      * @throws IOException
      */
-    @RequestMapping("getCodeName")
+   /*@RequestMapping("getCodeName")
     private void getCodeName(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         CheckImgUtil.checkImg(request, response);
-    }
+    }*/
 
     /**
      * 注册
