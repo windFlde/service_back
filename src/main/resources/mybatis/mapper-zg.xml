@@ -74,7 +74,7 @@
 
     <!--List<User> sendPhone();-->
     <select id="sendPhone" resultType="User">
-         select * from t_vip v LEFT JOIN t_user u ON u.id = v.userid where vip = 1 and fasong = 0
+         select * from t_vip v LEFT JOIN t_user u ON u.id = v.userid where u.vip = 1 and v.daoqi = 1
     </select>
 
     <!--void updateFS();-->
@@ -84,7 +84,7 @@
 
     <!--void contmoney(Integer id);-->
     <update id="contmoney">
-        update t_user set balance = balance - 15 where id = 2
+        update t_user set balance = balance - 15  where id = #{id}
     </update>
 
     <!--void addtime(Integer id, Date date1);-->
@@ -92,5 +92,13 @@
           update t_vip set endtime =  #{date1} where userid = #{id}
     </update>
 
+    <!--void updateDQ( Integer id);-->
+    <update id="updateDQ">
+          update t_user set vip = 0 where id = 2
+    </update>
 
+    <!--void daoqi(Integer id);-->
+    <update id="daoqi">
+          update t_vip set daoqi = 0 where userid = #{id}
+    </update>
 </mapper>

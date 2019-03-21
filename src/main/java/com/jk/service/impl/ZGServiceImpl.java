@@ -86,7 +86,22 @@ public class ZGServiceImpl implements ZGService {
         zgMapper.addtime(id,date1);
     }
 
+    @Override
+    public void updateDQ(Integer id) {
+        zgMapper.updateDQ(id);
 
+    }
+
+    @Override
+    public void daoqi(Integer id) {
+        zgMapper.daoqi(id);
+    }
+
+    @Override
+    public void All(Integer id,Date date1) {
+        zgMapper.contmoney(id);
+        zgMapper.addtime(id,date1);
+    }
 
 
 }

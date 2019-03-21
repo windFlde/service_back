@@ -29,7 +29,7 @@ public class Scheduler {
     ZGService zgService;
 
     //每隔2秒执行一次
-    @Scheduled(fixedRate = 1000)
+    @Scheduled(fixedRate = 1000 )
     public void testTasks() {
         String format = dateFormat.format(new Date());
         //System.out.println("定时任务执行时间：" + format );
@@ -45,30 +45,25 @@ public class Scheduler {
                 zgService.updateTask(wenZhang.getId());
                 System.out.println(wenZhang.getName() + "发布成功");
             }
-
         }
         //定时发送到期提醒
         List<User> AllVipUser  = zgService.sendPhone();
-
         for (User user : AllVipUser) {
-            if(user.getFasong() == 0){
-                Date date = new Date(); //现在的时间
-                long start = date.getTime();
-                Date endtime = user.getEndtime();//到期时间
-                long end = endtime.getTime();
-                double asd = end - start;
-                double day =  asd / 1000 / 60 / 60 / 24 ;
-                //System.out.println(day);
-                if(day==0 && user.getXufei() == 1){
-                    if(user.getBalabce() >= 15){
-                        //减余额
-                        zgService.contmoney(user.getId());
-                    }
-                        long l = end + 86400000L;
-                        Date date1 = new Date(l);
-                        //增加VIP天数
-                        zgService.addtime(user.getId(),date1);
-                }
+            Date date = new Date(); //现在的时间
+            long start = date.getTime();
+            Date endtime = user.getEndtime();//到期时间
+            long end = endtime.getTime();
+            double asd = end - start;
+            double day =  asd / 1000 / 60 / 60 / 24 ;
+            //System.out.println(user.getId() +"==="+ day);//剩余天数
+            if(day<=0){
+                //会员到期修改user字段 修改到期字段
+                zgService.updateDQ(user.getId());
+                zgService.daoqi(user.getId());
+                System.out.println("会员已到期");
+            }
+
+            if(user.getFasong() == 0){ //判断是否发过邮箱
                 if(day <= 2){
                     SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
                     // 设置收件人，寄件人
@@ -82,6 +77,7 @@ public class Scheduler {
                     zgService.updateFS();
                 }
             }
+
         }
     }
 }

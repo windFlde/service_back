@@ -18,7 +18,6 @@ public interface ZGService {
 
     List<WenZhang> getAllTask();
 
-
     void updateTask(Integer id);
 
     List<Exprent> poiDerive(String dis);
@@ -32,4 +31,10 @@ public interface ZGService {
     void contmoney(Integer id);
 
     void addtime(Integer id, Date date1);
+
+    void updateDQ(Integer id);
+
+    void daoqi(Integer id);
+
+    void All(Integer id,Date date1);
 }

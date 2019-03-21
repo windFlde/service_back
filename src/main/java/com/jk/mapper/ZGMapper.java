@@ -37,4 +37,7 @@ public interface ZGMapper {
 
     void addtime(Integer id, Date date1);
 
+    void updateDQ(@Param("id") Integer id);
+
+    void daoqi(@Param("id") Integer id);
 }

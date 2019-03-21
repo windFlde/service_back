@@ -21,9 +21,11 @@ public class User {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     Date endtime;    //到期时间
 
-    Integer balabce;
+    Integer balance;
+
     Integer vip;
     Integer xufei;
     Integer fasong;
+    Integer daoqi = 1;
     Integer stop;
 }
