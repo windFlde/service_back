@@ -5,9 +5,24 @@
    <!--  List<User> queryUser();-->
     <select id="queryUser" resultType="Users">
 
-        select * from t_user
+        select * from t_user t
+        <include refid="userwhere"></include>
     </select>
-    
+
+    <sql id="userwhere">
+        <where>
+            <if test="username!=null and username!=''">
+                and t.username like '%${username}%'
+            </if>
+            <if test="starttime!= null and starttime!= ''">
+                and t.createtime >= #{starttime}
+            </if>
+            <if test="endtime!= null and endtime!= ''">
+                and t.createtime &lt;=#{endtime}
+            </if>
+        </where>
+    </sql>
+
     <!-- void addUser(Users user);-->
     
    <insert id="addUser">

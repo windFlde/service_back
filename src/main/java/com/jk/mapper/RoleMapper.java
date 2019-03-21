@@ -11,7 +11,7 @@ public interface RoleMapper {
 
     void removeRoleByUserId(@Param("userid") Integer userid, @Param("roid") List<Integer> roid);
 
-    List<Role> queryRole();
+    List<Role> queryRole(Role role);
 
     void addPowerToRole(@Param("rid") Integer roleid, @Param("powerId") List<Integer> powerId);
 

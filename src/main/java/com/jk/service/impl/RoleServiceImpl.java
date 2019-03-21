@@ -29,10 +29,10 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public SendPage queryRole(ReceivePage receivePage) {
-        List<Role> count=roleMapper.queryRole();
+    public SendPage queryRole(Role role, ReceivePage receivePage) {
+        List<Role> count=roleMapper.queryRole(role);
         PageHelper.startPage(receivePage.getPage(), receivePage.getRows());
-        List<Role> list=roleMapper.queryRole();
+        List<Role> list=roleMapper.queryRole(role);
         SendPage sendPage = new SendPage(count.size(),list);
         return sendPage;
     }

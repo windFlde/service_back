@@ -20,4 +20,9 @@ public class Users {
     private String openId;
     private Integer vip;
     Integer stop;
+
+    //开始时间
+    private	String starttime;
+    //结束时间
+    private	String endtime;
 }

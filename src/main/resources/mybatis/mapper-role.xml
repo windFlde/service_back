@@ -5,8 +5,23 @@
     <!-- List<Role> queryRole();-->
     <select id="queryRole"  resultType="Role">
 
-        select * from t_role
+        select * from t_role t
+        <include refid="rolewhere"></include>
     </select>
+
+    <sql id="rolewhere">
+        <where>
+            <if test="name!=null and name!=''">
+                and t.name like '%${name}%'
+            </if>
+            <if test="startdate!= null and startdate!= ''">
+                and t.createdate >= #{startdate}
+            </if>
+            <if test="enddate!= null and enddate!= ''">
+                and t.createdate &lt;=#{enddate}
+            </if>
+        </where>
+    </sql>
 
     <!-- void addRoleByUserId(@Param("userid")Integer userid, @Param("roid")List<Integer> roid);
 

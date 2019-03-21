@@ -19,9 +19,9 @@ public class RoleController {
 
     @RequestMapping("queryRole")
     @ResponseBody
-    public SendPage queryRole(ReceivePage receivePage) {
+    public SendPage queryRole(Role role,ReceivePage receivePage) {
 
-        SendPage sendPage=roleService.queryRole(receivePage);
+        SendPage sendPage=roleService.queryRole(role,receivePage);
         return sendPage;
     }
 

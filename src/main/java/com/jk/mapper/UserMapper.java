@@ -1,7 +1,6 @@
 package com.jk.mapper;
 
 import com.jk.bean.*;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ import java.util.List;
 
 public interface UserMapper {
 
-    List<User> queryUser();
+    List<User> queryUser(Users users);
 
     void addUser(Users user);
 

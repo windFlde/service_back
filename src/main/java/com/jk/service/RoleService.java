@@ -1,14 +1,9 @@
 package com.jk.service;
 
-import com.jk.bean.QueryParam;
-import com.jk.bean.ReceivePage;
-import com.jk.bean.SendPage;
-import com.jk.bean.Tree;
-
-import java.util.List;
+import com.jk.bean.*;
 
 public interface RoleService {
-    SendPage queryRole(ReceivePage receivePage);
+    SendPage queryRole(Role role, ReceivePage receivePage);
 
     void addRoleByUserId(QueryParam queryParam);
 

@@ -33,9 +33,9 @@ public class UserController {
 
     @RequestMapping("queryUser")
     @ResponseBody
-    public SendPage queryUser(ReceivePage receivePage) {
+    public SendPage queryUser(Users users,ReceivePage receivePage) {
 
-        SendPage sendPage = userService.queryUser(receivePage);
+        SendPage sendPage = userService.queryUser(users,receivePage);
         return sendPage;
 
     }

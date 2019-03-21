@@ -16,12 +16,41 @@
 </head>
 
 <body>
+<div id="toolbar">
+    <table>
+        <tr>
+            <td>角色名称：</td>
+            <td> <input type="text" class="easyui-textbox" id="name"/> </td>
+            <td>创建时间:</td>
+            <td>
+                <input id="startdate" type="text" class="easyui-datebox"/>
+                <input id="enddate" type="text" class="easyui-datebox"/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6">
+                <a onclick="searchRole()" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</a>
+            </td>
+        </tr>
+    </table>
+</div>
 <table id="myTable"></table>
 </body>
  <script type="text/javascript" th:inline="none">
            $(function(){
                initMytable()
            })
+
+           function searchRole(){
+               var name = $('#name').textbox('getValue');
+               var startdate = $('#startdate').datebox('getValue');
+               var enddate = $('#enddate').datebox('getValue');
+               $('#myTable').datagrid('load',{
+                   name:name,
+                   startdate:startdate,
+                   enddate:enddate
+               })
+           }
 
      function initMytable() {
 

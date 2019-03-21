@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface UserService {
     
-    SendPage queryUser(ReceivePage receivePage);
+    SendPage queryUser(Users users, ReceivePage receivePage);
 
     void addUser(Users user);
 

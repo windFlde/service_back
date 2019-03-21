@@ -17,13 +17,13 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public SendPage queryUser(ReceivePage receivePage) {
+    public SendPage queryUser(Users users, ReceivePage receivePage) {
 
 
 
-        List<User> count=userMapper.queryUser();
+        List<User> count=userMapper.queryUser(users);
         PageHelper.startPage(receivePage.getPage(), receivePage.getRows());
-        List<User> list=userMapper.queryUser();
+        List<User> list=userMapper.queryUser(users);
         SendPage sendPage = new SendPage(count.size(), list);
         return sendPage;
     }

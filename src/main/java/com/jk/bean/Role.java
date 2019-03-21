@@ -9,4 +9,7 @@ public class Role {
     private Integer age;
     private String createdate;
     String shiroRoleName;
+
+    private String startdate;
+    private String enddate;
 }
