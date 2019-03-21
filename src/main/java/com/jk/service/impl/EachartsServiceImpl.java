@@ -25,16 +25,13 @@ public class EachartsServiceImpl implements EachartsService {
 
     @Override
     public List<Echarts> queryEcharts() {
-        Query queryA = new Query();
-        queryA.addCriteria(Criteria.where("name").is("匿名用户"));
-        int countA = (int) mongoTemplate.count(queryA, PingLunTwo.class);
 
         Query queryB = new Query();
         queryB.addCriteria(Criteria.where("name").is("马云"));
         int countB = (int) mongoTemplate.count(queryB, PingLunTwo.class);
 
         Query queryC = new Query();
-        queryC.addCriteria(Criteria.where("name").is("陈独秀"));
+        queryC.addCriteria(Criteria.where("name").is("刘强东"));
         int countC = (int) mongoTemplate.count(queryC, PingLunTwo.class);
 
         Query queryD = new Query();
@@ -47,23 +44,43 @@ public class EachartsServiceImpl implements EachartsService {
 
 
 
+
+
         List<Echarts> echarts = new ArrayList<>();
-        if(countA>0){
-            echarts.add(new Echarts(countA,"1"));
-        }
         if(countB>0){
-            echarts.add(new Echarts(countB,"2"));
+            echarts.add(new Echarts(countB,"马云"));
         }
         if(countC>0){
-            echarts.add(new Echarts(countC,"3"));
+            echarts.add(new Echarts(countC,"刘强东"));
         }
         if(countD>0){
-            echarts.add(new Echarts(countD,"4"));
+            echarts.add(new Echarts(countD,"雷军"));
         }
         if(countE>0){
-            echarts.add(new Echarts(countE,"5"));
+            echarts.add(new Echarts(countE,"任正非"));
         }
 
         return echarts;
     }
+
+    @Override
+    public void updateItme(PingLunTwo pingLunTwo) {
+
+        mongoTemplate.save(pingLunTwo);
+
+    }
+
+    @Override
+    public void delete(String id) {
+        PingLunTwo pingLunTwo = new PingLunTwo();
+        pingLunTwo.set_id(id);
+        mongoTemplate.remove(pingLunTwo);
+    }
+
+    @Override
+    public ArrayList<Echarts> queryEcharts2() {
+        return eachartsMapper.queryEcharts2();
+    }
+
+
 }

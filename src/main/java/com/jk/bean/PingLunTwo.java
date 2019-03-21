@@ -13,7 +13,7 @@ public class PingLunTwo {
 
     String _id;
     String content;
-    String name="匿名用户";
+    String name;
     Integer em_id;
     Integer userId;
     String img="https://mmb-toutiao.oss-cn-shanghai.aliyuncs.com/toutiaoImage/ee8d0b7e9e8e5a9f390f6be8856b868b.jpeg?x-oss-process=image/resize,w_440";
