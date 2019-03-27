@@ -210,7 +210,8 @@
                               });
                         },
                        success:function(a){
-                            layer.msg("导出成功")
+                           console.log(a)
+                           location.href="/zhuanjia/download?filename="+a;
                        },
                        error:function(){
                           layer.msg("ajax失败");

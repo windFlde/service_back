@@ -21,9 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.filechooser.FileSystemView;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -257,7 +255,7 @@ public class ZGController {
      */
     @ResponseBody
     @RequestMapping("poiDerive")
-    public String poiDerive(String dis) throws IOException {
+    public String poiDerive(String dis,HttpServletResponse response) throws IOException {
 
         /////获取桌面路径
         FileSystemView fsv = FileSystemView.getFileSystemView();
@@ -296,11 +294,46 @@ public class ZGController {
             row.createCell(8).setCellValue(datum.getDt_qw());
         }
         FileOutputStream out = new FileOutputStream(resultUrl); //表格保存位置
+
         workbook.write(out);//保存Excel文件
         out.close();//关闭文件流
-        return "1";
+        String[] split = resultUrl.split("//");
+        String s = split[1];
+
+        System.out.println(s);
+        return s;
     }
 
-
+    @RequestMapping("download")
+    public void download(String filename, HttpServletResponse response) {
+        /////获取桌面路径
+        FileSystemView fsv = FileSystemView.getFileSystemView();
+        File com = fsv.getHomeDirectory();
+        String path = com.getPath();
+        String resultUrl =  path +"\\"+filename;
+        String filePath = resultUrl;//所要下载的文件路径，从数据库中查询得到，当然也可以直接写文件路径，如：C:\\Users\\Administrator\\Desktop\\csv\\号码_utf8_100.csv
+        try {
+            File file = new File(filePath);
+            String fileName = filePath.substring(filePath.lastIndexOf(File.separator)+1);//得到文件名
+            fileName = new String(fileName.getBytes("UTF-8"),"ISO8859-1");//把文件名按UTF-8取出并按ISO8859-1编码，保证弹出窗口中的文件名中文不乱码，中文不要太多，最多支持17个中文，因为header有150个字节限制。
+            response.setContentType("application/octet-stream");//告诉浏览器输出内容为流
+            response.addHeader("Content-Disposition", "attachment;filename="+fileName);//Content-Disposition中指定的类型是文件的扩展名，并且弹出的下载对话框中的文件类型图片是按照文件的扩展名显示的，点保存后，文件以filename的值命名，保存类型以Content中设置的为准。注意：在设置Content-Disposition头字段之前，一定要设置Content-Type头字段。
+            String len = String.valueOf(file.length());
+            response.setHeader("Content-Length", len);//设置内容长度
+            OutputStream out = response.getOutputStream();
+            FileInputStream in = new FileInputStream(file);
+            byte[] b = new byte[1024];
+            int n;
+            while((n=in.read(b))!=-1){
+                out.write(b, 0, n);
+            }
+            in.close();
+            out.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
